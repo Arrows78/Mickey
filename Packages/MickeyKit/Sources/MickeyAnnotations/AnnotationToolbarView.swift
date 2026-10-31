@@ -27,6 +27,13 @@ struct AnnotationToolbarView: View {
                 .buttonStyle(.plain)
             }
             Divider().frame(height: 22)
+            Image(systemName: "lineweight").help("Stroke Width")
+            Slider(value: Binding(get: { controller.settings.strokeWidth }, set: { controller.setStrokeWidth($0) }),
+                   in: AnnotationSettings.strokeWidthRange)
+                .frame(width: 80)
+                .controlSize(.mini)
+                .help("Stroke Width")
+            Divider().frame(height: 22)
             Button { controller.undo() } label: { Image(systemName: "arrow.uturn.backward") }
                 .buttonStyle(.plain).help("Undo (⌘Z)").disabled(!controller.session.canUndo)
             Button { controller.clearAll() } label: { Image(systemName: "trash") }

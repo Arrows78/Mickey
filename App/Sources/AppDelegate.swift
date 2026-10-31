@@ -29,6 +29,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         model.actions = self
         model.onChange = { [weak self] old, new in self?.apply(new, old: old) }
         annotations.onDrawingChanged = { [weak self] drawing in self?.model.isDrawing = drawing }
+        annotations.onSettingsEdited = { [weak self] edited in self?.model.update { $0.annotations = edited } }
         hotkeys.onHotkey = { [weak self] action in self?.handle(action) }
         input.onTick = { [weak self] snapshot in self?.tick(snapshot) }
         input.onMouseDown = { [weak self] point in self?.mouseDown(at: point) }

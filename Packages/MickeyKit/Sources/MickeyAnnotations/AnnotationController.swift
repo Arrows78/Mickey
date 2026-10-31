@@ -13,6 +13,8 @@ public final class AnnotationController {
     public var session = AnnotationSession(tool: .freehand, color: .red) { didSet { canvas?.needsDisplay = true } }
     public var settings = AnnotationSettings()
     public var onDrawingChanged: ((Bool) -> Void)?
+    /// Called when the toolbar edits a persisted setting (stroke width).
+    public var onSettingsEdited: ((AnnotationSettings) -> Void)?
 
     @ObservationIgnored private var canvasPanel: CanvasPanel?
     @ObservationIgnored private var canvas: CanvasView?
@@ -73,6 +75,10 @@ public final class AnnotationController {
 
     public func select(_ tool: AnnotationTool) { commitTextEditing(); session.selectedTool = tool }
     public func setColor(_ c: RGBAColor) { session.color = c }
+    public func setStrokeWidth(_ w: Double) {
+        settings.strokeWidth = w
+        onSettingsEdited?(settings)
+    }
     public func undo() { session.undo(); hideIfIdle() }
     public func clearAll() { session.clearAll(); hideIfIdle() }
 
