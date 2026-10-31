@@ -247,6 +247,19 @@ public enum MenuBarItem: String, CaseIterable, Codable, Sendable, Identifiable {
         case .annotations: "Annotations"
         }
     }
+
+    /// Hotkey toggling the same setting.
+    public var hotkeyAction: HotkeyAction {
+        switch self {
+        case .spotlight: .toggleSpotlight
+        case .ring: .toggleRing
+        case .clickFeedback: .toggleClickFeedback
+        case .clickSound: .toggleClickSound
+        case .trail: .toggleTrail
+        case .shake: .toggleShakeToLocate
+        case .annotations: .toggleAnnotationMode
+        }
+    }
 }
 
 public enum LoginItemState: Equatable, Sendable {

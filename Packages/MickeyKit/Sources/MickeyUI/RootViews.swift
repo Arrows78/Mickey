@@ -91,7 +91,15 @@ public struct StatusPopoverView: View {
             Divider()
             let items = MenuBarItem.allCases.filter { model.settings.general.menuBarItems.contains($0) }
             ForEach(items) { item in
-                Toggle(item.title, isOn: model.binding(item))
+                Toggle(isOn: model.binding(item)) {
+                    HStack {
+                        Text(item.title)
+                        Spacer()
+                        if let combo = model.settings.hotkeys[item.hotkeyAction] {
+                            Text(combo.displayString).font(.caption.monospaced()).foregroundStyle(.secondary)
+                        }
+                    }
+                }
             }
             if items.isEmpty {
                 Text("No quick toggles selected. Choose them in Settings › General.").font(.caption).foregroundStyle(.secondary)
