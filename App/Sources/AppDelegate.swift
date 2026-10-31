@@ -81,8 +81,10 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         input.rateHz = s.general.updateRateHz
         if (old == nil || old?.hotkeys != s.hotkeys) && !recordingHotkey { registerHotkeys() }
         annotations.apply(s.annotations)
-        if old == nil || old?.click.customSound != s.click.customSound {
-            model.customSoundError = !sound.configure(custom: s.click.customSound)
+        if old == nil || old?.click.customSound != s.click.customSound, !sound.configure(custom: s.click.customSound) {
+            // A moved or deleted file falls back to the default sound and the choice is cleared.
+            model.customSoundError = true
+            model.update { $0.click.customSound = nil }
         }
         if old == nil || old?.general.showInDock != s.general.showInDock {
             NSApp.setActivationPolicy(s.general.showInDock ? .regular : .accessory)
