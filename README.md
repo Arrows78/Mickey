@@ -1,0 +1,264 @@
+<div align="center">
+
+<img src="App/Resources/Assets.xcassets/AppIcon.appiconset/icon_256x256.png" alt="Mickey app icon" width="128">
+
+# 🖱️ Mickey
+
+**A menu-bar cursor highlighter and presentation toolkit for macOS.**
+
+![GitHub last commit](https://img.shields.io/github/last-commit/Arrows78/Mickey?style=for-the-badge&color=FD8494&logoColor=D9E0EE&logo=github)
+![GitHub commit activity](https://img.shields.io/github/commit-activity/m/Arrows78/Mickey?style=for-the-badge&color=FF6022&logoColor=D9E0EE&logo=git)
+![GitHub repo size](https://img.shields.io/github/repo-size/Arrows78/Mickey?style=for-the-badge&color=FECB02&logoColor=D9E0EE&logo=databricks)
+![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/Arrows78/Mickey?style=for-the-badge&color=5A59AD&logoColor=D9E0EE&logo=sublimetext)
+![Github open issues](https://img.shields.io/github/issues/Arrows78/Mickey?style=for-the-badge&color=D9E0EE&logoColor=D9E0EE&logo=jira)
+
+[![Swift](https://img.shields.io/badge/Swift-6-F05138?style=for-the-badge&logo=swift&logoColor=D9E0EE)](https://www.swift.org/)
+[![macOS](https://img.shields.io/badge/macOS-14%2B-000000?style=for-the-badge&logo=apple&logoColor=D9E0EE)](https://www.apple.com/macos/)
+[![SwiftUI](https://img.shields.io/badge/SwiftUI-AppKit-0D96F6?style=for-the-badge&logo=swift&logoColor=D9E0EE)](https://developer.apple.com/xcode/swiftui/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-CBA6F7?style=for-the-badge&logo=opensourceinitiative&logoColor=D9E0EE)](LICENSE)
+
+</div>
+
+**Mickey** makes your pointer impossible to miss during demos, lessons, meetings and screen recordings. It lives in the menu bar and adds a spotlight, a ring, click effects and sounds, a trail and shake-to-locate, then goes further with on-screen drawing, keystroke display, live zoom, a loupe, window focus, a webcam bubble, live captions and a screen recorder.
+
+> [!NOTE]
+> Mickey runs entirely on your Mac: no account, no network access, no analytics. Settings stay in your user defaults and recordings in your Movies folder.
+
+## ✨ Features
+
+### 🎯 Cursor effects
+
+- **Spotlight**: dims the screen under the pointer except a circle, a horizontal band or a vertical band around it. It can stay on, appear only while a modifier is held (**Hold a Key to Show**), or switch itself off once the pointer moves away (**Turn Off When Moving**).
+- **Ring**: a ring that follows the pointer, with size, thickness, color, neon glow and an optional pulse animation.
+- **Click feedback**: seven effects (single ring, ripple, ring burst, color flash, particle burst, glow pulse, scale bounce) on mouse clicks, on a lone tap of a modifier key, or on demand with a hotkey.
+- **Click sounds**: a built-in click or any audio file you choose, at the volume you set.
+- **Trail**: solid, dots, dashed, particles, glow, stars or hearts, with length, width, opacity, color and fade speed.
+- **Shake to locate**: shake the mouse and a large pointer flashes then shrinks back onto the real one (or a ring closes in on it).
+- A master switch turns every cursor effect on or off; switching an effect on while Mickey is off turns Mickey on for you, so no toggle is ever dead.
+
+### ✏️ Annotations
+
+- Draw on top of everything: freehand, arrow, rectangle, circle, line, highlighter, text and numbered callouts.
+- Hold **Fn (🌐)** (or optionally **Right Option**) to draw while the key is held, or toggle a persistent drawing mode with a hotkey or the menu bar.
+- A floating toolbar offers tools, colors, stroke width, undo and clear; single-letter shortcuts (F, A, R, C, L, H, T, N), ⌘Z, ⌘⌫ and Esc work even while holding Fn.
+- Optional auto-fade and clear-on-exit.
+
+### 🎬 Presenter tools
+
+| Tool | What it does | Permission |
+| --- | --- | --- |
+| ⌨️ **Keystrokes** | Shows the shortcuts you press in an on-screen bar; repeats collapse into `×n`. **Shortcuts Only** (on by default) never shows plain typing. | Input Monitoring |
+| 🔍 **Live Zoom** | Magnifies the whole screen (×1.25 to ×6) while the spot under the pointer stays put; move the pointer to pan. | Screen Recording |
+| 🔎 **Loupe** | A round or square magnifying glass that follows the pointer. | Screen Recording |
+| 🪟 **Focus** | Dims everything except the frontmost window, following you as you switch apps. | — |
+| 📷 **Camera bubble** | Your webcam in a draggable circle or rounded square, mirrored if you like. | Camera |
+| 💬 **Captions** | Live subtitles of what you say, recognised on your Mac when the language supports it. | Microphone, Speech Recognition |
+| ⏺️ **Recorder** | Records the screen under the pointer, effects and annotations included, to `~/Movies/Mickey` after a countdown. | Screen Recording |
+
+### 🧰 Everyday use
+
+- **Menu-bar popover** with the master switch, the toggles you choose, each toggle's shortcut, presets, recording and drawing.
+- **Presets**: *Presentation*, *Tutorial Video* and *Discreet* switch several effects at once while keeping your colors and sizes.
+- **Automatic mode** applies a preset while Zoom, Teams, FaceTime, Keynote, PowerPoint, QuickTime Player, OBS, Loom, Webex or Discord runs, then restores your settings.
+- **Global hotkeys** for every action, with sensible defaults, a per-action restore button, *Reset to Defaults* and *Clear All*.
+- **Conflict checks**: shortcuts already used by macOS or by another action are refused; your own app shortcuts and widely used app shortcuts get a warning.
+- Launch at login, menu bar and/or Dock icon, adjustable update rate, searchable help, first-launch onboarding.
+
+## ⌨️ Default shortcuts
+
+Every action defaults to **⌃⌥⌘** plus a letter, a combination macOS and most apps leave free.
+
+| Shortcut | Action | Shortcut | Action |
+| --- | --- | --- | --- |
+| `⌃⌥⌘M` | Toggle Mickey | `⌃⌥⌘D` | Toggle drawing |
+| `⌃⌥⌘S` | Toggle spotlight | `⌃⌥⌘Y` | Toggle keystrokes |
+| `⌃⌥⌘R` | Toggle ring | `⌃⌥⌘Z` | Toggle live zoom |
+| `⌃⌥⌘T` | Toggle trail | `⌃⌥⌘O` | Toggle loupe |
+| `⌃⌥⌘C` | Toggle click feedback | `⌃⌥⌘W` | Toggle focus |
+| `⌃⌥⌘K` | Toggle click sounds | `⌃⌥⌘E` | Toggle camera bubble |
+| `⌃⌥⌘F` | Flash the click effect | `⌃⌥⌘A` | Toggle captions |
+| `⌃⌥⌘L` | Toggle shake to locate | `⌃⌥⌘V` | Start / stop recording |
+
+All of them can be changed or cleared in **Settings › Hotkeys**.
+
+## 🔐 Permissions
+
+Cursor effects, annotations and Focus need **no permission**: the pointer and modifier keys are read by polling, and clicks through global mouse monitors. The presenter tools ask only for what they use, and each settings page shows the permission state with a button to grant it.
+
+| Permission | Used by | Why |
+| --- | --- | --- |
+| Input Monitoring | Keystrokes | Read which shortcuts are pressed. Text is never recorded. |
+| Screen Recording | Live Zoom, Loupe, Recorder | Capture the screen to magnify or record it. |
+| Camera | Camera bubble | Show the webcam. |
+| Microphone, Speech Recognition | Captions | Hear and transcribe your voice. |
+
+The app is sandboxed with only these entitlements: user-selected read-only files (custom click sound), Movies folder (recordings), camera and audio input. It has **no network entitlement**.
+
+## 🧱 Technology stack
+
+| Area | Technologies |
+| --- | --- |
+| Language | Swift 6 with strict concurrency, main-actor default isolation |
+| User interface | SwiftUI (settings, popover, onboarding, HUDs), AppKit (status item, panels, overlays) |
+| Rendering | Core Animation layers in click-through overlay panels, one per screen |
+| Input | `CGEventSource` polling, `NSEvent` global monitors, Carbon hotkeys, listen-only `CGEventTap` |
+| Capture and media | ScreenCaptureKit, AVFoundation (`AVAssetWriter`, `AVCaptureSession`), Speech |
+| System | ServiceManagement (login item), StoreKit (review prompt), unified logging |
+| Persistence | Versioned JSON document in `UserDefaults` with field-level recovery and migrations |
+| Project | Swift Package (`MickeyKit`) + XcodeGen-generated app target |
+| Testing | Swift Testing |
+
+## 🏗️ Architecture
+
+```mermaid
+flowchart LR
+    UI[SwiftUI settings & popover] --> M[AppModel]
+    M --> R[SettingsRules] --> S[(UserDefaults JSON)]
+    M --> A[AppDelegate]
+    I[InputMonitor] --> E[InteractionEngine]
+    H[HotkeyRegistry] --> A
+    A --> E
+    E --> FX[EffectsEngine overlays]
+    A --> AN[AnnotationController]
+    A --> ST[StudioCoordinator]
+    ST --> T[Keystrokes · Zoom · Loupe · Focus · Camera · Captions · Recorder]
+```
+
+- **Single source of truth**: every change, whether it comes from a settings page, the popover or a hotkey, goes through `AppModel`, which applies the cross-field rules (master auto-enable, mutually exclusive spotlight triggers, menu bar or Dock always reachable) and saves with a short debounce.
+- **Pure domain**: `MickeyDomain` holds the models, rules and algorithms (shake detection, trail buffer, tap and hold recognisers, zoom geometry, keystroke formatting…) without AppKit, so it is unit-tested directly.
+- **Thin system adapters**: `MickeySystem` wraps input, hotkeys, login item, sound, permissions and window-server queries; `MickeyEffects`, `MickeyAnnotations` and `MickeyStudio` render; the app target only wires everything together.
+- **Window levels** sit just below the cursor so effects stay above menus, the Dock and full-screen apps: focus, zoom, effects, drawing, then toolbars and HUDs. Zoom and loupe capture the screen without Mickey's own windows; the recorder keeps them, so effects appear in recordings.
+
+More detail in [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md), [`docs/DATA_MODEL.md`](docs/DATA_MODEL.md) and [`docs/PRODUCT_SPEC.md`](docs/PRODUCT_SPEC.md).
+
+## 📦 Prerequisites
+
+- macOS 14 Sonoma or later;
+- [Xcode](https://developer.apple.com/xcode/) 26 or later (Swift 6.2 toolchain);
+- [XcodeGen](https://github.com/yonaskolb/XcodeGen) to generate the Xcode project.
+
+```bash
+xcodebuild -version
+brew install xcodegen
+```
+
+## 🚀 Installation
+
+### 1. Clone the repository
+
+```bash
+git clone git@github.com:Arrows78/Mickey.git
+cd Mickey
+```
+
+### 2. Generate the Xcode project
+
+```bash
+xcodegen generate
+```
+
+`Mickey.xcodeproj` is generated from [`project.yml`](project.yml) and is not committed.
+
+### 3. Build and run
+
+Open `Mickey.xcodeproj` in Xcode and run the **Mickey** scheme, or build from the command line:
+
+```bash
+xcodebuild -project Mickey.xcodeproj -scheme Mickey -configuration Release -derivedDataPath build/DerivedData build
+ditto build/DerivedData/Build/Products/Release/Mickey.app /Applications/Mickey.app
+open /Applications/Mickey.app
+```
+
+> [!TIP]
+> Launch at login and the permission prompts behave best when Mickey runs from `/Applications`.
+
+> [!NOTE]
+> Builds are signed ad hoc for local use, with the bundle identifier `dev.local.mickey`. Set your own team and identifier in `project.yml` to distribute the app.
+
+## 🛠️ Scripts
+
+| Command | Description |
+| --- | --- |
+| `./scripts/ci.sh` | Runs the package tests, regenerates the project and builds the app — the same checks to run before a commit. |
+| `swift test --package-path Packages/MickeyKit` | Runs the unit tests only. |
+| `swift scripts/make_app_icon.swift` | Redraws the app icon set from code. |
+| `python3 scripts/make_click_sound.py` | Synthesises the default click sound (`App/Resources/click.wav`). |
+
+## 📂 Project structure
+
+```text
+Mickey/
+├── project.yml                  # XcodeGen definition of the app target
+├── App/
+│   ├── Sources/                 # Composition root: AppDelegate, status item, windows, menu, review prompt
+│   ├── Resources/               # Generated icon set and click sound
+│   ├── Info.plist               # Generated from project.yml
+│   └── Mickey.entitlements      # Generated from project.yml
+├── Packages/MickeyKit/
+│   ├── Sources/
+│   │   ├── MickeyDomain/        # Models, rules and algorithms, no AppKit
+│   │   ├── MickeyPersistence/   # JSON settings store, recovery and migrations
+│   │   ├── MickeySystem/        # Input, hotkeys, login item, sound, permissions, window queries
+│   │   ├── MickeyEffects/       # Overlay panels and Core Animation renderers
+│   │   ├── MickeyAnnotations/   # Drawing canvas and toolbar
+│   │   ├── MickeyStudio/        # Presenter tools and their coordinator
+│   │   └── MickeyUI/            # Settings pages, popover, onboarding, help, hotkey recorder
+│   └── Tests/                   # Swift Testing suites per module
+├── scripts/                     # CI and asset generation
+└── docs/                        # Product spec, architecture, data model, system API map
+```
+
+## 💾 Local data
+
+| What | Where |
+| --- | --- |
+| Settings | `UserDefaults` key `mickey.settings.v1`: one JSON document, schema version 3 |
+| Review prompt counters | `UserDefaults` key `mickey.review.v1` |
+| Recordings | `~/Movies/Mickey/Mickey Recording <date> at <time>.mov` |
+| Diagnostics | Unified log, subsystem `dev.local.mickey` |
+
+Unknown or invalid values fall back to their default one field at a time, so a damaged entry never resets everything. Migrations add new hotkeys and menu-bar toggles without overriding your choices.
+
+## 🩺 Troubleshooting
+
+- **The menu-bar icon is missing.** A crowded menu bar, the camera notch or a menu-bar manager can hide it. Open Mickey again from `/Applications` to show Settings, then turn on **Show in Dock** in General; Mickey also warns there when macOS hides the icon.
+- **A tool does nothing.** Check its permission on its settings page or in **Support › Permissions**. Some permissions take effect only after Mickey is relaunched.
+- **A shortcut never fires.** Another app may have registered it; macOS does not report such duplicates. Pick another combination.
+- **Reporting a bug.** **Support › Copy Diagnostics** copies the version, macOS version, permission states and settings, with no personal data. Modifier and menu-bar diagnostics can be read with:
+
+```bash
+/usr/bin/log show --last 5m --predicate 'subsystem == "dev.local.mickey"'
+```
+
+## 🗺️ Roadmap
+
+- [ ] Verify every presenter tool end to end on a range of displays and keyboards.
+- [ ] UI tests for the settings window and the popover.
+- [ ] Editable app list for automatic mode, and more caption languages.
+- [ ] Signed and notarised releases.
+- [ ] Localisation (French first).
+
+Known limitation: macOS only hides the system pointer for the active app, so **Spotlight › Hide Cursor** takes effect while Mickey is frontmost.
+
+## 🙌 Contributing
+
+Issues and pull requests are welcome.
+
+1. Fork the repository and create a branch.
+2. Make your change, keeping the domain logic in `MickeyDomain` with tests.
+3. Run the checks:
+
+   ```bash
+   ./scripts/ci.sh
+   ```
+
+4. Commit using [Conventional Commits](https://www.conventionalcommits.org/).
+5. Push the branch and open a pull request.
+
+Keep pull requests focused and describe user-facing behaviour changes.
+
+## ©️ License
+
+Mickey is released under the [MIT License](LICENSE).
+
+Copyright © Thomas Jost.
