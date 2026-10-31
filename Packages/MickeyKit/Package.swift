@@ -7,10 +7,12 @@ let package = Package(
     name: "MickeyKit",
     platforms: [.macOS(.v14)],
     products: [
-        .library(name: "MickeyKit", targets: ["MickeyDomain"]),
+        .library(name: "MickeyKit", targets: ["MickeyDomain", "MickeyPersistence"]),
     ],
     targets: [
         .target(name: "MickeyDomain"),
+        .target(name: "MickeyPersistence", dependencies: ["MickeyDomain"]),
         .testTarget(name: "MickeyDomainTests", dependencies: ["MickeyDomain"]),
+        .testTarget(name: "MickeyPersistenceTests", dependencies: ["MickeyPersistence"]),
     ]
 )
