@@ -13,7 +13,7 @@ final class OverlayPanel: NSPanel {
         backgroundColor = .clear
         hasShadow = false
         ignoresMouseEvents = true
-        level = .screenSaver
+        level = OverlayLevel.effects
         collectionBehavior = [.canJoinAllSpaces, .stationary, .fullScreenAuxiliary, .ignoresCycle]
         isReleasedWhenClosed = false
         let view = NSView(frame: CGRect(origin: .zero, size: screen.frame.size))
@@ -23,6 +23,15 @@ final class OverlayPanel: NSPanel {
 
     override var canBecomeKey: Bool { false }
     override var canBecomeMain: Bool { false }
+}
+
+/// Window levels just below the cursor, so effects stay above menus, the Dock and full-screen apps.
+/// Drawing sits above the effects, and its toolbar above the drawing.
+public enum OverlayLevel {
+    private static let cursor = Int(CGWindowLevelForKey(.cursorWindow))
+    public static let effects = NSWindow.Level(rawValue: cursor - 3)
+    public static let drawing = NSWindow.Level(rawValue: cursor - 2)
+    public static let toolbar = NSWindow.Level(rawValue: cursor - 1)
 }
 
 extension NSScreen {
@@ -118,12 +127,13 @@ public final class EffectsEngine {
     // MARK: Spotlight
 
     private func renderSpotlight(_ l: ScreenLayers, pointer: CGPoint, isCurrent: Bool, visible: Bool, settings s: SpotlightSettings) {
-        guard visible else { l.dim.path = nil; l.hole.path = nil; return }
+        // Only the screen under the pointer is dimmed.
+        guard visible && isCurrent else { l.dim.path = nil; l.hole.path = nil; return }
         let bounds = l.root.bounds
-        let hole = isCurrent ? SpotlightHole.make(center: l.local(pointer), in: bounds, settings: s) : nil
+        let hole = SpotlightHole.make(center: l.local(pointer), in: bounds, settings: s)
         l.dim.path = Shapes.dimPath(bounds: bounds, hole: hole)
         l.dim.fillColor = CGColor(gray: 0, alpha: s.backgroundOpacity)
-        if let hole, s.spotOpacity < 1 {
+        if s.spotOpacity < 1 {
             l.hole.path = Shapes.holePath(hole)
             l.hole.fillColor = CGColor(gray: 0, alpha: s.backgroundOpacity * (1 - s.spotOpacity))
         } else {

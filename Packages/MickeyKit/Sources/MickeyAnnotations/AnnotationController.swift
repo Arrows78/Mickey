@@ -97,7 +97,7 @@ public final class AnnotationController {
             let panel = NSPanel(contentRect: .zero, styleMask: [.borderless, .nonactivatingPanel], backing: .buffered, defer: false)
             panel.isOpaque = false
             panel.backgroundColor = .clear
-            panel.level = NSWindow.Level(rawValue: NSWindow.Level.screenSaver.rawValue + 2)
+            panel.level = OverlayLevel.toolbar
             panel.collectionBehavior = [.canJoinAllSpaces, .fullScreenAuxiliary]
             panel.hasShadow = true
             let host = NSHostingView(rootView: AnnotationToolbarView(controller: self))
@@ -165,7 +165,7 @@ final class CanvasPanel: NSPanel {
         isOpaque = false
         backgroundColor = .clear
         hasShadow = false
-        level = NSWindow.Level(rawValue: NSWindow.Level.screenSaver.rawValue + 1)
+        level = OverlayLevel.drawing
         collectionBehavior = [.canJoinAllSpaces, .fullScreenAuxiliary, .stationary]
         ignoresMouseEvents = true
         acceptsMouseMovedEvents = true
