@@ -24,7 +24,7 @@ struct DefaultsTests {
         #expect(d.click.soundVolume == 0.5 && d.click.tapKey == nil)
         #expect(d.trail.length == 30 && d.trail.width == 5 && d.trail.opacity == 0.8 && d.trail.spawnRate == 4)
         #expect(d.shake.enabled && d.shake.sensitivity == 0.95)
-        #expect(d.hotkeys.isEmpty)
+        #expect(d.hotkeys == HotkeyAction.defaultHotkeys)
     }
 
     @Test func annotationDefaults() {
@@ -530,5 +530,13 @@ struct InteractionTests {
         var e = InteractionEngine()
         _ = e.tick(snap(x: 42, at: 0), settings: .defaults)
         #expect(e.showClickEffect(settings: .defaults) == [.clickEffect(CGPoint(x: 42, y: 100))])
+    }
+}
+
+@Suite("Default hotkeys") struct DefaultHotkeyTests {
+    @Test func everyActionHasAUniqueValidDefault() {
+        let combos = HotkeyAction.allCases.map(\.defaultHotkey)
+        #expect(Set(combos).count == HotkeyAction.allCases.count)
+        #expect(combos.allSatisfy { $0.validate() == nil })
     }
 }

@@ -41,6 +41,8 @@ public final class AppModel {
     public init(store: SettingsStore) {
         self.store = store
         settings = store.loadSettings()
+        // Persist right away so settings migrated or repaired while loading are written back.
+        store.saveSettings(settings)
     }
 
     public func update(_ transform: (inout MickeyDomain.Settings) -> Void) {
@@ -77,7 +79,15 @@ public final class AppModel {
         flush()
     }
 
-    public func resetHotkeys() { update { $0.hotkeys.removeAll() } }
+    public func resetHotkeys() { update { $0.hotkeys = HotkeyAction.defaultHotkeys } }
+    public func clearHotkeys() { update { $0.hotkeys.removeAll() } }
+    public func resetHotkey(_ action: HotkeyAction) {
+        update { s in
+            // The default may now belong to another action: free it first.
+            for (other, combo) in s.hotkeys where other != action && combo == action.defaultHotkey { s.hotkeys[other] = nil }
+            s.hotkeys[action] = action.defaultHotkey
+        }
+    }
 
     public func setLaunchAtLogin(_ enabled: Bool) {
         guard let actions else { return }

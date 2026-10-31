@@ -194,6 +194,27 @@ public enum HotkeyAction: String, CaseIterable, Codable, CodingKeyRepresentable,
         }
     }
 
+    /// Default shortcut: ⌃⌥⌘ plus a mnemonic letter. The triple modifier is left free by macOS
+    /// and by most apps, so the defaults rarely collide with anything.
+    public var defaultHotkey: KeyCombo {
+        let (code, label): (UInt32, String) = switch self {
+        case .toggleMaster: (46, "M")
+        case .toggleSpotlight: (1, "S")
+        case .toggleRing: (15, "R")
+        case .toggleTrail: (17, "T")
+        case .toggleClickFeedback: (8, "C")
+        case .toggleClickSound: (40, "K")
+        case .showClickEffect: (3, "F")
+        case .toggleShakeToLocate: (37, "L")
+        case .toggleAnnotationMode: (2, "D")
+        }
+        return KeyCombo(keyCode: code, modifiers: [.control, .option, .command], keyLabel: label)
+    }
+
+    public static var defaultHotkeys: [HotkeyAction: KeyCombo] {
+        Dictionary(uniqueKeysWithValues: allCases.map { ($0, $0.defaultHotkey) })
+    }
+
     public var detail: String {
         switch self {
         case .toggleMaster: "Turn every effect on or off"

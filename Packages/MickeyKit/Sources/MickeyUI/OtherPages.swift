@@ -44,10 +44,11 @@ struct AnnotationsPage: View {
 struct HotkeysPage: View {
     @Bindable var model: AppModel
     @State private var confirmReset = false
+    @State private var confirmClear = false
 
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
-            PageHeader(title: "Hotkeys", subtitle: "Global shortcuts that work from any app. None are set by default.")
+            PageHeader(title: "Hotkeys", subtitle: "Global shortcuts that work from any app. Each defaults to ⌃⌥⌘ plus a letter.")
             FeatureCard(title: "Keyboard Shortcuts", symbol: "keyboard") {
                 ForEach(HotkeyAction.allCases) { action in
                     HStack {
@@ -65,13 +66,19 @@ struct HotkeysPage: View {
                                        takenBy: { combo in
                                            model.settings.hotkeys.first { $0.key != action && $0.value == combo }?.key.title
                                        })
+                        Button { model.resetHotkey(action) } label: { Image(systemName: "arrow.counterclockwise") }
+                            .buttonStyle(.plain).foregroundStyle(.secondary)
+                            .help("Restore the default (\(action.defaultHotkey.displayString))")
+                            .accessibilityLabel("Restore default shortcut")
+                            .opacity(model.settings.hotkeys[action] == action.defaultHotkey ? 0 : 1)
+                            .disabled(model.settings.hotkeys[action] == action.defaultHotkey)
                     }
                     if action != HotkeyAction.allCases.last { Divider() }
                 }
             }
             FeatureCard(title: "How Hotkeys Work", symbol: "info.circle") {
                 VStack(alignment: .leading, spacing: 6) {
-                    Text("• Click a field, then press the combination. Esc cancels, Delete clears.")
+                    Text("• Click a field, then press the combination. Esc cancels, Delete clears, ↺ restores the default.")
                     Text("• Use at least Control or Option, or Command with another modifier. F-keys work alone.")
                     Text("• Combinations already used by macOS or by another action are refused.")
                     Text("• A shortcut set here is taken from every other app, so avoid ones you use elsewhere.")
@@ -81,13 +88,19 @@ struct HotkeysPage: View {
             }
             HStack {
                 Spacer()
+                Button("Clear All") { confirmClear = true }
                 Button("Reset to Defaults") { confirmReset = true }
             }
         }
-        .confirmationDialog("Clear all shortcuts?", isPresented: $confirmReset) {
-            Button("Clear All Shortcuts", role: .destructive) { model.resetHotkeys() }
+        .confirmationDialog("Restore the default shortcuts?", isPresented: $confirmReset) {
+            Button("Reset to Defaults", role: .destructive) { model.resetHotkeys() }
         } message: {
-            Text("Every custom keyboard shortcut will be removed.")
+            Text("Every action gets its ⌃⌥⌘ default back; your custom shortcuts are replaced.")
+        }
+        .confirmationDialog("Clear all shortcuts?", isPresented: $confirmClear) {
+            Button("Clear All Shortcuts", role: .destructive) { model.clearHotkeys() }
+        } message: {
+            Text("No action will have a shortcut. Reset to Defaults brings them back.")
         }
     }
 }

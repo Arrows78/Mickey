@@ -47,7 +47,7 @@ public enum HelpContent {
                   body: "F freehand, A arrow, R rectangle, C circle, L line, H highlighter, T text, N numbered callout. ⌘Z undoes, ⌘⌫ clears everything.",
                   section: .annotations),
         HelpEntry(id: "hotkeys", group: "Hotkeys", title: "Setting hotkeys",
-                  body: "No shortcuts are set by default. Open Hotkeys, click a field and press a combination with Control or Option. Reset to Defaults clears them all.",
+                  body: "Every action has a default shortcut: ⌃⌥⌘ plus a letter (M Mickey, S spotlight, R ring, T trail, C click feedback, K click sounds, F flash click, L locate, D draw). Change one by clicking its field; ↺ or Reset to Defaults restores them, Clear All removes them.",
                   section: .hotkeys),
         HelpEntry(id: "nothing", group: "Troubleshooting", title: "Nothing appears on screen",
                   body: "Make sure Enable Mickey is on, in the settings window or the menu bar.", section: .effects),

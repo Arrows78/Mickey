@@ -198,7 +198,8 @@ public struct AnnotationSettings: Codable, Equatable, Sendable {
 }
 
 public struct Settings: Codable, Equatable, Sendable {
-    public static let currentSchemaVersion = 1
+    /// 2: default hotkeys introduced.
+    public static let currentSchemaVersion = 2
 
     public var schemaVersion = Settings.currentSchemaVersion
     public var general = GeneralSettings()
@@ -208,7 +209,7 @@ public struct Settings: Codable, Equatable, Sendable {
     public var trail = TrailSettings()
     public var shake = ShakeSettings()
     public var annotations = AnnotationSettings()
-    public var hotkeys: [HotkeyAction: KeyCombo] = [:]
+    public var hotkeys: [HotkeyAction: KeyCombo] = HotkeyAction.defaultHotkeys
 
     public init() {}
 

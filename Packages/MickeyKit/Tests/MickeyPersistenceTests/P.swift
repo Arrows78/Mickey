@@ -79,3 +79,23 @@ struct PersistenceTests {
         #expect(store.loadReviewState() == r)
     }
 }
+
+@Suite("Migration") struct MigrationTests {
+    @Test func version1GainsDefaultHotkeysWithoutOverridingChoices() throws {
+        var old = Settings()
+        old.schemaVersion = 1
+        let custom = KeyCombo(keyCode: 1, modifiers: [.control, .option, .command], keyLabel: "S")
+        old.hotkeys = [.toggleRing: custom] // takes the Spotlight default combination
+        let s = SettingsCodec.decode(SettingsCodec.encode(old))
+        #expect(s.schemaVersion == Settings.currentSchemaVersion)
+        #expect(s.hotkeys[.toggleRing] == custom)
+        #expect(s.hotkeys[.toggleSpotlight] == nil)
+        #expect(s.hotkeys[.toggleMaster] == HotkeyAction.toggleMaster.defaultHotkey)
+    }
+
+    @Test func clearedHotkeysStayClearedInVersion2() {
+        var s = Settings()
+        s.hotkeys = [:]
+        #expect(SettingsCodec.decode(SettingsCodec.encode(s)).hotkeys.isEmpty)
+    }
+}

@@ -112,9 +112,15 @@ public enum SettingsCodec {
         object[first] = child
     }
 
-    /// Hook for future schema changes.
+    /// Upgrades settings saved by an older schema.
     static func migrate(_ s: Settings) -> Settings {
         var m = s
+        if s.schemaVersion < 2 {
+            // Version 1 had no default hotkeys: add them where the action is unset and the combination is unused.
+            for (action, combo) in HotkeyAction.defaultHotkeys where m.hotkeys[action] == nil && !m.hotkeys.values.contains(combo) {
+                m.hotkeys[action] = combo
+            }
+        }
         m.schemaVersion = Settings.currentSchemaVersion
         return m
     }
