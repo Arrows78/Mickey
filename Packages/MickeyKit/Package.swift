@@ -7,7 +7,8 @@ let package = Package(
     name: "MickeyKit",
     platforms: [.macOS(.v14)],
     products: [
-        .library(name: "MickeyKit", targets: ["MickeyDomain", "MickeyPersistence", "MickeySystem", "MickeyEffects", "MickeyAnnotations"]),
+        .library(name: "MickeyKit", targets: ["MickeyDomain", "MickeyPersistence", "MickeySystem",
+                                               "MickeyEffects", "MickeyAnnotations", "MickeyUI"]),
     ],
     targets: [
         .target(name: "MickeyDomain"),
@@ -15,6 +16,7 @@ let package = Package(
         .target(name: "MickeySystem", dependencies: ["MickeyDomain"], swiftSettings: mainActorByDefault),
         .target(name: "MickeyEffects", dependencies: ["MickeyDomain"], swiftSettings: mainActorByDefault),
         .target(name: "MickeyAnnotations", dependencies: ["MickeyDomain", "MickeyEffects"], swiftSettings: mainActorByDefault),
+        .target(name: "MickeyUI", dependencies: ["MickeyDomain", "MickeyPersistence", "MickeyEffects"], swiftSettings: mainActorByDefault),
         .testTarget(name: "MickeyDomainTests", dependencies: ["MickeyDomain"]),
         .testTarget(name: "MickeyPersistenceTests", dependencies: ["MickeyPersistence"]),
         .testTarget(name: "MickeyEffectsTests", dependencies: ["MickeyEffects", "MickeyDomain"]),
