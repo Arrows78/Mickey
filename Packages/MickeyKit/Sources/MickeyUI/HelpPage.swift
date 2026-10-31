@@ -25,6 +25,9 @@ public enum HelpContent {
         HelpEntry(id: "reach", group: "Menu bar", title: "Menu bar or Dock",
                   body: "Show in Menu Bar and Show in Dock can't both be off, so Mickey is always reachable. With the Dock icon shown, clicking it opens Settings.",
                   section: .general),
+        HelpEntry(id: "findicon", group: "Menu bar", title: "Can't find the menu bar icon",
+                  body: "A crowded menu bar, the camera notch or a menu-bar manager can hide the icon. Open Mickey again from the Applications folder to show Settings, then turn on Show in Dock for a second way in.",
+                  section: .general),
         HelpEntry(id: "spotlight", group: "Cursor Effects", title: "Spotlight",
                   body: "Dims the screen except a circle or a bar around the pointer. Hold a Key to Show reveals it only while a modifier is held. Turn Off When Moving clears it once you move away.",
                   section: .effects),
@@ -88,6 +91,7 @@ struct HelpPage: View {
             .background(.background.secondary, in: RoundedRectangle(cornerRadius: 8))
             .background(Button("") { searchFocused = true }.keyboardShortcut("f", modifiers: .command).hidden())
 
+            if model.helpQuery.isEmpty { jumpRow }
             if results.isEmpty {
                 VStack(alignment: .leading, spacing: 4) {
                     Text("No matches for “\(model.helpQuery)”").font(.headline)
@@ -105,6 +109,20 @@ struct HelpPage: View {
                             }
                         }
                         .padding(.vertical, 2)
+                    }
+                }
+            }
+        }
+    }
+
+    /// Shortcuts to the settings page of each feature area.
+    private var jumpRow: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text("Jump to a feature").font(.headline)
+            HStack(spacing: 8) {
+                ForEach([SettingsSection.effects, .annotations, .hotkeys, .general], id: \.self) { section in
+                    Button { model.selectedSection = section } label: {
+                        Label(section.title, systemImage: section.symbolName)
                     }
                 }
             }
