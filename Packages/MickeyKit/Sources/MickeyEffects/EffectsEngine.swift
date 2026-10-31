@@ -329,8 +329,47 @@ public final class EffectsEngine {
         DispatchQueue.main.asyncAfter(deadline: .now() + duration + 0.5) { layers.forEach { $0.removeFromSuperlayer() } }
     }
 
-    /// Shake-to-locate: a large ring that shrinks onto the pointer.
-    public func playLocator(at point: CGPoint, color: RGBAColor) {
+    /// Shake-to-locate, in the chosen style.
+    public func playLocator(at point: CGPoint, color: RGBAColor, style: LocatorStyle) {
+        switch style {
+        case .ring: playRingLocator(at: point, color: color)
+        case .enlargedPointer: playPointerLocator(at: point)
+        }
+    }
+
+    /// A big pointer over the real one, flashing then shrinking back to normal size.
+    private func playPointerLocator(at point: CGPoint) {
+        guard let l = screen(containing: point) else { return }
+        setVisible(true)
+        let layer = CAShapeLayer()
+        layer.position = l.local(point)
+        layer.path = Shapes.pointer(height: 26)
+        layer.fillColor = CGColor(gray: 1, alpha: 1)
+        layer.strokeColor = CGColor(gray: 0, alpha: 1)
+        layer.lineWidth = 1.2
+        layer.lineJoin = .round
+        layer.shadowColor = CGColor(gray: 0, alpha: 1)
+        layer.shadowOpacity = 0.35
+        layer.shadowRadius = 4
+        layer.shadowOffset = CGSize(width: 0, height: -2)
+        layer.opacity = 0
+        let d = LocatorAnimation.duration
+        let scale = CAKeyframeAnimation(keyPath: "transform.scale")
+        scale.values = [1, 5, 5, 1]
+        scale.keyTimes = [0, 0.15, 0.55, 1]
+        scale.timingFunctions = [CAMediaTimingFunction(name: .easeOut), CAMediaTimingFunction(name: .linear), CAMediaTimingFunction(name: .easeInEaseOut)]
+        let fade = CAKeyframeAnimation(keyPath: "opacity")
+        fade.values = [0, 1, 1, 0]; fade.keyTimes = [0, 0.1, 0.85, 1]
+        let g = CAAnimationGroup()
+        g.animations = [scale, fade]
+        g.duration = d
+        layer.add(g, forKey: "fx")
+        l.effects.addSublayer(layer)
+        DispatchQueue.main.asyncAfter(deadline: .now() + d + 0.1) { layer.removeFromSuperlayer() }
+    }
+
+    /// A large ring that shrinks onto the pointer.
+    private func playRingLocator(at point: CGPoint, color: RGBAColor) {
         guard let l = screen(containing: point) else { return }
         setVisible(true)
         let layer = CAShapeLayer()

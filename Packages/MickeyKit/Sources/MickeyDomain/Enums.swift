@@ -48,6 +48,18 @@ public enum TriggerKey: String, CaseIterable, Codable, Sendable {
     }
 }
 
+/// Shake-to-locate animation.
+public enum LocatorStyle: String, CaseIterable, Codable, Sendable {
+    case enlargedPointer, ring
+
+    public var title: String {
+        switch self {
+        case .enlargedPointer: "Enlarged Pointer"
+        case .ring: "Shrinking Ring"
+        }
+    }
+}
+
 public enum ClickEffectType: String, CaseIterable, Codable, Sendable {
     case singleRing, ripple, ringBurst, colorFlash, particleBurst, glowPulse, scaleBounce
 

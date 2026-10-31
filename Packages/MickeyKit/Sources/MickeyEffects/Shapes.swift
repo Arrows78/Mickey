@@ -42,6 +42,17 @@ public enum Shapes {
         return p
     }
 
+    /// Arrow pointer with its tip at the origin, pointing up-left, `height` points tall.
+    public static func pointer(height h: CGFloat) -> CGPath {
+        let u = h / 26
+        let pts: [(CGFloat, CGFloat)] = [(0, 0), (0, -22), (5.5, -17), (9.5, -26), (13, -24.5), (9, -15.5), (16, -15.5)]
+        let p = CGMutablePath()
+        p.move(to: .zero)
+        for (x, y) in pts.dropFirst() { p.addLine(to: CGPoint(x: x * u, y: y * u)) }
+        p.closeSubpath()
+        return p
+    }
+
     /// Full-screen dimming path with the spotlight hole cut out (even-odd fill).
     public static func dimPath(bounds: CGRect, hole: SpotlightHole?) -> CGPath {
         let p = CGMutablePath()

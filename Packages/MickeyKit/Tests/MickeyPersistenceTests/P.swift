@@ -116,3 +116,17 @@ struct PersistenceTests {
         #expect(SettingsCodec.decode(SettingsCodec.encode(s)).hotkeys.isEmpty)
     }
 }
+
+@Suite("Added fields") struct AddedFieldTests {
+    @Test func settingsSavedBeforeLocatorStyleKeepEverythingElse() throws {
+        var s = Settings()
+        s.shake.sensitivity = 0.5
+        var json = try #require(JSONSerialization.jsonObject(with: SettingsCodec.encode(s)) as? [String: Any])
+        var shake = try #require(json["shake"] as? [String: Any])
+        shake["style"] = nil
+        json["shake"] = shake
+        let decoded = SettingsCodec.decode(try JSONSerialization.data(withJSONObject: json))
+        #expect(decoded.shake.sensitivity == 0.5)
+        #expect(decoded.shake.style == .enlargedPointer)
+    }
+}

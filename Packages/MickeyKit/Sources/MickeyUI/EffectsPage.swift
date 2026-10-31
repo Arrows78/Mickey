@@ -136,6 +136,7 @@ struct EffectsPage: View {
                     subtitle: "Shake the mouse quickly to show a large locator around the pointer.",
                     isOn: model.binding(\.shake.enabled)) {
             SliderRow(title: "Sensitivity", value: model.binding(\.shake.sensitivity), range: ShakeSettings.sensitivityRange, format: percent)
+            PickerRow(title: "Animation", selection: model.binding(\.shake.style), options: LocatorStyle.allCases) { Text($0.title) }
         }
     }
 }

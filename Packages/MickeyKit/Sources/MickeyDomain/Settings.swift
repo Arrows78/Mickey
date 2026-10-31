@@ -172,6 +172,7 @@ public struct TrailSettings: Codable, Equatable, Sendable {
 public struct ShakeSettings: Codable, Equatable, Sendable {
     public var enabled = true
     public var sensitivity = 0.95
+    public var style = LocatorStyle.enlargedPointer
     public init() {}
 
     public static let sensitivityRange = 0.1...1.0
