@@ -20,5 +20,6 @@ let package = Package(
         .testTarget(name: "MickeyDomainTests", dependencies: ["MickeyDomain"]),
         .testTarget(name: "MickeyPersistenceTests", dependencies: ["MickeyPersistence"]),
         .testTarget(name: "MickeyEffectsTests", dependencies: ["MickeyEffects", "MickeyDomain"]),
+        .testTarget(name: "MickeyUITests", dependencies: ["MickeyUI", "MickeyDomain"]),
     ]
 )

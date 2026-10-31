@@ -7,8 +7,8 @@ import MickeyDomain
 struct HotkeyRecorder: View {
     @Binding var combo: KeyCombo?
     var onRecording: (Bool) -> Void = { _ in }
-    /// Name of another action already using the combination, if any.
-    var takenBy: (KeyCombo) -> String? = { _ in nil }
+    /// Shortcuts of the other actions, to refuse duplicates.
+    var otherActions: [HotkeyAction: KeyCombo] = [:]
 
     @State private var recording = false
     @State private var monitor: Any?
@@ -67,33 +67,13 @@ struct HotkeyRecorder: View {
         case .commandOnlyReserved?: error = "⌘ + key alone is reserved by macOS; add another modifier."
         case .shiftOnly?: error = "Shift alone is not enough; add another modifier."
         case nil:
-            if Self.isUsedBySystem(candidate) {
-                error = "Already used by macOS (System Settings › Keyboard › Keyboard Shortcuts)."
-            } else if let owner = takenBy(candidate) {
-                error = "Already used by \(owner)."
+            // Refuse combinations that could never fire; softer conflicts are shown next to the row.
+            if let conflict = HotkeyConflict.check(candidate, otherActions: otherActions), conflict.blocks {
+                error = conflict.message
             } else {
                 combo = candidate
                 stop()
             }
-        }
-    }
-
-    /// True when the combination matches an enabled system shortcut (Mission Control, Spotlight, input sources…),
-    /// which would swallow it before Mickey sees it.
-    static func isUsedBySystem(_ c: KeyCombo) -> Bool {
-        var unmanaged: Unmanaged<CFArray>?
-        guard CopySymbolicHotKeys(&unmanaged) == noErr,
-              let shortcuts = unmanaged?.takeRetainedValue() as? [[String: Any]] else { return false }
-        let relevant = cmdKey | optionKey | controlKey | shiftKey
-        var mods = 0
-        if c.modifiers.contains(.command) { mods |= cmdKey }
-        if c.modifiers.contains(.option) { mods |= optionKey }
-        if c.modifiers.contains(.control) { mods |= controlKey }
-        if c.modifiers.contains(.shift) { mods |= shiftKey }
-        return shortcuts.contains { s in
-            (s[kHISymbolicHotKeyEnabled as String] as? Bool) == true
-                && (s[kHISymbolicHotKeyCode as String] as? Int) == Int(c.keyCode)
-                && ((s[kHISymbolicHotKeyModifiers as String] as? Int) ?? -1) & relevant == mods
         }
     }
 

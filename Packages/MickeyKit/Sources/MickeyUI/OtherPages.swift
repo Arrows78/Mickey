@@ -51,21 +51,24 @@ struct HotkeysPage: View {
             PageHeader(title: "Hotkeys", subtitle: "Global shortcuts that work from any app. Each defaults to ⌃⌥⌘ plus a letter.")
             FeatureCard(title: "Keyboard Shortcuts", symbol: "keyboard") {
                 ForEach(HotkeyAction.allCases) { action in
+                    let others = model.settings.hotkeys.filter { $0.key != action }
+                    let conflict = model.settings.hotkeys[action].flatMap { HotkeyConflict.check($0, otherActions: others) }
                     HStack {
                         VStack(alignment: .leading, spacing: 2) {
                             Text(action.title)
                             Text(action.detail).font(.caption).foregroundStyle(.secondary)
+                            if let conflict {
+                                Label(conflict.message, systemImage: "exclamationmark.triangle.fill")
+                                    .font(.caption).foregroundStyle(conflict.blocks ? .red : .orange)
+                            } else if model.failedHotkeys.contains(action) {
+                                Label("macOS refused this shortcut. Pick another one.", systemImage: "exclamationmark.triangle.fill")
+                                    .font(.caption).foregroundStyle(.red)
+                            }
                         }
                         Spacer()
-                        if model.failedHotkeys.contains(action) {
-                            Image(systemName: "exclamationmark.triangle.fill").foregroundStyle(.orange)
-                                .help("macOS refused this shortcut. It may be used by another app.")
-                        }
                         HotkeyRecorder(combo: model.binding(\.hotkeys[action]),
                                        onRecording: { model.actions?.setHotkeyRecording($0) },
-                                       takenBy: { combo in
-                                           model.settings.hotkeys.first { $0.key != action && $0.value == combo }?.key.title
-                                       })
+                                       otherActions: others)
                         Button { model.resetHotkey(action) } label: { Image(systemName: "arrow.counterclockwise") }
                             .buttonStyle(.plain).foregroundStyle(.secondary)
                             .help("Restore the default (\(action.defaultHotkey.displayString))")
@@ -80,7 +83,8 @@ struct HotkeysPage: View {
                 VStack(alignment: .leading, spacing: 6) {
                     Text("• Click a field, then press the combination. Esc cancels, Delete clears, ↺ restores the default.")
                     Text("• Use at least Control or Option, or Command with another modifier. F-keys work alone.")
-                    Text("• Combinations already used by macOS or by another action are refused.")
+                    Text("• Combinations already used by macOS or by another action are refused; common app shortcuts get a warning.")
+                    Text("• Shortcuts set by other apps (Raycast, Rectangle…) can't be detected: if one stops working, pick another.")
                     Text("• A shortcut set here is taken from every other app, so avoid ones you use elsewhere.")
                     Text("• Annotations also work without a hotkey: hold Fn (🌐).")
                 }
