@@ -1,6 +1,7 @@
 import AppKit
 import SwiftUI
 import MickeyUI
+import os
 
 /// Menu-bar icon opening the quick-toggle popover.
 final class StatusItemController: NSObject {
@@ -9,6 +10,7 @@ final class StatusItemController: NSObject {
 
     init(model: AppModel) {
         super.init()
+        item.autosaveName = "MickeyStatusItem"
         popover.behavior = .transient
         let host = NSHostingController(rootView: StatusPopoverView(model: model))
         host.sizingOptions = .preferredContentSize
@@ -30,6 +32,16 @@ final class StatusItemController: NSObject {
         get { item.button?.appearsDisabled ?? false }
         set { item.button?.appearsDisabled = newValue }
     }
+
+    /// True when macOS keeps the icon off screen: crowded menu bar, notch, or a menu-bar manager.
+    var isHiddenBySystem: Bool {
+        guard item.isVisible, let window = item.button?.window else { return false }
+        let onScreen = NSScreen.screens.contains { $0.frame.intersects(window.frame) }
+        Self.log.notice("status item frame=\(NSStringFromRect(window.frame), privacy: .public) occlusion=\(window.occlusionState.rawValue, privacy: .public)")
+        return !onScreen || !window.occlusionState.contains(.visible)
+    }
+
+    private static let log = Logger(subsystem: "dev.local.mickey", category: "menubar")
 
     func closePopover() { if popover.isShown { popover.performClose(nil) } }
 

@@ -115,6 +115,10 @@ struct GeneralPage: View {
                 ToggleRow(title: "Show in Menu Bar", detail: "Display the Mickey icon in the menu bar.", isOn: model.binding(\.general.showInMenuBar))
                 ToggleRow(title: "Show in Dock", detail: "Display the Mickey icon in the Dock.", isOn: model.binding(\.general.showInDock))
                 NoteView(text: "At least one of Menu Bar or Dock stays on so Mickey is always reachable.")
+                if model.menuBarIconHidden && !model.settings.general.showInDock {
+                    NoteView(text: "macOS is not showing the Mickey icon: the menu bar may be full, hidden behind the camera notch, or managed by another app. Turn on Show in Dock for a second way in.",
+                             warning: true)
+                }
             }
             FeatureCard(title: "Menu Bar Contents", symbol: "menubar.rectangle",
                         subtitle: "Choose which quick toggles appear when you click the menu-bar icon.") {

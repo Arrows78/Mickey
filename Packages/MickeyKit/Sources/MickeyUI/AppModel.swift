@@ -28,6 +28,8 @@ public final class AppModel {
     public var helpQuery = ""
     public var failedHotkeys: Set<HotkeyAction> = []
     public var customSoundError = false
+    /// The menu-bar icon is enabled but macOS is not showing it.
+    public var menuBarIconHidden = false
 
     @ObservationIgnored public weak var actions: AppActions?
     /// Called after every change with (old, new).

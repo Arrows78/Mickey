@@ -44,6 +44,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
         apply(model.settings, old: nil)
         input.start()
+        checkMenuBarIcon()
         review.start(isActive: { [weak self] in self?.model.settings.general.masterEnabled ?? false })
         if !model.settings.general.hasCompletedOnboarding {
             windows.showOnboarding(model: model)
@@ -89,8 +90,21 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         if old == nil || old?.general.showInDock != s.general.showInDock {
             NSApp.setActivationPolicy(s.general.showInDock ? .regular : .accessory)
         }
-        statusItem?.isVisible = s.general.showInMenuBar
+        if statusItem?.isVisible != s.general.showInMenuBar {
+            statusItem?.isVisible = s.general.showInMenuBar
+            if old != nil { checkMenuBarIcon() }
+        }
         statusItem?.isDimmed = !s.general.masterEnabled
+    }
+
+    /// The menu bar takes a moment to lay out new items, so the check runs shortly after launch.
+    private func checkMenuBarIcon() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2) { [weak self] in
+            MainActor.assumeIsolated {
+                guard let self, let statusItem = self.statusItem else { return }
+                self.model.menuBarIconHidden = statusItem.isHiddenBySystem
+            }
+        }
     }
 
     private func registerHotkeys() {
