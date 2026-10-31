@@ -43,6 +43,8 @@ public final class AnnotationController {
         if !momentary {
             previousApp = NSWorkspace.shared.frontmostApplication
             canvasPanel?.makeKeyAndOrderFront(nil)
+            // Without this, Esc and the tool shortcuts only work after a first click.
+            canvasPanel?.makeFirstResponder(canvas)
             NSApp.activate(ignoringOtherApps: true)
         }
         NSCursor.crosshair.push()
