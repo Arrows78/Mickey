@@ -24,6 +24,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     private var recordingHotkey = false
 
     func applicationDidFinishLaunching(_ notification: Notification) {
+        let launchedAsLoginItem = Self.isLaunchingAsLoginItem()
         NSApp.mainMenu = MainMenu.make()
         effects = EffectsEngine()
         model.actions = self
@@ -46,7 +47,18 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         review.start(isActive: { [weak self] in self?.model.settings.general.masterEnabled ?? false })
         if !model.settings.general.hasCompletedOnboarding {
             windows.showOnboarding(model: model)
+        } else if !launchedAsLoginItem {
+            // Started at login: stay in the menu bar. Started by the user: show Settings.
+            windows.showSettings(model: model)
         }
+    }
+
+    /// True when macOS opened the app as a login item rather than the user launching it.
+    /// Only meaningful while the launch Apple Event is being handled.
+    private static func isLaunchingAsLoginItem() -> Bool {
+        guard let event = NSAppleEventManager.shared().currentAppleEvent,
+              event.eventID == kAEOpenApplication else { return false }
+        return event.paramDescriptor(forKeyword: keyAEPropData)?.enumCodeValue == keyAELaunchedAsLogInItem
     }
 
     func applicationWillTerminate(_ notification: Notification) {
