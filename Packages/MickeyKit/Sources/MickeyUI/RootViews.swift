@@ -92,7 +92,6 @@ public struct StatusPopoverView: View {
             let items = MenuBarItem.allCases.filter { model.settings.general.menuBarItems.contains($0) }
             ForEach(items) { item in
                 Toggle(item.title, isOn: model.binding(item))
-                    .disabled(!model.settings.general.masterEnabled && item != .annotations && false)
             }
             if items.isEmpty {
                 Text("No quick toggles selected. Choose them in Settings › General.").font(.caption).foregroundStyle(.secondary)
@@ -134,6 +133,12 @@ public struct OnboardingView: View {
         VStack(spacing: 20) {
             let s = steps[step]
             Image(systemName: s.0).font(.system(size: 56)).foregroundStyle(.tint).frame(height: 70)
+                .overlay(alignment: .bottomTrailing) {
+                    if step == steps.count - 1 {
+                        Image(systemName: "checkmark.circle.fill").font(.system(size: 24)).foregroundStyle(.green)
+                            .background(Circle().fill(.background)).offset(x: 10, y: 4)
+                    }
+                }
             Text(s.1).font(.title.bold())
             Text(s.2).multilineTextAlignment(.center).foregroundStyle(.secondary).frame(maxWidth: 380)
             switch step {

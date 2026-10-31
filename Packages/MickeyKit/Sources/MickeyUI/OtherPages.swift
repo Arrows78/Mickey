@@ -119,6 +119,13 @@ struct GeneralPage: View {
                         set: { on in model.update { if on { $0.general.menuBarItems.insert(item) } else { $0.general.menuBarItems.remove(item) } } }))
                 }
             }
+            FeatureCard(title: "About", symbol: "info.circle") {
+                HStack {
+                    Text("Version")
+                    Spacer()
+                    Text(appVersion).foregroundStyle(.secondary).textSelection(.enabled)
+                }
+            }
             FeatureCard(title: "Reset", symbol: "arrow.counterclockwise") {
                 HStack {
                     Text("Restore every setting to its default value.").foregroundStyle(.secondary)
@@ -158,11 +165,18 @@ struct SupportPage: View {
             PageHeader(title: "Support", subtitle: "About this build.")
             FeatureCard(title: "About", symbol: "info.circle") {
                 Text("Mickey — cursor highlighter & presentation toolkit.")
-                Text("Version \(Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "dev")")
+                Text("Version \(appVersion)")
                     .foregroundStyle(.secondary)
                 Text("Runs entirely on your Mac: no account, no network access, no data collection.")
                     .font(.callout).foregroundStyle(.secondary)
             }
         }
     }
+}
+
+/// "0.1.0 (1)" from the app bundle, or "dev" when run outside one.
+var appVersion: String {
+    let info = Bundle.main.infoDictionary
+    guard let short = info?["CFBundleShortVersionString"] as? String else { return "dev" }
+    return info?["CFBundleVersion"].map { "\(short) (\($0))" } ?? short
 }

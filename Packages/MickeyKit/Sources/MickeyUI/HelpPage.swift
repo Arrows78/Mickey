@@ -19,11 +19,12 @@ public enum HelpContent {
         HelpEntry(id: "start", group: "Overview", title: "Getting started",
                   body: "Turn on Enable Mickey, then switch on the effects you want. Switching on an effect while Mickey is off turns it on for you.",
                   section: .effects),
-        HelpEntry(id: "menubar", group: "Overview", title: "Menu bar",
-                  body: "Click the pointer icon in the menu bar for quick toggles. Pick which toggles appear in General › Menu Bar Contents.",
+        HelpEntry(id: "menubar", group: "Menu bar", title: "Quick toggles",
+                  body: "Click the pointer icon in the menu bar for quick toggles, Start Drawing, Settings and Quit. Pick which toggles appear in General › Menu Bar Contents.",
                   section: .general),
-        HelpEntry(id: "reach", group: "Overview", title: "Menu bar or Dock",
-                  body: "Show in Menu Bar and Show in Dock can't both be off, so Mickey is always reachable.", section: .general),
+        HelpEntry(id: "reach", group: "Menu bar", title: "Menu bar or Dock",
+                  body: "Show in Menu Bar and Show in Dock can't both be off, so Mickey is always reachable. With the Dock icon shown, clicking it opens Settings.",
+                  section: .general),
         HelpEntry(id: "spotlight", group: "Cursor Effects", title: "Spotlight",
                   body: "Dims the screen except a circle or a bar around the pointer. Hold a Key to Show reveals it only while a modifier is held. Turn Off When Moving clears it once you move away.",
                   section: .effects),
@@ -111,6 +112,6 @@ struct HelpPage: View {
     }
 
     private func order(_ group: String) -> Int {
-        ["Overview", "Cursor Effects", "Annotations", "Hotkeys", "Troubleshooting"].firstIndex(of: group) ?? 99
+        ["Overview", "Cursor Effects", "Annotations", "Hotkeys", "Menu bar", "Troubleshooting"].firstIndex(of: group) ?? 99
     }
 }
