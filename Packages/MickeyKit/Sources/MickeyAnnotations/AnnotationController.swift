@@ -42,13 +42,17 @@ public final class AnnotationController {
         guard let screen else { return }
         showCanvas(on: screen)
         canvasPanel?.ignoresMouseEvents = false
-        if !momentary {
+        if momentary {
+            // The canvas is a non-activating panel: it takes the keyboard without activating Mickey,
+            // so tool shortcuts work while Fn is held and the previous app stays frontmost.
+            canvasPanel?.makeKey()
+        } else {
             previousApp = NSWorkspace.shared.frontmostApplication
             canvasPanel?.makeKeyAndOrderFront(nil)
-            // Without this, Esc and the tool shortcuts only work after a first click.
-            canvasPanel?.makeFirstResponder(canvas)
             NSApp.activate(ignoringOtherApps: true)
         }
+        // Without this, Esc and the tool shortcuts only work after a first click.
+        canvasPanel?.makeFirstResponder(canvas)
         NSCursor.crosshair.push()
         showToolbar(on: screen)
         onDrawingChanged?(true)
