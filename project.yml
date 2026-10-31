@@ -1,0 +1,48 @@
+name: Mickey
+options:
+  bundleIdPrefix: dev.local
+  deploymentTarget:
+    macOS: "14.0"
+  createIntermediateGroups: true
+packages:
+  MickeyKit:
+    path: Packages/MickeyKit
+settings:
+  base:
+    SWIFT_VERSION: "6.0"
+    MACOSX_DEPLOYMENT_TARGET: "14.0"
+targets:
+  Mickey:
+    type: application
+    platform: macOS
+    sources:
+      - App/Sources
+      - App/Resources
+    dependencies:
+      - package: MickeyKit
+        product: MickeyKit
+    info:
+      path: App/Info.plist
+      properties:
+        CFBundleDisplayName: Mickey
+        CFBundleShortVersionString: "0.1.0"
+        CFBundleVersion: "1"
+        LSUIElement: true
+        LSMinimumSystemVersion: "14.0"
+        LSApplicationCategoryType: public.app-category.productivity
+        NSHumanReadableCopyright: "Copyright © 2026 Thomas Jost. Released under the MIT License."
+    entitlements:
+      path: App/Mickey.entitlements
+      properties:
+        com.apple.security.app-sandbox: true
+        com.apple.security.files.user-selected.read-only: true
+        com.apple.security.files.bookmarks.app-scope: true
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: dev.local.mickey
+        PRODUCT_NAME: Mickey
+        SWIFT_DEFAULT_ACTOR_ISOLATION: MainActor
+        ENABLE_HARDENED_RUNTIME: YES
+        CODE_SIGN_STYLE: Manual
+        CODE_SIGN_IDENTITY: "-"
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
