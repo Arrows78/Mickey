@@ -60,7 +60,11 @@ struct HotkeysPage: View {
                             Image(systemName: "exclamationmark.triangle.fill").foregroundStyle(.orange)
                                 .help("macOS refused this shortcut. It may be used by another app.")
                         }
-                        HotkeyRecorder(combo: model.binding(\.hotkeys[action]), onRecording: { model.actions?.setHotkeyRecording($0) })
+                        HotkeyRecorder(combo: model.binding(\.hotkeys[action]),
+                                       onRecording: { model.actions?.setHotkeyRecording($0) },
+                                       takenBy: { combo in
+                                           model.settings.hotkeys.first { $0.key != action && $0.value == combo }?.key.title
+                                       })
                     }
                     if action != HotkeyAction.allCases.last { Divider() }
                 }
@@ -69,6 +73,7 @@ struct HotkeysPage: View {
                 VStack(alignment: .leading, spacing: 6) {
                     Text("• Click a field, then press the combination. Esc cancels, Delete clears.")
                     Text("• Use at least Control or Option, or Command with another modifier. F-keys work alone.")
+                    Text("• Combinations already used by macOS or by another action are refused.")
                     Text("• A shortcut set here is taken from every other app, so avoid ones you use elsewhere.")
                     Text("• Annotations also work without a hotkey: hold Fn (🌐).")
                 }
