@@ -137,6 +137,7 @@ struct GeneralPage: View {
                              warning: true)
                 }
             }
+            PresetsCard(model: model)
             FeatureCard(title: "Menu Bar Contents", symbol: "menubar.rectangle",
                         subtitle: "Choose which quick toggles appear when you click the menu-bar icon.") {
                 ForEach(MenuBarItem.allCases) { item in
@@ -179,12 +180,27 @@ struct AdvancedPage: View {
                           step: 10, format: { "\(Int($0)) fps" })
                 NoteView(text: "Higher rates make effects smoother but use more CPU.")
             }
+            AutoModeCard(model: model)
         }
     }
 }
 
 struct SupportPage: View {
     @Bindable var model: AppModel
+    @State private var copied = false
+
+    private func copyDiagnostics() {
+        let info = ProcessInfo.processInfo
+        let permissions = Permission.allCases.map { "\($0.title): \(model.permissions[$0].map { "\($0)" } ?? "unknown")" }
+        var settings = model.settings
+        settings.click.customSound = nil // a bookmark identifies a file on this Mac
+        let json = (try? JSONEncoder().encode(settings)).flatMap { String(data: $0, encoding: .utf8) } ?? "{}"
+        let report = (["Mickey \(appVersion)", "macOS \(info.operatingSystemVersionString)"] + permissions + ["Settings: \(json)"])
+            .joined(separator: "\n")
+        NSPasteboard.general.clearContents()
+        NSPasteboard.general.setString(report, forType: .string)
+        copied = true
+    }
 
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
@@ -195,6 +211,17 @@ struct SupportPage: View {
                     .foregroundStyle(.secondary)
                 Text("Runs entirely on your Mac: no account, no network access, no data collection.")
                     .font(.callout).foregroundStyle(.secondary)
+            }
+            FeatureCard(title: "Report a Problem", symbol: "ladybug") {
+                Text("Copy a summary of your setup (version, macOS, permissions, settings) to paste into a bug report. It contains no personal data.")
+                    .font(.callout).foregroundStyle(.secondary)
+                HStack {
+                    Button(copied ? "Copied" : "Copy Diagnostics") { copyDiagnostics() }
+                    Button("Show Recordings") { model.actions?.revealRecordings() }
+                }
+            }
+            FeatureCard(title: "Permissions", symbol: "lock.shield") {
+                ForEach(Permission.allCases) { PermissionRow(model: model, permission: $0) }
             }
         }
     }

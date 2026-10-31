@@ -8,13 +8,14 @@ let package = Package(
     platforms: [.macOS(.v14)],
     products: [
         .library(name: "MickeyKit", targets: ["MickeyDomain", "MickeyPersistence", "MickeySystem",
-                                               "MickeyEffects", "MickeyAnnotations", "MickeyUI"]),
+                                               "MickeyEffects", "MickeyAnnotations", "MickeyStudio", "MickeyUI"]),
     ],
     targets: [
         .target(name: "MickeyDomain"),
         .target(name: "MickeyPersistence", dependencies: ["MickeyDomain"]),
         .target(name: "MickeySystem", dependencies: ["MickeyDomain"], swiftSettings: mainActorByDefault),
         .target(name: "MickeyEffects", dependencies: ["MickeyDomain"], swiftSettings: mainActorByDefault),
+        .target(name: "MickeyStudio", dependencies: ["MickeyDomain", "MickeySystem", "MickeyEffects"], swiftSettings: mainActorByDefault),
         .target(name: "MickeyAnnotations", dependencies: ["MickeyDomain", "MickeyEffects"], swiftSettings: mainActorByDefault),
         .target(name: "MickeyUI", dependencies: ["MickeyDomain", "MickeyPersistence", "MickeyEffects"], swiftSettings: mainActorByDefault),
         .testTarget(name: "MickeyDomainTests", dependencies: ["MickeyDomain"]),

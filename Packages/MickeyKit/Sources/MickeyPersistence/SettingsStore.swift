@@ -115,11 +115,15 @@ public enum SettingsCodec {
     /// Upgrades settings saved by an older schema.
     static func migrate(_ s: Settings) -> Settings {
         var m = s
-        if s.schemaVersion < 2 {
-            // Version 1 had no default hotkeys: add them where the action is unset and the combination is unused.
-            for (action, combo) in HotkeyAction.defaultHotkeys where m.hotkeys[action] == nil && !m.hotkeys.values.contains(combo) {
-                m.hotkeys[action] = combo
-            }
+        // Give actions introduced after the saved version their default, unless unset on purpose
+        // since then or the combination is already in use.
+        for action in HotkeyAction.allCases where action.introducedInSchema > s.schemaVersion {
+            let combo = action.defaultHotkey
+            if m.hotkeys[action] == nil && !m.hotkeys.values.contains(combo) { m.hotkeys[action] = combo }
+        }
+        if s.schemaVersion < 3 {
+            // Presenter tools appear in the menu-bar popover like every other toggle.
+            m.general.menuBarItems.formUnion([.keystrokes, .liveZoom, .loupe, .focus, .cameraBubble, .captions])
         }
         m.schemaVersion = Settings.currentSchemaVersion
         return m

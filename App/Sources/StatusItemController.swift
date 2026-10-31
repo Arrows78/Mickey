@@ -43,6 +43,15 @@ final class StatusItemController: NSObject {
 
     private static let log = Logger(subsystem: "dev.local.mickey", category: "menubar")
 
+    /// Red record icon while a recording runs.
+    var isRecording = false {
+        didSet {
+            item.button?.image = NSImage(systemSymbolName: isRecording ? "record.circle.fill" : "cursorarrow.rays",
+                                         accessibilityDescription: isRecording ? "Mickey — recording" : "Mickey")
+            item.button?.contentTintColor = isRecording ? .systemRed : nil
+        }
+    }
+
     func closePopover() { if popover.isShown { popover.performClose(nil) } }
 
     @objc private func togglePopover(_ sender: NSStatusBarButton) {

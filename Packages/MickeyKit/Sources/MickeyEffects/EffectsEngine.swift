@@ -26,16 +26,18 @@ final class OverlayPanel: NSPanel {
 }
 
 /// Window levels just below the cursor, so effects stay above menus, the Dock and full-screen apps.
-/// Drawing sits above the effects, and its toolbar above the drawing.
+/// From bottom to top: focus dimming, live zoom, cursor effects, drawing, then toolbars and HUDs.
 public enum OverlayLevel {
     private static let cursor = Int(CGWindowLevelForKey(.cursorWindow))
+    public static let focus = NSWindow.Level(rawValue: cursor - 5)
+    public static let zoom = NSWindow.Level(rawValue: cursor - 4)
     public static let effects = NSWindow.Level(rawValue: cursor - 3)
     public static let drawing = NSWindow.Level(rawValue: cursor - 2)
     public static let toolbar = NSWindow.Level(rawValue: cursor - 1)
 }
 
 extension NSScreen {
-    var displayID: CGDirectDisplayID {
+    public var displayID: CGDirectDisplayID {
         (deviceDescription[NSDeviceDescriptionKey("NSScreenNumber")] as? NSNumber)?.uint32Value ?? 0
     }
 }

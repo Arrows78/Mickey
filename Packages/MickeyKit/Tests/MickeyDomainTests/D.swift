@@ -540,3 +540,98 @@ struct InteractionTests {
         #expect(combos.allSatisfy { $0.validate() == nil })
     }
 }
+
+@Suite("Presenter tools") struct StudioLogicTests {
+    @Test func keystrokesHidePlainTypingInShortcutsOnlyMode() {
+        #expect(KeystrokeFormatter.format(flags: 0, keyCode: 0, characters: "a", shortcutsOnly: true) == nil)
+        #expect(KeystrokeFormatter.format(flags: 0x0002_0000, keyCode: 0, characters: "A", shortcutsOnly: true) == nil)
+        #expect(KeystrokeFormatter.format(flags: 0, keyCode: 49, characters: " ", shortcutsOnly: true) == nil)
+        #expect(KeystrokeFormatter.format(flags: 0x0010_0000 | 0x0002_0000, keyCode: 6, characters: "z", shortcutsOnly: true) == "⇧⌘Z")
+        #expect(KeystrokeFormatter.format(flags: 0, keyCode: 53, characters: "\u{1b}", shortcutsOnly: true) == "⎋")
+        #expect(KeystrokeFormatter.format(flags: 0, keyCode: 0, characters: "a", shortcutsOnly: false) == "A")
+        #expect(KeystrokeFormatter.format(flags: 0x0004_0000 | 0x0008_0000 | 0x0010_0000, keyCode: 40, characters: "k", shortcutsOnly: true) == "⌃⌥⌘K")
+    }
+
+    @Test func keystrokeRepeatsCollapse() {
+        var h = KeystrokeHistory()
+        h.add("⌘Z", at: 0); h.add("⌘Z", at: 0.4); h.add("⌘Z", at: 0.8)
+        #expect(h.entries.count == 1)
+        #expect(h.entries[0].label == "⌘Z ×3")
+        h.add("⌘Z", at: 3)
+        #expect(h.entries.count == 2)
+        for i in 0..<6 { h.add("⌘\(i)", at: 4) }
+        #expect(h.entries.count == h.maxEntries)
+        let changed = h.expire(now: 10, duration: 1.5)
+        #expect(changed)
+        #expect(h.entries.isEmpty)
+    }
+
+    @Test func zoomKeepsThePointerFixed() {
+        let screen = CGRect(x: 0, y: 0, width: 1000, height: 800)
+        for p in [CGPoint(x: 0, y: 0), CGPoint(x: 500, y: 400), CGPoint(x: 1000, y: 800), CGPoint(x: 250, y: 700)] {
+            let src = MagnifierGeometry.zoomSource(pointer: p, screen: screen, factor: 2)
+            #expect(src.width == 500 && src.height == 400)
+            #expect(screen.contains(src.insetBy(dx: 0.001, dy: 0.001)))
+            // The pointer's point in the source maps back onto the pointer once magnified.
+            let mapped = CGPoint(x: (p.x - src.minX) * 2, y: (p.y - src.minY) * 2)
+            #expect(abs(mapped.x - p.x) < 0.001 && abs(mapped.y - p.y) < 0.001)
+        }
+        let frame = MagnifierGeometry.imageFrame(source: CGRect(x: 250, y: 200, width: 500, height: 400), screen: screen,
+                                                  viewSize: CGSize(width: 1000, height: 800))
+        #expect(frame == CGRect(x: -500, y: -400, width: 2000, height: 1600))
+    }
+
+    @Test func focusPicksTheFrontmostAppsTopWindow() {
+        let windows = [
+            WindowInfo(pid: 9, layer: 25, bounds: CGRect(x: 0, y: 0, width: 300, height: 24)),
+            WindowInfo(pid: 5, layer: 0, bounds: CGRect(x: 10, y: 10, width: 20, height: 20)),
+            WindowInfo(pid: 5, layer: 0, bounds: CGRect(x: 100, y: 50, width: 400, height: 300)),
+            WindowInfo(pid: 7, layer: 0, bounds: CGRect(x: 0, y: 0, width: 800, height: 600)),
+        ]
+        #expect(FocusSelector.focusRect(windows: windows, frontmostPID: 5, primaryScreenHeight: 1000)
+                == CGRect(x: 100, y: 650, width: 400, height: 300))
+        #expect(FocusSelector.focusRect(windows: windows, frontmostPID: 42, primaryScreenHeight: 1000) == nil)
+    }
+
+    @Test func captionsKeepTheEndAtAWordBoundary() {
+        #expect(CaptionText.tail(of: "hello world", maxChars: 40) == "hello world")
+        #expect(CaptionText.tail(of: "one two three four", maxChars: 10) == "four")
+        #expect(CaptionText.tail(of: "  spaced  ", maxChars: 20) == "spaced")
+    }
+
+    @Test func recordingNamesAndElapsedTime() {
+        var cal = Calendar(identifier: .gregorian); cal.timeZone = TimeZone(identifier: "UTC")!
+        let date = cal.date(from: DateComponents(year: 2026, month: 11, day: 1, hour: 9, minute: 5, second: 7))!
+        #expect(RecordingNaming.fileName(for: date, calendar: cal) == "Mickey Recording 2026-11-01 at 09.05.07.mov")
+        #expect(RecordingNaming.elapsed(65) == "1:05")
+        #expect(RecordingNaming.elapsed(3725) == "1:02:05")
+    }
+
+    @Test func presetsTurnMickeyOnAndKeepAppearance() {
+        var s = Settings(); s.general.masterEnabled = false; s.ring.color = .red
+        let p = Preset.presentation.apply(to: s)
+        #expect(p.general.masterEnabled && p.ring.enabled && p.click.feedbackEnabled)
+        #expect(p.spotlight.holdKey != nil && !p.spotlight.dismissOnMove)
+        #expect(p.ring.color == .red)
+        let d = Preset.discreet.apply(to: s)
+        #expect(!d.click.showOnClicks && d.click.tapKey != nil && !d.ring.enabled)
+        #expect(Preset.tutorial.apply(to: s).keystrokes.enabled)
+    }
+
+    @Test func autoModeWatchesApps() {
+        #expect(AutoModeRule.shouldActivate(running: ["us.zoom.xos", "x"], watched: AutoModeSettings.defaultBundleIDs))
+        #expect(!AutoModeRule.shouldActivate(running: ["com.apple.Safari"], watched: AutoModeSettings.defaultBundleIDs))
+    }
+
+    @Test func newActionsHaveUniqueDefaults() {
+        let combos = HotkeyAction.allCases.map(\.defaultHotkey)
+        #expect(Set(combos).count == combos.count)
+        #expect(HotkeyAction.toggleRecording.introducedInSchema == 3)
+    }
+
+    @Test func presenterToolsIgnoreTheMasterSwitch() {
+        var s = Settings(); s.general.masterEnabled = false
+        let n = SettingsRules.applying(.toggleLoupe, to: s)
+        #expect(n.loupe.enabled && !n.general.masterEnabled)
+    }
+}

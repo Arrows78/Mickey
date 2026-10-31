@@ -198,8 +198,8 @@ public struct AnnotationSettings: Codable, Equatable, Sendable {
 }
 
 public struct Settings: Codable, Equatable, Sendable {
-    /// 2: default hotkeys introduced.
-    public static let currentSchemaVersion = 2
+    /// 2: default hotkeys introduced. 3: presenter tools (keystrokes, zoom, loupe, focus, camera, captions, recorder).
+    public static let currentSchemaVersion = 3
 
     public var schemaVersion = Settings.currentSchemaVersion
     public var general = GeneralSettings()
@@ -209,6 +209,14 @@ public struct Settings: Codable, Equatable, Sendable {
     public var trail = TrailSettings()
     public var shake = ShakeSettings()
     public var annotations = AnnotationSettings()
+    public var keystrokes = KeystrokeSettings()
+    public var zoom = ZoomSettings()
+    public var loupe = LoupeSettings()
+    public var focus = FocusSettings()
+    public var camera = CameraSettings()
+    public var captions = CaptionSettings()
+    public var recorder = RecorderSettings()
+    public var autoMode = AutoModeSettings()
     public var hotkeys: [HotkeyAction: KeyCombo] = HotkeyAction.defaultHotkeys
 
     public init() {}
@@ -247,6 +255,21 @@ public struct Settings: Codable, Equatable, Sendable {
         s.annotations.autoFadeDelay = s.annotations.autoFadeDelay.clamped(to: AnnotationSettings.autoFadeDelayRange)
         s.annotations.color = s.annotations.color.clamped()
         s.annotations.highlighterColor = s.annotations.highlighterColor.clamped()
+        s.keystrokes.fontSize = s.keystrokes.fontSize.clamped(to: KeystrokeSettings.fontSizeRange)
+        s.keystrokes.duration = s.keystrokes.duration.clamped(to: KeystrokeSettings.durationRange)
+        s.zoom.factor = s.zoom.factor.clamped(to: ZoomSettings.factorRange)
+        s.loupe.size = s.loupe.size.clamped(to: LoupeSettings.sizeRange)
+        s.loupe.factor = s.loupe.factor.clamped(to: LoupeSettings.factorRange)
+        s.loupe.borderColor = s.loupe.borderColor.clamped()
+        s.focus.dimOpacity = s.focus.dimOpacity.clamped(to: FocusSettings.dimOpacityRange)
+        s.focus.cornerRadius = s.focus.cornerRadius.clamped(to: FocusSettings.cornerRadiusRange)
+        s.focus.padding = s.focus.padding.clamped(to: FocusSettings.paddingRange)
+        s.camera.size = s.camera.size.clamped(to: CameraSettings.sizeRange)
+        s.camera.borderColor = s.camera.borderColor.clamped()
+        s.captions.fontSize = s.captions.fontSize.clamped(to: CaptionSettings.fontSizeRange)
+        s.captions.backgroundOpacity = s.captions.backgroundOpacity.clamped(to: 0...1)
+        s.captions.maxLines = min(max(s.captions.maxLines, CaptionSettings.maxLinesRange.lowerBound), CaptionSettings.maxLinesRange.upperBound)
+        s.recorder.countdown = min(max(s.recorder.countdown, RecorderSettings.countdownRange.lowerBound), RecorderSettings.countdownRange.upperBound)
         return s
     }
 }

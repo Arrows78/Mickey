@@ -31,12 +31,18 @@ targets:
         LSMinimumSystemVersion: "14.0"
         LSApplicationCategoryType: public.app-category.productivity
         NSHumanReadableCopyright: "Copyright © 2026 Thomas Jost. Released under the MIT License."
+        NSCameraUsageDescription: "Mickey shows your webcam in the camera bubble."
+        NSMicrophoneUsageDescription: "Mickey listens to your voice to display live captions."
+        NSSpeechRecognitionUsageDescription: "Mickey turns your voice into live captions, on your Mac when the language supports it."
     entitlements:
       path: App/Mickey.entitlements
       properties:
         com.apple.security.app-sandbox: true
         com.apple.security.files.user-selected.read-only: true
         com.apple.security.files.bookmarks.app-scope: true
+        com.apple.security.assets.movies.read-write: true
+        com.apple.security.device.camera: true
+        com.apple.security.device.audio-input: true
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: dev.local.mickey

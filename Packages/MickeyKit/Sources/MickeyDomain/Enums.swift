@@ -145,7 +145,7 @@ public enum AnnotationTool: String, CaseIterable, Codable, Sendable {
 }
 
 public enum SettingsSection: String, CaseIterable, Codable, Sendable, Identifiable {
-    case effects, annotations, hotkeys, general, advanced, help, support
+    case effects, annotations, keystrokes, zoom, loupe, focus, recorder, captions, hotkeys, general, advanced, help, support
 
     public var id: String { rawValue }
 
@@ -153,6 +153,12 @@ public enum SettingsSection: String, CaseIterable, Codable, Sendable, Identifiab
         switch self {
         case .effects: "Cursor Effects"
         case .annotations: "Annotations"
+        case .keystrokes: "Keystrokes"
+        case .zoom: "Live Zoom"
+        case .loupe: "Loupe"
+        case .focus: "Focus"
+        case .recorder: "Recorder & Camera"
+        case .captions: "Captions"
         case .hotkeys: "Hotkeys"
         case .general: "General"
         case .advanced: "Advanced"
@@ -165,7 +171,13 @@ public enum SettingsSection: String, CaseIterable, Codable, Sendable, Identifiab
         switch self {
         case .effects: "cursorarrow.rays"
         case .annotations: "pencil.tip.crop.circle"
-        case .hotkeys: "keyboard"
+        case .keystrokes: "command.square"
+        case .zoom: "plus.magnifyingglass"
+        case .loupe: "magnifyingglass.circle"
+        case .focus: "macwindow.on.rectangle"
+        case .recorder: "record.circle"
+        case .captions: "captions.bubble"
+        case .hotkeys: "keyboard.badge.ellipsis"
         case .general: "gearshape"
         case .advanced: "slider.horizontal.3"
         case .help: "questionmark.circle"
@@ -176,7 +188,8 @@ public enum SettingsSection: String, CaseIterable, Codable, Sendable, Identifiab
 
 public enum HotkeyAction: String, CaseIterable, Codable, CodingKeyRepresentable, Sendable, Identifiable {
     case toggleMaster, toggleSpotlight, toggleRing, toggleTrail, toggleClickFeedback,
-         toggleClickSound, showClickEffect, toggleShakeToLocate, toggleAnnotationMode
+         toggleClickSound, showClickEffect, toggleShakeToLocate, toggleAnnotationMode,
+         toggleKeystrokes, toggleLiveZoom, toggleLoupe, toggleFocus, toggleCameraBubble, toggleCaptions, toggleRecording
 
     public var id: String { rawValue }
 
@@ -191,6 +204,13 @@ public enum HotkeyAction: String, CaseIterable, Codable, CodingKeyRepresentable,
         case .showClickEffect: "Show Click Effect"
         case .toggleShakeToLocate: "Toggle Shake to Locate"
         case .toggleAnnotationMode: "Toggle Annotation Mode"
+        case .toggleKeystrokes: "Toggle Keystrokes"
+        case .toggleLiveZoom: "Toggle Live Zoom"
+        case .toggleLoupe: "Toggle Loupe"
+        case .toggleFocus: "Toggle Focus"
+        case .toggleCameraBubble: "Toggle Camera Bubble"
+        case .toggleCaptions: "Toggle Captions"
+        case .toggleRecording: "Start / Stop Recording"
         }
     }
 
@@ -207,8 +227,23 @@ public enum HotkeyAction: String, CaseIterable, Codable, CodingKeyRepresentable,
         case .showClickEffect: (3, "F")
         case .toggleShakeToLocate: (37, "L")
         case .toggleAnnotationMode: (2, "D")
+        case .toggleKeystrokes: (16, "Y")
+        case .toggleLiveZoom: (6, "Z")
+        case .toggleLoupe: (31, "O")
+        case .toggleFocus: (13, "W")
+        case .toggleCameraBubble: (14, "E")
+        case .toggleCaptions: (0, "A")
+        case .toggleRecording: (9, "V")
         }
         return KeyCombo(keyCode: code, modifiers: [.control, .option, .command], keyLabel: label)
+    }
+
+    /// Settings schema version that introduced the action, so migrations add only new defaults.
+    public var introducedInSchema: Int {
+        switch self {
+        case .toggleKeystrokes, .toggleLiveZoom, .toggleLoupe, .toggleFocus, .toggleCameraBubble, .toggleCaptions, .toggleRecording: 3
+        default: 2
+        }
     }
 
     public static var defaultHotkeys: [HotkeyAction: KeyCombo] {
@@ -226,13 +261,21 @@ public enum HotkeyAction: String, CaseIterable, Codable, CodingKeyRepresentable,
         case .showClickEffect: "Flash the click effect at the pointer"
         case .toggleShakeToLocate: "Shake the mouse to find the pointer"
         case .toggleAnnotationMode: "Enter or leave drawing mode"
+        case .toggleKeystrokes: "Show typed shortcuts on screen"
+        case .toggleLiveZoom: "Magnify the whole screen around the pointer"
+        case .toggleLoupe: "Magnifying glass that follows the pointer"
+        case .toggleFocus: "Dim everything but the front window"
+        case .toggleCameraBubble: "Floating webcam bubble"
+        case .toggleCaptions: "Live subtitles from the microphone"
+        case .toggleRecording: "Record the screen to a movie"
         }
     }
 }
 
 /// Quick toggles that can appear in the menu-bar popover.
 public enum MenuBarItem: String, CaseIterable, Codable, Sendable, Identifiable {
-    case spotlight, ring, clickFeedback, clickSound, trail, shake, annotations
+    case spotlight, ring, clickFeedback, clickSound, trail, shake, annotations,
+         keystrokes, liveZoom, loupe, focus, cameraBubble, captions
 
     public var id: String { rawValue }
 
@@ -245,6 +288,12 @@ public enum MenuBarItem: String, CaseIterable, Codable, Sendable, Identifiable {
         case .trail: "Trail"
         case .shake: "Shake to Locate"
         case .annotations: "Annotations"
+        case .keystrokes: "Keystrokes"
+        case .liveZoom: "Live Zoom"
+        case .loupe: "Loupe"
+        case .focus: "Focus"
+        case .cameraBubble: "Camera Bubble"
+        case .captions: "Captions"
         }
     }
 
@@ -258,6 +307,12 @@ public enum MenuBarItem: String, CaseIterable, Codable, Sendable, Identifiable {
         case .trail: .toggleTrail
         case .shake: .toggleShakeToLocate
         case .annotations: .toggleAnnotationMode
+        case .keystrokes: .toggleKeystrokes
+        case .liveZoom: .toggleLiveZoom
+        case .loupe: .toggleLoupe
+        case .focus: .toggleFocus
+        case .cameraBubble: .toggleCameraBubble
+        case .captions: .toggleCaptions
         }
     }
 }

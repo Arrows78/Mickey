@@ -40,8 +40,9 @@ public enum SettingsRules {
         return pairs.contains { !$0.0 && $0.1 }
     }
 
-    /// Settings change implied by a hotkey. `showClickEffect` and `toggleAnnotationMode` are
+    /// Settings change implied by a hotkey. `showClickEffect`, `toggleRecording` and `toggleAnnotationMode` are
     /// runtime commands and leave settings untouched (except enabling annotations if needed).
+    /// Presenter tools (keystrokes, zoom, loupe, focus, camera, captions) do not depend on the master switch.
     public static func applying(_ action: HotkeyAction, to settings: Settings) -> Settings {
         var s = settings
         switch action {
@@ -53,7 +54,13 @@ public enum SettingsRules {
         case .toggleClickSound: s.click.soundEnabled.toggle()
         case .toggleShakeToLocate: s.shake.enabled.toggle()
         case .toggleAnnotationMode: if !s.annotations.enabled { s.annotations.enabled = true }
-        case .showClickEffect: break
+        case .toggleKeystrokes: s.keystrokes.enabled.toggle()
+        case .toggleLiveZoom: s.zoom.enabled.toggle()
+        case .toggleLoupe: s.loupe.enabled.toggle()
+        case .toggleFocus: s.focus.enabled.toggle()
+        case .toggleCameraBubble: s.camera.enabled.toggle()
+        case .toggleCaptions: s.captions.enabled.toggle()
+        case .showClickEffect, .toggleRecording: break
         }
         return normalize(old: settings, new: s)
     }
@@ -67,6 +74,12 @@ public enum SettingsRules {
         case .trail: s.trail.enabled
         case .shake: s.shake.enabled
         case .annotations: s.annotations.enabled
+        case .keystrokes: s.keystrokes.enabled
+        case .liveZoom: s.zoom.enabled
+        case .loupe: s.loupe.enabled
+        case .focus: s.focus.enabled
+        case .cameraBubble: s.camera.enabled
+        case .captions: s.captions.enabled
         }
     }
 
@@ -80,6 +93,12 @@ public enum SettingsRules {
         case .trail: n.trail.enabled = value
         case .shake: n.shake.enabled = value
         case .annotations: n.annotations.enabled = value
+        case .keystrokes: n.keystrokes.enabled = value
+        case .liveZoom: n.zoom.enabled = value
+        case .loupe: n.loupe.enabled = value
+        case .focus: n.focus.enabled = value
+        case .cameraBubble: n.camera.enabled = value
+        case .captions: n.captions.enabled = value
         }
         return normalize(old: s, new: n)
     }

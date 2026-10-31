@@ -3,6 +3,7 @@ import MickeyAnnotations
 import MickeyDomain
 import MickeyEffects
 import MickeyPersistence
+import MickeyStudio
 import MickeySystem
 import MickeyUI
 
@@ -22,6 +23,10 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     private lazy var review = ReviewTracker(store: store)
     private var statusItem: StatusItemController?
     private var recordingHotkey = false
+    private let studio = StudioCoordinator()
+    private let appWatcher = AppWatcher()
+    /// Settings before and after Automatic Mode applied its preset.
+    private var autoModeSnapshot: (before: MickeyDomain.Settings, applied: MickeyDomain.Settings)?
 
     func applicationDidFinishLaunching(_ notification: Notification) {
         let launchedAsLoginItem = Self.isLaunchingAsLoginItem()
@@ -35,8 +40,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         input.onTick = { [weak self] snapshot in self?.tick(snapshot) }
         input.onMouseDown = { [weak self] point in self?.mouseDown(at: point) }
         input.onScroll = { [weak self] in self?.interaction.scrolled() }
-        windows.onSettingsBecameKey = { [weak self] in self?.considerReview() }
+        windows.onSettingsBecameKey = { [weak self] in self?.considerReview(); self?.refreshPermissions() }
         statusItem = StatusItemController(model: model)
+        wireStudio()
 
         // The login item may have been changed in System Settings since the last run.
         model.loginItemState = loginItems.state
@@ -63,6 +69,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     func applicationWillTerminate(_ notification: Notification) {
+        if studio.isRecording { studio.toggleRecording(settings: model.settings.recorder) }
         model.flush()
         input.stop()
         hotkeys.unregisterAll()
@@ -95,6 +102,59 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             if old != nil { checkMenuBarIcon() }
         }
         statusItem?.isDimmed = !s.general.masterEnabled
+        studio.apply(s, old: old)
+        if old?.autoMode != s.autoMode {
+            if s.autoMode.enabled { appWatcher.start() } else { appWatcher.stop() }
+            updateAutoMode(running: appWatcher.running)
+        }
+    }
+
+    // MARK: Presenter tools
+
+    private func wireStudio() {
+        studio.onMessage = { [weak self] message in self?.model.studioMessage = message }
+        studio.onRecordingChanged = { [weak self] recording, start in
+            self?.model.recordingStartedAt = recording ? start : nil
+            self?.statusItem?.isRecording = recording
+        }
+        studio.onRecordingSaved = { [weak self] url in
+            self?.model.lastRecordingURL = url
+            NSWorkspace.shared.activateFileViewerSelecting([url])
+        }
+        appWatcher.onChange = { [weak self] running in self?.updateAutoMode(running: running) }
+        refreshPermissions()
+        NotificationCenter.default.addObserver(forName: NSApplication.didBecomeActiveNotification, object: nil, queue: .main) { [weak self] _ in
+            MainActor.assumeIsolated { self?.refreshPermissions() }
+        }
+        NotificationCenter.default.addObserver(forName: NSApplication.didChangeScreenParametersNotification, object: nil, queue: .main) { [weak self] _ in
+            MainActor.assumeIsolated { self?.studio.screensChanged() }
+        }
+    }
+
+    /// Re-reads permission states; tools waiting for one retry once it is granted.
+    private func refreshPermissions() {
+        let fresh = Dictionary(uniqueKeysWithValues: Permission.allCases.map { ($0, Permissions.status($0)) })
+        let newlyGranted = fresh.contains { $0.value == .granted && model.permissions[$0.key] != .granted }
+        model.permissions = fresh
+        if newlyGranted {
+            model.studioMessage = nil
+            studio.permissionsChanged()
+        }
+    }
+
+    /// Applies the Automatic Mode preset while a watched app runs, and restores the previous settings
+    /// afterwards unless the user changed something in the meantime.
+    private func updateAutoMode(running: Set<String>) {
+        let s = model.settings
+        let active = s.autoMode.enabled && AutoModeRule.shouldActivate(running: running, watched: s.autoMode.bundleIDs)
+        if active, autoModeSnapshot == nil {
+            let applied = s.autoMode.preset.apply(to: s)
+            autoModeSnapshot = (s, applied)
+            model.set(applied)
+        } else if !active, let snapshot = autoModeSnapshot {
+            autoModeSnapshot = nil
+            if model.settings == snapshot.applied { model.set(snapshot.before) }
+        }
     }
 
     /// The menu bar takes a moment to lay out new items, so the check runs shortly after launch.
@@ -118,6 +178,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         let s = model.settings
         effects?.render(pointer: snapshot.position, time: snapshot.time, settings: s,
                         spotlightVisible: interaction.spotlightVisible(s))
+        studio.tick(pointer: snapshot.position)
         cursor.set(hidden: interaction.shouldHideCursor(s))
     }
 
@@ -147,6 +208,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         case .toggleAnnotationMode:
             model.perform(action)
             annotations.toggle()
+        case .toggleRecording:
+            toggleRecording()
         default:
             model.perform(action)
         }
@@ -190,6 +253,21 @@ extension AppDelegate: AppActions {
     }
 
     func open(_ url: URL) { NSWorkspace.shared.open(url) }
+
+    func request(_ permission: Permission) {
+        Permissions.request(permission) { [weak self] _ in self?.refreshPermissions() }
+    }
+
+    func toggleRecording() {
+        statusItem?.closePopover()
+        studio.toggleRecording(settings: model.settings.recorder)
+    }
+
+    func revealRecordings() {
+        let folder = StudioCoordinator.recordingsFolder
+        try? FileManager.default.createDirectory(at: folder, withIntermediateDirectories: true)
+        if let last = model.lastRecordingURL { NSWorkspace.shared.activateFileViewerSelecting([last]) } else { NSWorkspace.shared.open(folder) }
+    }
 
     /// Registered hotkeys would swallow the combination being recorded, so they pause meanwhile.
     func setHotkeyRecording(_ recording: Bool) {

@@ -15,6 +15,9 @@ public protocol AppActions: AnyObject {
     func quit()
     func open(_ url: URL)
     func setHotkeyRecording(_ recording: Bool)
+    func request(_ permission: Permission)
+    func toggleRecording()
+    func revealRecordings()
 }
 
 /// Single source of truth for the UI. Every change goes through `update`, which applies the
@@ -30,6 +33,13 @@ public final class AppModel {
     public var customSoundError = false
     /// The menu-bar icon is enabled but macOS is not showing it.
     public var menuBarIconHidden = false
+    public var permissions: [Permission: PermissionStatus] = [:]
+    public var recordingStartedAt: Date?
+    public var lastRecordingURL: URL?
+    /// Problem reported by a presenter tool.
+    public var studioMessage: String?
+
+    public var isRecording: Bool { recordingStartedAt != nil }
 
     @ObservationIgnored public weak var actions: AppActions?
     /// Called after every change with (old, new).
@@ -70,6 +80,8 @@ public final class AppModel {
     }
 
     public func perform(_ action: HotkeyAction) { set(SettingsRules.applying(action, to: settings)) }
+
+    public func apply(_ preset: Preset) { set(preset.apply(to: settings)) }
 
     public func resetAllSettings() {
         let keepOnboarding = settings.general.hasCompletedOnboarding

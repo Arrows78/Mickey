@@ -13,7 +13,11 @@ public struct SettingsRootView: View {
             Divider()
             VStack(spacing: 0) {
                 ScrollView {
-                    page.padding(24).frame(maxWidth: 720, alignment: .leading).frame(maxWidth: .infinity)
+                    VStack(alignment: .leading, spacing: 12) {
+                        StudioMessage(model: model)
+                        page
+                    }
+                    .padding(24).frame(maxWidth: 720, alignment: .leading).frame(maxWidth: .infinity)
                 }
                 Divider()
                 statusBar
@@ -33,10 +37,15 @@ public struct SettingsRootView: View {
             }
             .padding(.horizontal, 12).padding(.vertical, 16)
             ForEach(SettingsSection.allCases) { section in
+                if section == .keystrokes || section == .hotkeys {
+                    Text(section == .keystrokes ? "PRESENTER TOOLS" : "SETTINGS")
+                        .font(.caption2.weight(.semibold)).foregroundStyle(.secondary)
+                        .padding(.horizontal, 20).padding(.top, 10)
+                }
                 Button { model.selectedSection = section } label: {
                     Label(section.title, systemImage: section.symbolName)
                         .frame(maxWidth: .infinity, alignment: .leading)
-                        .padding(.horizontal, 10).padding(.vertical, 7)
+                        .padding(.horizontal, 10).padding(.vertical, 5)
                         .background(model.selectedSection == section ? Color.accentColor.opacity(0.18) : .clear,
                                     in: RoundedRectangle(cornerRadius: 8))
                         .contentShape(Rectangle())
@@ -54,6 +63,12 @@ public struct SettingsRootView: View {
         switch model.selectedSection {
         case .effects: EffectsPage(model: model)
         case .annotations: AnnotationsPage(model: model)
+        case .keystrokes: KeystrokesPage(model: model)
+        case .zoom: ZoomPage(model: model)
+        case .loupe: LoupePage(model: model)
+        case .focus: FocusPage(model: model)
+        case .recorder: RecorderPage(model: model)
+        case .captions: CaptionsPage(model: model)
         case .hotkeys: HotkeysPage(model: model)
         case .general: GeneralPage(model: model)
         case .advanced: AdvancedPage(model: model)
@@ -108,6 +123,22 @@ public struct StatusPopoverView: View {
                 Divider()
                 Button(model.isDrawing ? "Stop Drawing" : "Start Drawing") { model.actions?.toggleDrawing() }
                 Text("or hold Fn (🌐) to draw").font(.caption).foregroundStyle(.secondary)
+            }
+            Divider()
+            HStack {
+                Button { model.actions?.toggleRecording() } label: {
+                    Label(model.isRecording ? "Stop Recording" : "Record Screen",
+                          systemImage: model.isRecording ? "stop.circle.fill" : "record.circle")
+                }
+                .foregroundStyle(model.isRecording ? .red : .primary)
+                Spacer()
+                Menu("Presets") {
+                    ForEach(Preset.allCases) { preset in Button(preset.title) { model.apply(preset) } }
+                }
+                .fixedSize()
+            }
+            if let message = model.studioMessage {
+                Text(message).font(.caption).foregroundStyle(.orange).fixedSize(horizontal: false, vertical: true)
             }
             Divider()
             HStack {

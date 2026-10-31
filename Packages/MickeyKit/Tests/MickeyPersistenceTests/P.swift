@@ -93,6 +93,23 @@ struct PersistenceTests {
         #expect(s.hotkeys[.toggleMaster] == HotkeyAction.toggleMaster.defaultHotkey)
     }
 
+    @Test func version2DocumentWithoutPresenterToolsLoadsAndGainsOnlyNewDefaults() throws {
+        var v2 = Settings()
+        v2.schemaVersion = 2
+        v2.ring.enabled = true
+        v2.hotkeys = [:] // cleared on purpose in version 2
+        var json = try #require(JSONSerialization.jsonObject(with: SettingsCodec.encode(v2)) as? [String: Any])
+        for key in ["keystrokes", "zoom", "loupe", "focus", "camera", "captions", "recorder", "autoMode"] { json[key] = nil }
+        let s = SettingsCodec.decode(try JSONSerialization.data(withJSONObject: json))
+        #expect(s.ring.enabled)
+        #expect(s.schemaVersion == Settings.currentSchemaVersion)
+        #expect(s.loupe == LoupeSettings())
+        #expect(s.general.menuBarItems.contains(.loupe))
+        #expect(s.hotkeys[.toggleRing] == nil)
+        #expect(s.hotkeys[.toggleLoupe] == HotkeyAction.toggleLoupe.defaultHotkey)
+        #expect(s.hotkeys.count == HotkeyAction.allCases.filter { $0.introducedInSchema == 3 }.count)
+    }
+
     @Test func clearedHotkeysStayClearedInVersion2() {
         var s = Settings()
         s.hotkeys = [:]

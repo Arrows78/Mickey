@@ -46,6 +46,28 @@ public enum HelpContent {
         HelpEntry(id: "tools", group: "Annotations", title: "Tools and shortcuts",
                   body: "F freehand, A arrow, R rectangle, C circle, L line, H highlighter, T text, N numbered callout. ⌘Z undoes, ⌘⌫ clears everything.",
                   section: .annotations),
+        HelpEntry(id: "keystrokes", group: "Presenter Tools", title: "Show keystrokes",
+                  body: "Displays the shortcuts you press in a bar on screen. Needs Input Monitoring. Shortcuts Only (on by default) never shows plain typing.",
+                  section: .keystrokes),
+        HelpEntry(id: "zoom", group: "Presenter Tools", title: "Live zoom",
+                  body: "Magnifies the whole screen while the point under the pointer stays put; move the pointer to pan. Needs Screen Recording.",
+                  section: .zoom),
+        HelpEntry(id: "loupe", group: "Presenter Tools", title: "Loupe",
+                  body: "A round or square magnifying glass that follows the pointer. Needs Screen Recording.", section: .loupe),
+        HelpEntry(id: "focus", group: "Presenter Tools", title: "Focus",
+                  body: "Dims everything except the frontmost window and follows it as you switch apps. No permission needed.", section: .focus),
+        HelpEntry(id: "record", group: "Presenter Tools", title: "Recording and camera bubble",
+                  body: "Records the screen under the pointer to Movies › Mickey with every effect, after a countdown. The camera bubble shows your webcam; drag it anywhere.",
+                  section: .recorder),
+        HelpEntry(id: "captions", group: "Presenter Tools", title: "Live captions",
+                  body: "Subtitles what you say, on your Mac when the language supports it. Needs Microphone and Speech Recognition.",
+                  section: .captions),
+        HelpEntry(id: "presets", group: "Presenter Tools", title: "Presets and Automatic Mode",
+                  body: "Presets switch several effects at once (General, or the menu bar). Automatic Mode applies one while Zoom, Teams, Keynote and similar apps run, then restores your settings.",
+                  section: .general),
+        HelpEntry(id: "permissions", group: "Troubleshooting", title: "A tool asks for a permission",
+                  body: "Click Allow… next to the permission, or open System Settings › Privacy & Security and switch Mickey on. Support lists every permission and its state.",
+                  section: .support),
         HelpEntry(id: "hotkeys", group: "Hotkeys", title: "Setting hotkeys",
                   body: "Every action has a default shortcut: ⌃⌥⌘ plus a letter (M Mickey, S spotlight, R ring, T trail, C click feedback, K click sounds, F flash click, L locate, D draw). Change one by clicking its field; ↺ or Reset to Defaults restores them, Clear All removes them.",
                   section: .hotkeys),
@@ -120,7 +142,7 @@ struct HelpPage: View {
         VStack(alignment: .leading, spacing: 8) {
             Text("Jump to a feature").font(.headline)
             HStack(spacing: 8) {
-                ForEach([SettingsSection.effects, .annotations, .hotkeys, .general], id: \.self) { section in
+                ForEach([SettingsSection.effects, .annotations, .keystrokes, .recorder, .hotkeys, .general], id: \.self) { section in
                     Button { model.selectedSection = section } label: {
                         Label(section.title, systemImage: section.symbolName)
                     }
@@ -130,6 +152,6 @@ struct HelpPage: View {
     }
 
     private func order(_ group: String) -> Int {
-        ["Overview", "Cursor Effects", "Annotations", "Hotkeys", "Menu bar", "Troubleshooting"].firstIndex(of: group) ?? 99
+        ["Overview", "Cursor Effects", "Annotations", "Presenter Tools", "Hotkeys", "Menu bar", "Troubleshooting"].firstIndex(of: group) ?? 99
     }
 }
