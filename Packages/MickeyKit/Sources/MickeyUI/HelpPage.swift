@@ -76,7 +76,7 @@ public enum HelpContent {
         HelpEntry(id: "dead", group: "Troubleshooting", title: "A toggle does nothing",
                   body: "If an effect needs a trigger (hold key, tap key, hotkey), check that one is set.", section: .effects),
         HelpEntry(id: "nodraw", group: "Troubleshooting", title: "Annotations won't draw",
-                  body: "Enable Annotations first. On some keyboards Fn is mapped to the emoji picker; use Right Option or a hotkey instead.",
+                  body: "Enable Annotations and make sure Mickey is on. On some keyboards Fn is mapped to the emoji picker; use Right Option or a hotkey instead.",
                   section: .annotations),
         HelpEntry(id: "cursor", group: "Troubleshooting", title: "Pointer stays hidden",
                   body: "Turn off Hide Cursor in the Spotlight settings or quit Mickey: the pointer is always restored on exit.", section: .effects),

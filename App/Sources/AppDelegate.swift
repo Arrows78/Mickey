@@ -87,6 +87,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
     private func apply(_ s: MickeyDomain.Settings, old: MickeyDomain.Settings?) {
         input.rateHz = s.general.updateRateHz
+        // Turning Mickey off ends drawing like every other cursor effect.
+        if old?.general.masterEnabled == true && !s.general.masterEnabled { annotations.exit() }
         if (old == nil || old?.hotkeys != s.hotkeys) && !recordingHotkey { registerHotkeys() }
         annotations.apply(s.annotations)
         if old == nil || old?.click.customSound != s.click.customSound, !sound.configure(custom: s.click.customSound) {
@@ -234,7 +236,7 @@ extension AppDelegate: AppActions {
 
     func toggleDrawing() {
         statusItem?.closePopover()
-        annotations.toggle()
+        handle(.toggleAnnotationMode)
     }
 
     func showSettings(_ section: SettingsSection?) {

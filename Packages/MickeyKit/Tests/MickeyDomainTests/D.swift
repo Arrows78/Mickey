@@ -636,6 +636,72 @@ struct InteractionTests {
     }
 }
 
+@Suite("Hold-to-draw triggers") struct HoldToDrawTests {
+    let fn = InputSnapshot.secondaryFnMask
+    func snap(_ flags: UInt64 = 0, at t: TimeInterval, other: Bool = false) -> InputSnapshot {
+        InputSnapshot(position: .zero, flags: flags, otherKeyDown: other, time: t)
+    }
+
+    @Test func toolShortcutWhileHoldingFnKeepsDrawing() {
+        var e = InteractionEngine()
+        var s = Settings.defaults
+        s.annotations.enabled = true
+        _ = e.tick(snap(fn, at: 0), settings: s)
+        #expect(e.tick(snap(fn, at: 0.3), settings: s) == [.beginMomentaryDrawing])
+        #expect(e.tick(snap(fn, at: 0.5, other: true), settings: s).isEmpty)
+        #expect(e.tick(snap(at: 0.6, other: true), settings: s) == [.endMomentaryDrawing])
+    }
+
+    @Test func fnNeverDrawsWhileMickeyIsOff() {
+        var e = InteractionEngine()
+        var s = Settings.defaults
+        s.annotations.enabled = true
+        s.general.masterEnabled = false
+        _ = e.tick(snap(fn, at: 0), settings: s)
+        #expect(e.tick(snap(fn, at: 1), settings: s).isEmpty)
+        s.general.masterEnabled = true
+        _ = e.tick(snap(fn, at: 1.1), settings: s)
+        #expect(e.tick(snap(fn, at: 1.5), settings: s) == [.beginMomentaryDrawing])
+        s.general.masterEnabled = false
+        #expect(e.tick(snap(fn, at: 1.6), settings: s) == [.endMomentaryDrawing])
+    }
+
+    @Test func fnFlagFromArrowKeysIsIgnored() {
+        var f = FnKeyFilter()
+        // ↓ held: the flag appears with a key-down and stays while the key repeats.
+        #expect(f.filter(fn, keyDownIsLatest: true) == 0)
+        #expect(f.filter(fn, keyDownIsLatest: true) == 0)
+        #expect(f.filter(fn, keyDownIsLatest: false) == 0)
+        #expect(f.filter(0, keyDownIsLatest: true) == 0)
+        // A real Fn press is a modifier change, and a later tool key does not undo it.
+        #expect(f.filter(fn, keyDownIsLatest: false) == fn)
+        #expect(f.filter(fn, keyDownIsLatest: true) == fn)
+    }
+
+    @Test func triggerKeyIsNotAloneWithOtherModifiers() {
+        var e = InteractionEngine()
+        var s = Settings.defaults
+        s.spotlight.enabled = true
+        s.spotlight.holdKey = .leftControl
+        // Left ⌃ + left ⌥ + left ⌘ held, as while typing a ⌃⌥⌘ hotkey.
+        let combo: UInt64 = 0x0004_0000 | 0x0008_0000 | 0x0010_0000 | 0x01 | 0x20 | 0x08
+        for i in 0...10 { _ = e.tick(snap(combo, at: Double(i) * 0.1), settings: s) }
+        #expect(!e.spotlightVisible(s))
+        let control: UInt64 = 0x0004_0000 | 0x01
+        _ = e.tick(snap(at: 2), settings: s)
+        _ = e.tick(snap(control, at: 2.1), settings: s)
+        _ = e.tick(snap(control, at: 2.7), settings: s)
+        #expect(e.spotlightVisible(s))
+    }
+
+    @Test func annotationHotkeyTurnsMickeyOn() {
+        var s = Settings.defaults
+        s.annotations.enabled = true
+        s.general.masterEnabled = false
+        #expect(SettingsRules.applying(.toggleAnnotationMode, to: s).general.masterEnabled)
+    }
+}
+
 @Suite("Layout-aware hotkeys") struct LayoutHotkeyTests {
     /// French AZERTY: A↔Q and Z↔W swapped, M on the US ";" key.
     let azerty: (Character) -> UInt32? = { c in

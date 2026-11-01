@@ -41,7 +41,7 @@ public enum SettingsRules {
     }
 
     /// Settings change implied by a hotkey. `showClickEffect`, `toggleRecording` and `toggleAnnotationMode` are
-    /// runtime commands and leave settings untouched (except enabling annotations if needed).
+    /// runtime commands and leave settings untouched, except that drawing needs annotations and Mickey on.
     /// Presenter tools (keystrokes, zoom, loupe, focus, camera, captions) do not depend on the master switch.
     public static func applying(_ action: HotkeyAction, to settings: Settings) -> Settings {
         var s = settings
@@ -53,7 +53,7 @@ public enum SettingsRules {
         case .toggleClickFeedback: s.click.feedbackEnabled.toggle()
         case .toggleClickSound: s.click.soundEnabled.toggle()
         case .toggleShakeToLocate: s.shake.enabled.toggle()
-        case .toggleAnnotationMode: if !s.annotations.enabled { s.annotations.enabled = true }
+        case .toggleAnnotationMode: s.annotations.enabled = true; s.general.masterEnabled = true
         case .toggleKeystrokes: s.keystrokes.enabled.toggle()
         case .toggleLiveZoom: s.zoom.enabled.toggle()
         case .toggleLoupe: s.loupe.enabled.toggle()

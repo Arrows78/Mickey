@@ -21,9 +21,35 @@ public struct InputSnapshot: Sendable {
     public func isDown(_ key: TriggerKey) -> Bool { flags & key.deviceFlagMask != 0 }
     public var fnDown: Bool { flags & Self.secondaryFnMask != 0 }
 
-    /// True when exactly `key` is held among the trigger-capable modifiers.
+    /// Left/right bits of control, shift, command and option.
+    static let deviceModifierMask: UInt64 = 0x0000_207F
+
+    /// True when `key` is the only modifier held (either side of any other modifier counts) and no other key was pressed.
     func isAlone(_ key: TriggerKey) -> Bool {
-        isDown(key) && TriggerKey.allCases.allSatisfy { $0 == key || !isDown($0) } && !otherKeyDown
+        isDown(key)
+            && flags & Self.deviceModifierMask & ~key.deviceFlagMask == 0
+            && flags & Self.modifierMask & ~key.genericFlagMask == 0
+            && !otherKeyDown
+    }
+}
+
+/// Keeps the secondary-Fn flag only for a real Fn (🌐) press.
+///
+/// macOS also sets that flag while an arrow, Home/End, Page Up/Down or F-key is down. A real Fn press is a
+/// modifier change, while those keys are key-downs: the event that raised the flag tells them apart.
+public struct FnKeyFilter: Sendable {
+    private var wasDown = false
+    private var ignoring = false
+
+    public init() {}
+
+    /// `keyDownIsLatest`: the most recent keyboard event is a key-down rather than a modifier change.
+    public mutating func filter(_ flags: UInt64, keyDownIsLatest: Bool) -> UInt64 {
+        let down = flags & InputSnapshot.secondaryFnMask != 0
+        if down && !wasDown { ignoring = keyDownIsLatest }
+        if !down { ignoring = false }
+        wasDown = down
+        return ignoring ? flags & ~InputSnapshot.secondaryFnMask : flags
     }
 }
 
@@ -110,9 +136,9 @@ public struct InteractionEngine: Sendable {
             tapKeyWasDown = false
         }
 
-        // Hold Fn (or Right Option when enabled) to draw.
-        if s.annotations.enabled {
-            if let e = fnHold.update(isDown: input.fnDown && !input.otherKeyDown, at: t) {
+        // Hold Fn (or Right Option when enabled) to draw. Once drawing, tool shortcuts typed with the key held keep it going.
+        if effectsOn && s.annotations.enabled {
+            if let e = fnHold.update(isDown: input.fnDown && (fnHold.isActive || !input.otherKeyDown), at: t) {
                 out.append(e == .began ? .beginMomentaryDrawing : .endMomentaryDrawing)
             }
             let optionDown = s.annotations.rightOptionTrigger && input.isAlone(.rightOption)

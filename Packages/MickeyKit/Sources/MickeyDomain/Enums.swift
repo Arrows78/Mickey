@@ -37,6 +37,16 @@ public enum TriggerKey: String, CaseIterable, Codable, Sendable {
         }
     }
 
+    /// Device-independent bit of the same modifier (control, shift, command or option).
+    public var genericFlagMask: UInt64 {
+        switch self {
+        case .leftControl, .rightControl: 0x0004_0000
+        case .rightShift: 0x0002_0000
+        case .rightCommand: 0x0010_0000
+        case .rightOption: 0x0008_0000
+        }
+    }
+
     /// Caveat shown next to the picker, if any.
     public var caveat: String? {
         switch self {

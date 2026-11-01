@@ -54,7 +54,7 @@ public final class InputMonitor {
     }
 
     private func sample() {
-        let flags = Self.currentFlags()
+        let flags = fnFilter.filter(Self.currentFlags(), keyDownIsLatest: Self.keyDownIsLatest())
         let held = flags & Self.modifierMask != 0
         if held && modifiersDownAt == nil { modifiersDownAt = ProcessInfo.processInfo.systemUptime }
         if !held { modifiersDownAt = nil }
@@ -68,6 +68,14 @@ public final class InputMonitor {
     /// Device-independent bits of control, shift, option, command and fn.
     private static let modifierMask: UInt64 = 0x0004_0000 | 0x0002_0000 | 0x0008_0000 | 0x0010_0000 | InputSnapshot.secondaryFnMask
     private var modifiersDownAt: TimeInterval?
+    private var fnFilter = FnKeyFilter()
+
+    /// True when the last keyboard event was a key-down rather than a modifier change: an arrow or F-key
+    /// raises the Fn flag with a key-down, the Fn (🌐) key with a modifier change.
+    static func keyDownIsLatest() -> Bool {
+        CGEventSource.secondsSinceLastEventType(.combinedSessionState, eventType: .keyDown)
+            < CGEventSource.secondsSinceLastEventType(.combinedSessionState, eventType: .flagsChanged)
+    }
 
     /// True when a non-modifier key was pressed after `start` (system uptime).
     ///
