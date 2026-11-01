@@ -207,3 +207,52 @@ public enum AutoModeRule {
         !running.isDisjoint(with: watched)
     }
 }
+
+/// Applies the Automatic Mode preset while a watched app runs, and gives the user's own settings back afterwards
+/// unless they changed something in the meantime. Editing Automatic Mode itself does not count as a change.
+public struct AutoModeSession: Sendable {
+    /// The user's settings before the preset, and the settings the preset produced.
+    public private(set) var snapshot: (before: Settings, applied: Settings)?
+
+    public init() {}
+
+    public var isApplied: Bool { snapshot != nil }
+
+    /// Settings to switch to after `settings` or the running apps changed, if any.
+    public mutating func update(settings s: Settings, running: Set<String>) -> Settings? {
+        let active = s.autoMode.enabled && AutoModeRule.shouldActivate(running: running, watched: s.autoMode.bundleIDs)
+        guard let current = snapshot else {
+            guard active else { return nil }
+            let applied = s.autoMode.preset.apply(to: s)
+            snapshot = (s, applied)
+            return applied
+        }
+        let untouched = Self.ignoringAutoMode(s) == Self.ignoringAutoMode(current.applied)
+        var before = current.before
+        before.autoMode = s.autoMode
+        if !active {
+            snapshot = nil
+            return untouched ? before : nil
+        }
+        if untouched && s.autoMode.preset != current.applied.autoMode.preset {
+            let applied = s.autoMode.preset.apply(to: before)
+            snapshot = (before, applied)
+            return applied
+        }
+        return nil
+    }
+
+    /// Settings worth saving on quit: the user's own while the preset is still in place, so it never sticks.
+    public func settingsToPersist(_ s: Settings) -> Settings {
+        guard let current = snapshot, Self.ignoringAutoMode(s) == Self.ignoringAutoMode(current.applied) else { return s }
+        var before = current.before
+        before.autoMode = s.autoMode
+        return before
+    }
+
+    static func ignoringAutoMode(_ s: Settings) -> Settings {
+        var c = s
+        c.autoMode = AutoModeSettings()
+        return c
+    }
+}

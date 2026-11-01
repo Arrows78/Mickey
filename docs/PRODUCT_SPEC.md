@@ -179,7 +179,7 @@ Each page shows its permission state with *Allow…* (system prompt) or *Open Sy
 | Tutorial Video | ring, click feedback, click sounds, keystrokes, shake to locate |
 | Discreet | click flash on a tap key only (Left Control unless one is set), shake to locate |
 
-Presets turn Mickey on and keep colors, sizes and hotkeys. Automatic mode applies its preset while one of the watched apps runs (Zoom, Microsoft Teams, FaceTime, Keynote, PowerPoint, QuickTime Player, OBS, Loom, Webex, Discord) and restores the previous settings when they quit, unless the settings were changed meanwhile.
+Presets turn Mickey on and keep colors, sizes and hotkeys. Automatic mode applies its preset while one of the watched apps runs (Zoom, Microsoft Teams, FaceTime, Keynote, PowerPoint, QuickTime Player, OBS, Loom, Webex, Discord) and restores the previous settings when they quit, unless the settings were changed meanwhile. Turning Automatic mode off or changing its preset counts as no change: the previous settings come back, or the new preset applies. Quitting while the preset applies saves the previous settings, not the preset.
 
 ### 4.10 Launch at login
 

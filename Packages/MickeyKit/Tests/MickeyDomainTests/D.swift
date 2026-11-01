@@ -750,3 +750,58 @@ struct InteractionTests {
         #expect(MenuBarItem.ring.hotkeyAction == .toggleRing)
     }
 }
+
+@Suite("Automatic Mode") struct AutoModeSessionTests {
+    let zoom: Set<String> = ["us.zoom.xos"]
+    var base: Settings {
+        var s = Settings.defaults
+        s.autoMode.enabled = true
+        s.ring.enabled = false
+        return s
+    }
+
+    @Test func restoresWhenTheAppQuits() throws {
+        var session = AutoModeSession()
+        let appliedStep = session.update(settings: base, running: zoom)
+        let applied = try #require(appliedStep)
+        #expect(applied.ring.enabled)
+        #expect(session.update(settings: applied, running: []) == base)
+    }
+
+    @Test func turningAutoModeOffRestoresAndKeepsItOff() throws {
+        var session = AutoModeSession()
+        let sStep = session.update(settings: base, running: zoom)
+        var s = try #require(sStep)
+        s.autoMode.enabled = false
+        let restoredStep = session.update(settings: s, running: zoom)
+        let restored = try #require(restoredStep)
+        #expect(!restored.ring.enabled && !restored.autoMode.enabled)
+    }
+
+    @Test func changingThePresetReappliesIt() throws {
+        var session = AutoModeSession()
+        let sStep = session.update(settings: base, running: zoom)
+        var s = try #require(sStep)
+        s.autoMode.preset = .discreet
+        let nextStep = session.update(settings: s, running: zoom)
+        let next = try #require(nextStep)
+        #expect(!next.ring.enabled && next.autoMode.preset == .discreet)
+        #expect(session.update(settings: next, running: []) == { var b = base; b.autoMode.preset = .discreet; return b }())
+    }
+
+    @Test func userChangesAreKept() throws {
+        var session = AutoModeSession()
+        let sStep = session.update(settings: base, running: zoom)
+        var s = try #require(sStep)
+        s.trail.enabled = true
+        #expect(session.settingsToPersist(s) == s)
+        #expect(session.update(settings: s, running: []) == nil)
+    }
+
+    @Test func presetIsNotSavedAsTheUsersSettings() throws {
+        var session = AutoModeSession()
+        let appliedStep = session.update(settings: base, running: zoom)
+        let applied = try #require(appliedStep)
+        #expect(session.settingsToPersist(applied) == base)
+    }
+}

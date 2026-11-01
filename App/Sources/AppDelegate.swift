@@ -25,8 +25,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     private var recordingHotkey = false
     private let studio = StudioCoordinator()
     private let appWatcher = AppWatcher()
-    /// Settings before and after Automatic Mode applied its preset.
-    private var autoModeSnapshot: (before: MickeyDomain.Settings, applied: MickeyDomain.Settings)?
+    private var autoMode = AutoModeSession()
 
     func applicationDidFinishLaunching(_ notification: Notification) {
         let launchedAsLoginItem = Self.isLaunchingAsLoginItem()
@@ -79,6 +78,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     func applicationWillTerminate(_ notification: Notification) {
+        // Automatic Mode's preset is not saved as the user's settings.
+        model.set(autoMode.settingsToPersist(model.settings))
         model.flush()
         input.stop()
         hotkeys.unregisterAll()
@@ -156,16 +157,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     /// Applies the Automatic Mode preset while a watched app runs, and restores the previous settings
     /// afterwards unless the user changed something in the meantime.
     private func updateAutoMode(running: Set<String>) {
-        let s = model.settings
-        let active = s.autoMode.enabled && AutoModeRule.shouldActivate(running: running, watched: s.autoMode.bundleIDs)
-        if active, autoModeSnapshot == nil {
-            let applied = s.autoMode.preset.apply(to: s)
-            autoModeSnapshot = (s, applied)
-            model.set(applied)
-        } else if !active, let snapshot = autoModeSnapshot {
-            autoModeSnapshot = nil
-            if model.settings == snapshot.applied { model.set(snapshot.before) }
-        }
+        if let next = autoMode.update(settings: model.settings, running: running) { model.set(next) }
     }
 
     /// The menu bar takes a moment to lay out new items, so the check runs shortly after launch.

@@ -59,7 +59,7 @@
 
 - **Menu-bar popover** with the master switch, the toggles you choose, each toggle's shortcut, presets, recording and drawing.
 - **Presets**: *Presentation*, *Tutorial Video* and *Discreet* switch several effects at once while keeping your colors and sizes.
-- **Automatic mode** applies a preset while Zoom, Teams, FaceTime, Keynote, PowerPoint, QuickTime Player, OBS, Loom, Webex or Discord runs, then restores your settings.
+- **Automatic mode** applies a preset while Zoom, Teams, FaceTime, Keynote, PowerPoint, QuickTime Player, OBS, Loom, Webex or Discord runs, then restores your settings; the preset is never saved as your own settings.
 - **Global hotkeys** for every action, with sensible defaults, a per-action restore button, *Reset to Defaults* and *Clear All*.
 - **Conflict checks**: shortcuts already used by macOS or by another action are refused; your own app shortcuts and widely used app shortcuts get a warning.
 - Launch at login, menu bar and/or Dock icon, adjustable update rate, searchable help, first-launch onboarding.
