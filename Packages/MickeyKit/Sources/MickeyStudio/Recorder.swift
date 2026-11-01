@@ -81,15 +81,21 @@ final class ScreenRecorder: NSObject, SCStreamOutput, SCStreamDelegate {
     private var url: URL?
     private let box = SinkBox()
     private let queue = DispatchQueue(label: "dev.local.mickey.recorder")
+    /// Capture is being set up: a stop request waits for it instead of being lost.
+    private var starting = false
+    private var stopRequested = false
+    private var stopCompletions: [() -> Void] = []
 
-    var isRecording: Bool { stream != nil }
+    var isRecording: Bool { stream != nil || starting }
 
     static var folder: URL {
         FileManager.default.urls(for: .moviesDirectory, in: .userDomainMask)[0].appendingPathComponent("Mickey", isDirectory: true)
     }
 
     func start(on screen: NSScreen, settings: RecorderSettings) {
-        guard stream == nil else { return }
+        guard stream == nil, !starting else { return }
+        starting = true
+        stopRequested = false
         Task {
             do {
                 let (display, _) = try await ScreenCapture.target(for: screen)
@@ -111,27 +117,49 @@ final class ScreenRecorder: NSObject, SCStreamOutput, SCStreamDelegate {
                 try await stream.startCapture()
                 self.stream = stream
                 self.url = url
+                starting = false
                 onStarted?()
+                if stopRequested { stop() }
             } catch {
+                starting = false
                 box.set(nil)
                 onFinished?(nil, error.localizedDescription)
+                finishStopping()
             }
         }
     }
 
-    func stop() {
-        guard let stream else { return }
+    /// Stops the recording. `completion` runs once the movie is written, or right away if nothing records.
+    func stop(completion: (() -> Void)? = nil) {
+        if let completion { stopCompletions.append(completion) }
+        if starting { stopRequested = true; return }
+        guard let stream else { finishStopping(); return }
         self.stream = nil
         let url = self.url
         let box = self.box
         Task { [weak self] in
             try? await stream.stopCapture()
-            guard let sink = box.current else { self?.onFinished?(nil, "Recording failed."); return }
+            guard let sink = box.current else {
+                self?.onFinished?(nil, "Recording failed.")
+                self?.finishStopping()
+                return
+            }
             box.set(nil)
             sink.finish { error in
-                DispatchQueue.main.async { MainActor.assumeIsolated { self?.onFinished?(error == nil ? url : nil, error) } }
+                DispatchQueue.main.async {
+                    MainActor.assumeIsolated {
+                        self?.onFinished?(error == nil ? url : nil, error)
+                        self?.finishStopping()
+                    }
+                }
             }
         }
+    }
+
+    private func finishStopping() {
+        let completions = stopCompletions
+        stopCompletions.removeAll()
+        completions.forEach { $0() }
     }
 
     nonisolated func stream(_ stream: SCStream, didOutputSampleBuffer sample: CMSampleBuffer, of type: SCStreamOutputType) {
@@ -147,6 +175,7 @@ final class ScreenRecorder: NSObject, SCStreamOutput, SCStreamDelegate {
                 self.box.current?.finish { _ in }
                 self.box.set(nil)
                 self.onFinished?(nil, message)
+                self.finishStopping()
             }
         }
     }

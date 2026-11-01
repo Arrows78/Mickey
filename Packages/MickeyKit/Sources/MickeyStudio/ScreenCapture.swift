@@ -61,14 +61,19 @@ final class ScreenFrameSource: NSObject, SCStreamOutput, SCStreamDelegate {
 
     private var stream: SCStream?
     private(set) var screenFrame: CGRect?
+    /// Screen whose capture failed: not retried every frame, only after `retry()` or a screen change.
+    private var failedFrame: CGRect?
     private var starting = false
+    /// Bumped by `stop()`, so a capture still starting knows it is no longer wanted.
+    private var generation = 0
     private let queue = DispatchQueue(label: "dev.local.mickey.magnifier-frames")
 
     /// Starts (or switches) capture to `screen`. Does nothing if that screen is already captured.
     func capture(_ screen: NSScreen) {
-        guard screenFrame != screen.frame, !starting else { return }
-        starting = true
         let frame = screen.frame
+        guard screenFrame != frame, failedFrame != frame, !starting else { return }
+        starting = true
+        let generation = self.generation
         Task {
             defer { starting = false }
             await stopStream()
@@ -78,16 +83,24 @@ final class ScreenFrameSource: NSObject, SCStreamOutput, SCStreamDelegate {
                 let stream = SCStream(filter: filter, configuration: ScreenCapture.configuration(for: screen, showsCursor: false), delegate: self)
                 try stream.addStreamOutput(self, type: .screen, sampleHandlerQueue: queue)
                 try await stream.startCapture()
+                guard generation == self.generation else { try? await stream.stopCapture(); return }
                 self.stream = stream
                 screenFrame = frame
             } catch {
+                guard generation == self.generation else { return }
+                failedFrame = frame
                 onError?(error.localizedDescription)
             }
         }
     }
 
+    /// Allows another attempt after a failure, e.g. once Screen Recording is granted.
+    func retry() { failedFrame = nil }
+
     func stop() {
+        generation += 1
         screenFrame = nil
+        failedFrame = nil
         Task { await stopStream() }
     }
 
@@ -108,7 +121,9 @@ final class ScreenFrameSource: NSObject, SCStreamOutput, SCStreamDelegate {
         let message = error.localizedDescription
         DispatchQueue.main.async {
             MainActor.assumeIsolated {
+                // Not restarted on its own: a stream that died (permission revoked…) would fail again every frame.
                 self.stream = nil
+                self.failedFrame = self.screenFrame
                 self.screenFrame = nil
                 self.onError?(message)
             }

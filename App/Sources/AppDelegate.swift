@@ -68,8 +68,17 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         return event.paramDescriptor(forKeyword: keyAEPropData)?.enumCodeValue == keyAELaunchedAsLogInItem
     }
 
+    /// A running recording is finished before quitting, otherwise the movie file would be unreadable.
+    func applicationShouldTerminate(_ sender: NSApplication) -> NSApplication.TerminateReply {
+        guard studio.isRecording else { return .terminateNow }
+        let reply = TerminationReply()
+        studio.stopRecording { reply.send() }
+        // Never block quitting for long if writing hangs.
+        DispatchQueue.main.asyncAfter(deadline: .now() + 10) { MainActor.assumeIsolated { reply.send() } }
+        return .terminateLater
+    }
+
     func applicationWillTerminate(_ notification: Notification) {
-        if studio.isRecording { studio.toggleRecording(settings: model.settings.recorder) }
         model.flush()
         input.stop()
         hotkeys.unregisterAll()
@@ -224,6 +233,17 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
                                     spotlightVisible: interaction.spotlightVisible(s),
                                     drawing: annotations.isDrawing,
                                     presentingFrom: windows.settingsViewController)
+    }
+}
+
+/// Answers a `.terminateLater` exactly once, after it was returned.
+private final class TerminationReply {
+    private var sent = false
+
+    func send() {
+        guard !sent else { return }
+        sent = true
+        DispatchQueue.main.async { MainActor.assumeIsolated { NSApp.reply(toApplicationShouldTerminate: true) } }
     }
 }
 

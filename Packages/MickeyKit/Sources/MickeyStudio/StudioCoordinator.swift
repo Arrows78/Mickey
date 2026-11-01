@@ -51,12 +51,22 @@ public final class StudioCoordinator {
         if magnifier.isActive { magnifier.update(pointer: pointer) }
     }
 
-    public func screensChanged() { focus.screensChanged() }
+    public func screensChanged() {
+        focus.screensChanged()
+        magnifier.retry()
+    }
 
     /// Retries tools that were waiting for a permission.
     public func permissionsChanged() {
+        magnifier.retry()
         keystrokes.retry()
         captions.retry()
+    }
+
+    /// Stops a countdown or a recording; `completion` runs once the movie file is complete.
+    public func stopRecording(completion: @escaping () -> Void) {
+        if countdown.isRunning { countdown.cancel() }
+        recorder.stop(completion: completion)
     }
 
     public func toggleRecording(settings: RecorderSettings) {

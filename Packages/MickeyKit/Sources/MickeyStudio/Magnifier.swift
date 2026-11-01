@@ -53,6 +53,9 @@ final class Magnifier {
 
     var isActive: Bool { zoom.enabled || loupe.enabled }
 
+    /// Tries capturing again after a failure (permission granted, screens changed).
+    func retry() { source.retry() }
+
     func apply(zoom: ZoomSettings, loupe: LoupeSettings) {
         self.zoom = zoom
         self.loupe = loupe
