@@ -144,14 +144,23 @@ brew install xcodegen
 
 ## 🚀 Installation
 
-### 1. Clone the repository
+### Download
+
+Grab `Mickey-<version>.zip` from the [latest release](https://github.com/Arrows78/Mickey/releases/latest), unzip it and move **Mickey.app** to `/Applications`. Releases are universal (Apple Silicon and Intel).
+
+> [!WARNING]
+> Releases are signed ad hoc, not notarised, so macOS blocks the first launch. Open **System Settings › Privacy & Security** and click **Open Anyway**, or run `xattr -dr com.apple.quarantine /Applications/Mickey.app`.
+
+### Build from source
+
+#### 1. Clone the repository
 
 ```bash
 git clone git@github.com:Arrows78/Mickey.git
 cd Mickey
 ```
 
-### 2. Generate the Xcode project
+#### 2. Generate the Xcode project
 
 ```bash
 xcodegen generate
@@ -159,7 +168,7 @@ xcodegen generate
 
 `Mickey.xcodeproj` is generated from [`project.yml`](project.yml) and is not committed.
 
-### 3. Build and run
+#### 3. Build and run
 
 Open `Mickey.xcodeproj` in Xcode and run the **Mickey** scheme, or build from the command line:
 
@@ -183,6 +192,8 @@ open /Applications/Mickey.app
 | `swift test --package-path Packages/MickeyKit` | Runs the unit tests only. |
 | `swift scripts/make_app_icon.swift` | Redraws the app icon set from code. |
 | `python3 scripts/make_click_sound.py` | Synthesises the default click sound (`App/Resources/click.wav`). |
+
+To publish a release, bump `CFBundleShortVersionString` in `project.yml`, then push a matching tag (`git tag v0.2.0 && git push origin v0.2.0`). The [Release workflow](.github/workflows/release.yml) runs the tests, builds a universal app and attaches the zip to a new GitHub release; `0.x` versions are marked as pre-releases.
 
 ## 📂 Project structure
 
