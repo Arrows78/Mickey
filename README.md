@@ -79,7 +79,7 @@ Every action defaults to **⌃⌥⌘** plus a letter, a combination macOS and mo
 | `⌃⌥⌘F` | Flash the click effect | `⌃⌥⌘A` | Toggle captions |
 | `⌃⌥⌘L` | Toggle shake to locate | `⌃⌥⌘V` | Start / stop recording |
 
-All of them can be changed or cleared in **Settings › Hotkeys**.
+Letters follow your keyboard layout: on AZERTY, `⌃⌥⌘A` is the key marked A. All of them can be changed or cleared in **Settings › Hotkeys**.
 
 ## 🔐 Permissions
 

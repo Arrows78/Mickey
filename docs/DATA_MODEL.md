@@ -71,7 +71,7 @@ Values are clamped to their range when decoded and whenever they change.
 
 ### Hotkeys
 
-`hotkeys: [HotkeyAction: KeyCombo]`, defaulting to ⌃⌥⌘ plus a letter for every action. `KeyCombo { keyCode: UInt32, modifiers: {control, option, shift, command}, keyLabel: String }`.
+`hotkeys: [HotkeyAction: KeyCombo]`, defaulting to ⌃⌥⌘ plus a letter for every action. `KeyCombo { keyCode: UInt32, modifiers: {control, option, shift, command}, keyLabel: String }`. Two combos are equal when key code and modifiers match; `keyLabel` only describes the key and the UI shows what the key prints in the current layout. Default hotkeys sit on the key printing their letter in the current layout (`HotkeyAction.defaultHotkey(keyCode:)`); ⌥ and ⌥⇧ alone are refused because they type characters.
 
 ## 3. Colors
 
@@ -82,7 +82,7 @@ Values are clamped to their range when decoded and whenever they change.
 - `Settings` is encoded as JSON under `mickey.settings.v1` in the standard user defaults; `ReviewState { launchCount, activeMinutes, lastRequest }` under `mickey.review.v1`.
 - Writes are debounced (250 ms), flushed on quit, after a reset and at launch (so migrations persist).
 - **Recovery**: when the document does not decode as a whole, stored values are merged into the defaults one leaf at a time, keeping each only if the document still decodes. Unknown, missing or invalid fields fall back to their default; the hotkey dictionary is merged as a whole.
-- **Migrations** (`schemaVersion`, currently 3): each `HotkeyAction` records the schema that introduced it; loading an older document adds those actions' defaults when unset and not already used by another action. Version 3 also adds the presenter tools to `menuBarItems`.
+- **Migrations** (`schemaVersion`, currently 4): each `HotkeyAction` records the schema that introduced it; loading an older document adds those actions' defaults when unset and not already used by another action. Version 3 also adds the presenter tools to `menuBarItems`. Version 4 moves hotkeys still on their US-layout default to the key printing the same letter in the current layout (⌃⌥⌘M was ⌃⌥⌘, on AZERTY), leaving custom shortcuts alone.
 
 ## 5. Runtime models
 

@@ -228,27 +228,44 @@ public enum HotkeyAction: String, CaseIterable, Codable, CodingKeyRepresentable,
 
     /// Default shortcut: ⌃⌥⌘ plus a mnemonic letter. The triple modifier is left free by macOS
     /// and by most apps, so the defaults rarely collide with anything.
-    public var defaultHotkey: KeyCombo {
-        let (code, label): (UInt32, String) = switch self {
-        case .toggleMaster: (46, "M")
-        case .toggleSpotlight: (1, "S")
-        case .toggleRing: (15, "R")
-        case .toggleTrail: (17, "T")
-        case .toggleClickFeedback: (8, "C")
-        case .toggleClickSound: (40, "K")
-        case .showClickEffect: (3, "F")
-        case .toggleShakeToLocate: (37, "L")
-        case .toggleAnnotationMode: (2, "D")
-        case .toggleKeystrokes: (16, "Y")
-        case .toggleLiveZoom: (6, "Z")
-        case .toggleLoupe: (31, "O")
-        case .toggleFocus: (13, "W")
-        case .toggleCameraBubble: (14, "E")
-        case .toggleCaptions: (0, "A")
-        case .toggleRecording: (9, "V")
-        }
-        return KeyCombo(keyCode: code, modifiers: [.control, .option, .command], keyLabel: label)
+    /// This is the US-layout key; `defaultHotkey(keyCode:)` follows the user's layout.
+    public var defaultHotkey: KeyCombo { defaultHotkey(keyCode: { _ in nil }) }
+
+    /// Default shortcut on the key printing `defaultLetter` in the current layout, as reported by `keyCode`,
+    /// falling back to the US-layout key.
+    public func defaultHotkey(keyCode: (Character) -> UInt32?) -> KeyCombo {
+        let letter = defaultLetter
+        let code = keyCode(Character(letter.lowercased())) ?? Self.usKeyCodes[letter] ?? 0
+        return KeyCombo(keyCode: code, modifiers: [.control, .option, .command], keyLabel: String(letter))
     }
+
+    /// Mnemonic letter of the default shortcut.
+    public var defaultLetter: Character {
+        switch self {
+        case .toggleMaster: "M"
+        case .toggleSpotlight: "S"
+        case .toggleRing: "R"
+        case .toggleTrail: "T"
+        case .toggleClickFeedback: "C"
+        case .toggleClickSound: "K"
+        case .showClickEffect: "F"
+        case .toggleShakeToLocate: "L"
+        case .toggleAnnotationMode: "D"
+        case .toggleKeystrokes: "Y"
+        case .toggleLiveZoom: "Z"
+        case .toggleLoupe: "O"
+        case .toggleFocus: "W"
+        case .toggleCameraBubble: "E"
+        case .toggleCaptions: "A"
+        case .toggleRecording: "V"
+        }
+    }
+
+    /// Virtual key codes of the default letters on a US (ANSI) keyboard.
+    static let usKeyCodes: [Character: UInt32] = [
+        "M": 46, "S": 1, "R": 15, "T": 17, "C": 8, "K": 40, "F": 3, "L": 37,
+        "D": 2, "Y": 16, "Z": 6, "O": 31, "W": 13, "E": 14, "A": 0, "V": 9,
+    ]
 
     /// Settings schema version that introduced the action, so migrations add only new defaults.
     public var introducedInSchema: Int {
@@ -258,8 +275,10 @@ public enum HotkeyAction: String, CaseIterable, Codable, CodingKeyRepresentable,
         }
     }
 
-    public static var defaultHotkeys: [HotkeyAction: KeyCombo] {
-        Dictionary(uniqueKeysWithValues: allCases.map { ($0, $0.defaultHotkey) })
+    public static var defaultHotkeys: [HotkeyAction: KeyCombo] { defaultHotkeys(keyCode: { _ in nil }) }
+
+    public static func defaultHotkeys(keyCode: (Character) -> UInt32?) -> [HotkeyAction: KeyCombo] {
+        Dictionary(uniqueKeysWithValues: allCases.map { ($0, $0.defaultHotkey(keyCode: keyCode)) })
     }
 
     public var detail: String {
@@ -309,8 +328,9 @@ public enum MenuBarItem: String, CaseIterable, Codable, Sendable, Identifiable {
         }
     }
 
-    /// Hotkey toggling the same setting.
-    public var hotkeyAction: HotkeyAction {
+    /// Hotkey toggling the same setting. Annotations has none: its hotkey starts drawing rather than
+    /// switching the feature on or off.
+    public var hotkeyAction: HotkeyAction? {
         switch self {
         case .spotlight: .toggleSpotlight
         case .ring: .toggleRing
@@ -318,7 +338,7 @@ public enum MenuBarItem: String, CaseIterable, Codable, Sendable, Identifiable {
         case .clickSound: .toggleClickSound
         case .trail: .toggleTrail
         case .shake: .toggleShakeToLocate
-        case .annotations: .toggleAnnotationMode
+        case .annotations: nil
         case .keystrokes: .toggleKeystrokes
         case .liveZoom: .toggleLiveZoom
         case .loupe: .toggleLoupe

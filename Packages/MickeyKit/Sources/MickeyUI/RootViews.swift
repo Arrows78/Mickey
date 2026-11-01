@@ -110,8 +110,8 @@ public struct StatusPopoverView: View {
                     HStack {
                         Text(item.title)
                         Spacer()
-                        if let combo = model.settings.hotkeys[item.hotkeyAction] {
-                            Text(combo.displayString).font(.caption.monospaced()).foregroundStyle(.secondary)
+                        if let combo = item.hotkeyAction.flatMap({ model.settings.hotkeys[$0] }) {
+                            Text(KeyboardLayout.displayString(combo)).font(.caption.monospaced()).foregroundStyle(.secondary)
                         }
                     }
                 }
@@ -121,7 +121,13 @@ public struct StatusPopoverView: View {
             }
             if model.settings.annotations.enabled {
                 Divider()
-                Button(model.isDrawing ? "Stop Drawing" : "Start Drawing") { model.actions?.toggleDrawing() }
+                HStack {
+                    Button(model.isDrawing ? "Stop Drawing" : "Start Drawing") { model.actions?.toggleDrawing() }
+                    Spacer()
+                    if let combo = model.settings.hotkeys[.toggleAnnotationMode] {
+                        Text(KeyboardLayout.displayString(combo)).font(.caption.monospaced()).foregroundStyle(.secondary)
+                    }
+                }
                 Text("or hold Fn (🌐) to draw").font(.caption).foregroundStyle(.secondary)
             }
             Divider()
@@ -131,6 +137,7 @@ public struct StatusPopoverView: View {
                           systemImage: model.isRecording ? "stop.circle.fill" : "record.circle")
                 }
                 .foregroundStyle(model.isRecording ? .red : .primary)
+                .help(model.settings.hotkeys[.toggleRecording].map(KeyboardLayout.displayString) ?? "")
                 Spacer()
                 Menu("Presets") {
                     ForEach(Preset.allCases) { preset in Button(preset.title) { model.apply(preset) } }

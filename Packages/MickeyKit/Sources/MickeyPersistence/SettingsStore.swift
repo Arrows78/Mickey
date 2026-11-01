@@ -15,12 +15,19 @@ public final class UserDefaultsSettingsStore: SettingsStore, @unchecked Sendable
     public static let reviewKey = "mickey.review.v1"
 
     private let defaults: UserDefaults
+    private let keyCode: SettingsCodec.KeyCodeLookup?
 
-    public init(defaults: UserDefaults = .standard) { self.defaults = defaults }
+    /// `keyCode` maps a letter to the key typing it in the current keyboard layout, so default hotkeys follow the layout.
+    public init(defaults: UserDefaults = .standard, keyCode: SettingsCodec.KeyCodeLookup? = nil) {
+        self.defaults = defaults
+        self.keyCode = keyCode
+    }
 
     public func loadSettings() -> Settings {
-        guard let data = defaults.data(forKey: Self.settingsKey) else { return .defaults }
-        return SettingsCodec.decode(data)
+        guard let data = defaults.data(forKey: Self.settingsKey) else {
+            return keyCode.map { Settings.defaults.localizingDefaultHotkeys(keyCode: $0) } ?? .defaults
+        }
+        return SettingsCodec.decode(data, keyCode: keyCode)
     }
 
     public func saveSettings(_ settings: Settings) {
@@ -57,14 +64,16 @@ public final class InMemorySettingsStore: SettingsStore, @unchecked Sendable {
 
 /// JSON codec that tolerates missing, unknown or invalid fields: each bad leaf falls back to its default.
 public enum SettingsCodec {
+    public typealias KeyCodeLookup = (Character) -> UInt32?
+
     public static func encode(_ s: Settings) -> Data {
         let e = JSONEncoder()
         e.outputFormatting = [.sortedKeys]
         return (try? e.encode(s)) ?? Data()
     }
 
-    public static func decode(_ data: Data) -> Settings {
-        if let s = try? JSONDecoder().decode(Settings.self, from: data) { return migrate(s).clamped() }
+    public static func decode(_ data: Data, keyCode: KeyCodeLookup? = nil) -> Settings {
+        if let s = try? JSONDecoder().decode(Settings.self, from: data) { return migrate(s, keyCode: keyCode).clamped() }
         guard let stored = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
               let base = try? JSONSerialization.jsonObject(with: encode(.defaults)) as? [String: Any]
         else { return .defaults }
@@ -72,7 +81,7 @@ public enum SettingsCodec {
         var merged = base
         merge(stored, into: &merged, path: [])
         let result = (try? decodeObject(merged)) ?? .defaults
-        return migrate(result).clamped()
+        return migrate(result, keyCode: keyCode).clamped()
     }
 
     /// Copies stored leaves into `root` one at a time, keeping each only if the whole document still decodes.
@@ -113,7 +122,7 @@ public enum SettingsCodec {
     }
 
     /// Upgrades settings saved by an older schema.
-    static func migrate(_ s: Settings) -> Settings {
+    static func migrate(_ s: Settings, keyCode: KeyCodeLookup? = nil) -> Settings {
         var m = s
         // Give actions introduced after the saved version their default, unless unset on purpose
         // since then or the combination is already in use.
@@ -124,6 +133,10 @@ public enum SettingsCodec {
         if s.schemaVersion < 3 {
             // Presenter tools appear in the menu-bar popover like every other toggle.
             m.general.menuBarItems.formUnion([.keystrokes, .liveZoom, .loupe, .focus, .cameraBubble, .captions])
+        }
+        if s.schemaVersion < 4, let keyCode {
+            // Defaults used to sit on US key positions: ⌃⌥⌘M was ⌃⌥⌘, on an AZERTY keyboard.
+            m = m.localizingDefaultHotkeys(keyCode: keyCode)
         }
         m.schemaVersion = Settings.currentSchemaVersion
         return m

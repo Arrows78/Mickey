@@ -3,7 +3,8 @@ import Carbon.HIToolbox
 import SwiftUI
 import MickeyDomain
 
-/// Click-to-record shortcut field. Esc cancels, Delete clears.
+/// Click-to-record shortcut field. Esc cancels, Delete clears. Leaving the app or the window cancels too,
+/// since every global hotkey is paused while recording.
 struct HotkeyRecorder: View {
     @Binding var combo: KeyCombo?
     var onRecording: (Bool) -> Void = { _ in }
@@ -18,7 +19,7 @@ struct HotkeyRecorder: View {
         VStack(alignment: .trailing, spacing: 2) {
             HStack(spacing: 4) {
                 Button { recording ? stop() : start() } label: {
-                    Text(recording ? "Press shortcut…" : (combo?.displayString ?? "Record Shortcut"))
+                    Text(recording ? "Press shortcut…" : (combo.map(KeyboardLayout.displayString) ?? "Record Shortcut"))
                         .frame(minWidth: 130)
                         .foregroundStyle(combo == nil && !recording ? .secondary : .primary)
                 }
@@ -30,6 +31,8 @@ struct HotkeyRecorder: View {
             if let error { Text(error).font(.caption2).foregroundStyle(.orange) }
         }
         .onDisappear(perform: stop)
+        .onReceive(NotificationCenter.default.publisher(for: NSApplication.didResignActiveNotification)) { _ in stop() }
+        .onReceive(NotificationCenter.default.publisher(for: NSWindow.willCloseNotification)) { _ in stop() }
     }
 
     private func start() {
@@ -66,6 +69,7 @@ struct HotkeyRecorder: View {
         case .needsModifier?: error = "Add Control, Option or Command."
         case .commandOnlyReserved?: error = "⌘ + key alone is reserved by macOS; add another modifier."
         case .shiftOnly?: error = "Shift alone is not enough; add another modifier."
+        case .optionOnly?: error = "⌥ alone types characters such as { [ | ~; add ⌃ or ⌘."
         case nil:
             // Refuse combinations that could never fire; softer conflicts are shown next to the row.
             if let conflict = HotkeyConflict.check(candidate, otherActions: otherActions), conflict.blocks {
@@ -84,6 +88,7 @@ struct HotkeyRecorder: View {
                                     kVK_F8: "F8", kVK_F9: "F9", kVK_F10: "F10", kVK_F11: "F11", kVK_F12: "F12", kVK_F13: "F13",
                                     kVK_F14: "F14", kVK_F15: "F15", kVK_F16: "F16", kVK_F17: "F17", kVK_F18: "F18", kVK_F19: "F19", kVK_F20: "F20"]
         if let n = named[Int(event.keyCode)] { return n }
-        return (event.charactersIgnoringModifiers ?? "?").uppercased()
+        // The unshifted character: modifiers are shown separately (⇧5, not ⇧%).
+        return KeyboardLayout.label(for: UInt32(event.keyCode)) ?? (event.charactersIgnoringModifiers ?? "?").uppercased()
     }
 }

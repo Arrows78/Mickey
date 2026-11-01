@@ -32,3 +32,18 @@ struct HotkeyConflictTests {
         }
     }
 }
+
+@Suite("Keyboard layout") @MainActor struct KeyboardLayoutTests {
+    /// S sits on the same key in QWERTY, AZERTY and QWERTZ.
+    @Test func lettersRoundTrip() {
+        #expect(KeyboardLayout.keyCode(for: "s") == 1)
+        #expect(KeyboardLayout.label(for: 1) == "S")
+        #expect(KeyboardLayout.displayString(HotkeyAction.toggleSpotlight.defaultHotkey) == "⌃⌥⌘S")
+    }
+
+    @Test func layoutDefaultsHaveNoConflicts() {
+        let defaults = HotkeyAction.allCases.map(KeyboardLayout.defaultHotkey)
+        #expect(Set(defaults).count == defaults.count)
+        for combo in defaults { #expect(HotkeyConflict.check(combo)?.blocks != true) }
+    }
+}

@@ -635,3 +635,52 @@ struct InteractionTests {
         #expect(n.loupe.enabled && !n.general.masterEnabled)
     }
 }
+
+@Suite("Layout-aware hotkeys") struct LayoutHotkeyTests {
+    /// French AZERTY: A↔Q and Z↔W swapped, M on the US ";" key.
+    let azerty: (Character) -> UInt32? = { c in
+        let codes: [Character: UInt32] = ["a": 12, "q": 0, "z": 13, "w": 6, "m": 41, ",": 46]
+        return codes[c] ?? HotkeyAction.allCases.first { Character($0.defaultLetter.lowercased()) == c }?.defaultHotkey.keyCode
+    }
+
+    @Test func comboIdentityIgnoresLabel() {
+        let a = KeyCombo(keyCode: 0, modifiers: [.control, .option, .command], keyLabel: "A")
+        let q = KeyCombo(keyCode: 0, modifiers: [.control, .option, .command], keyLabel: "Q")
+        #expect(a == q)
+        #expect(Set([a, q]).count == 1)
+        #expect(q.displayString(keyName: "Z") == "⌃⌥⌘Z")
+    }
+
+    @Test func optionOnlyIsRefused() {
+        #expect(KeyCombo(keyCode: 40, modifiers: .option, keyLabel: "K").validate() == .optionOnly)
+        #expect(KeyCombo(keyCode: 40, modifiers: [.option, .shift], keyLabel: "K").validate() == .optionOnly)
+        #expect(KeyCombo(keyCode: 40, modifiers: [.option, .command], keyLabel: "K").validate() == nil)
+        #expect(KeyCombo(keyCode: 40, modifiers: .control, keyLabel: "K").validate() == nil)
+    }
+
+    @Test func defaultsFollowTheLayout() {
+        let d = HotkeyAction.defaultHotkeys(keyCode: azerty)
+        #expect(d[.toggleMaster]?.keyCode == 41)
+        #expect(d[.toggleCaptions]?.keyCode == 12)
+        #expect(d[.toggleLiveZoom]?.keyCode == 13)
+        #expect(d[.toggleFocus]?.keyCode == 6)
+        #expect(d[.toggleSpotlight] == HotkeyAction.toggleSpotlight.defaultHotkey)
+        #expect(Set(d.values).count == HotkeyAction.allCases.count)
+    }
+
+    @Test func localizingKeepsCustomShortcuts() {
+        var s = Settings.defaults
+        let custom = KeyCombo(keyCode: 12, modifiers: [.control, .option, .command], keyLabel: "A")
+        s.hotkeys[.toggleRing] = custom // the user put Ring on the AZERTY A key
+        let l = s.localizingDefaultHotkeys(keyCode: azerty)
+        #expect(l.hotkeys[.toggleRing] == custom)
+        #expect(l.hotkeys[.toggleCaptions] == HotkeyAction.toggleCaptions.defaultHotkey) // its key is taken: left as it was
+        #expect(l.hotkeys[.toggleFocus]?.keyCode == 6)
+        #expect(l.hotkeys[.toggleLiveZoom]?.keyCode == 13)
+    }
+
+    @Test func annotationsRowShowsNoToggleHotkey() {
+        #expect(MenuBarItem.annotations.hotkeyAction == nil)
+        #expect(MenuBarItem.ring.hotkeyAction == .toggleRing)
+    }
+}

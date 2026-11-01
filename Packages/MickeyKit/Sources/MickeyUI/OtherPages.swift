@@ -71,10 +71,10 @@ struct HotkeysPage: View {
                                        otherActions: others)
                         Button { model.resetHotkey(action) } label: { Image(systemName: "arrow.counterclockwise") }
                             .buttonStyle(.plain).foregroundStyle(.secondary)
-                            .help("Restore the default (\(action.defaultHotkey.displayString))")
+                            .help("Restore the default (\(KeyboardLayout.displayString(KeyboardLayout.defaultHotkey(action))))")
                             .accessibilityLabel("Restore default shortcut")
-                            .opacity(model.settings.hotkeys[action] == action.defaultHotkey ? 0 : 1)
-                            .disabled(model.settings.hotkeys[action] == action.defaultHotkey)
+                            .opacity(model.settings.hotkeys[action] == KeyboardLayout.defaultHotkey(action) ? 0 : 1)
+                            .disabled(model.settings.hotkeys[action] == KeyboardLayout.defaultHotkey(action))
                     }
                     if action != HotkeyAction.allCases.last { Divider() }
                 }
@@ -82,7 +82,8 @@ struct HotkeysPage: View {
             FeatureCard(title: "How Hotkeys Work", symbol: "info.circle") {
                 VStack(alignment: .leading, spacing: 6) {
                     Text("• Click a field, then press the combination. Esc cancels, Delete clears, ↺ restores the default.")
-                    Text("• Use at least Control or Option, or Command with another modifier. F-keys work alone.")
+                    Text("• Use Control, or Command or Option with another modifier. F-keys work alone.")
+                    Text("• Letters follow your keyboard layout: ⌃⌥⌘M is the key marked M, on AZERTY too.")
                     Text("• Combinations already used by macOS or by another action are refused; common app shortcuts get a warning.")
                     Text("• Shortcuts set by other apps (Raycast, Rectangle…) can't be detected: if one stops working, pick another.")
                     Text("• A shortcut set here is taken from every other app, so avoid ones you use elsewhere.")

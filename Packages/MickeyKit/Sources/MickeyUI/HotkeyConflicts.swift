@@ -80,8 +80,13 @@ enum HotkeyConflict: Equatable {
             }
             rest = rest.dropFirst()
         }
-        guard rest.count == 1, let code = keyCodes[rest.lowercased()] else { return nil }
+        guard rest.count == 1, let c = rest.first, let code = keyCode(for: c) else { return nil }
         return Key(code: code, modifiers: mods)
+    }
+
+    /// Key typing `c` in the current layout, or its US position when the layout has none.
+    static func keyCode(for c: Character) -> UInt32? {
+        KeyboardLayout.keyCode(for: c) ?? usKeyCodes[String(c).lowercased()]
     }
 
     struct Key: Hashable {
@@ -91,8 +96,8 @@ enum HotkeyConflict: Equatable {
         init(_ c: KeyCombo) { self.init(code: c.keyCode, modifiers: c.modifiers) }
     }
 
-    /// ANSI key codes of printable keys, for parsing stored key equivalents.
-    private static let keyCodes: [String: UInt32] = [
+    /// ANSI key codes of printable keys, used when the current layout has no key for a character.
+    private static let usKeyCodes: [String: UInt32] = [
         "a": 0, "s": 1, "d": 2, "f": 3, "h": 4, "g": 5, "z": 6, "x": 7, "c": 8, "v": 9, "b": 11, "q": 12,
         "w": 13, "e": 14, "r": 15, "y": 16, "t": 17, "1": 18, "2": 19, "3": 20, "4": 21, "6": 22, "5": 23,
         "=": 24, "9": 25, "7": 26, "-": 27, "8": 28, "0": 29, "]": 30, "o": 31, "u": 32, "[": 33, "i": 34,
@@ -101,34 +106,49 @@ enum HotkeyConflict: Equatable {
     ]
 
     private static func common(_ mods: KeyCombo.Modifiers, _ key: String, _ use: String) -> (Key, String) {
-        (Key(code: keyCodes[key]!, modifiers: mods), use)
+        (Key(code: keyCode(for: Character(key))!, modifiers: mods), use)
     }
 
-    /// Widely used app shortcuts that a global hotkey would take away.
-    private static let commonShortcuts: [Key: String] = Dictionary(uniqueKeysWithValues: [
-        common([.command, .shift], "t", "reopen closed tab"),
-        common([.command, .shift], "n", "new private window, new folder"),
-        common([.command, .shift], "z", "redo"),
-        common([.command, .shift], "s", "save as"),
-        common([.command, .shift], "g", "go to folder"),
-        common([.command, .shift], "a", "Finder Applications"),
-        common([.command, .shift], "d", "Finder Desktop"),
-        common([.command, .shift], "o", "Finder Documents"),
-        common([.command, .shift], "h", "Finder Home"),
-        common([.command, .shift], "f", "find in files"),
-        common([.command, .shift], "p", "command palette"),
-        common([.command, .shift], "k", "delete line"),
-        common([.command, .shift], "[", "previous tab"),
-        common([.command, .shift], "]", "next tab"),
-        common([.command, .shift], ".", "show hidden files"),
-        common([.command, .option], "i", "developer tools"),
-        common([.command, .option], "j", "JavaScript console"),
-        common([.command, .option], "h", "hide others"),
-        common([.command, .option], "m", "minimize all"),
-        common([.command, .option], "w", "close all windows"),
-        common([.command, .option], "v", "move item"),
-        common([.command, .control], "f", "full screen"),
-        common([.command, .control], "q", "lock screen"),
-        common([.command, .control], "d", "look up"),
-    ])
+    /// Widely used app shortcuts that a global hotkey would take away, on the keys of the current layout.
+    private static var commonShortcuts: [Key: String] {
+        Dictionary([
+            common([.command, .shift], "t", "reopen closed tab"),
+            common([.command, .shift], "n", "new private window, new folder"),
+            common([.command, .shift], "z", "redo"),
+            common([.command, .shift], "s", "save as"),
+            common([.command, .shift], "g", "go to folder"),
+            common([.command, .shift], "a", "Finder Applications"),
+            common([.command, .shift], "d", "Finder Desktop"),
+            common([.command, .shift], "o", "Finder Documents"),
+            common([.command, .shift], "h", "Finder Home"),
+            common([.command, .shift], "f", "find in files"),
+            common([.command, .shift], "p", "command palette"),
+            common([.command, .shift], "k", "delete line"),
+            common([.command, .shift], "[", "previous tab"),
+            common([.command, .shift], "]", "next tab"),
+            common([.command, .shift], ".", "show hidden files"),
+            common([.command, .option], "i", "developer tools"),
+            common([.command, .option], "j", "JavaScript console"),
+            common([.command, .option], "h", "hide others"),
+            common([.command, .option], "m", "minimize all"),
+            common([.command, .option], "w", "close all windows"),
+            common([.command, .option], "v", "move item"),
+            common([.command, .control], "f", "full screen"),
+            common([.command, .control], "q", "lock screen"),
+            common([.command, .control], "d", "look up"),
+            // Text fields move the caret with these everywhere in macOS.
+            common([.control], "a", "text editing: line start"),
+            common([.control], "e", "text editing: line end"),
+            common([.control], "k", "text editing: delete to line end"),
+            common([.control], "b", "text editing: back one character"),
+            common([.control], "f", "text editing: forward one character"),
+            common([.control], "n", "text editing: next line"),
+            common([.control], "p", "text editing: previous line"),
+            common([.control], "d", "text editing: delete forward"),
+            common([.control], "h", "text editing: delete backward"),
+            common([.control], "o", "text editing: open line"),
+            common([.control], "t", "text editing: transpose"),
+            common([.control], "y", "text editing: yank"),
+        ], uniquingKeysWith: { first, _ in first })
+    }
 }

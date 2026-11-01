@@ -9,7 +9,7 @@ import MickeyUI
 
 /// Composition root: owns every subsystem and routes input, hotkeys and settings changes between them.
 final class AppDelegate: NSObject, NSApplicationDelegate {
-    private let store = UserDefaultsSettingsStore()
+    private let store = UserDefaultsSettingsStore(keyCode: KeyboardLayout.keyCode(for:))
     private lazy var model = AppModel(store: store)
     private let input = InputMonitor()
     private var interaction = InteractionEngine()

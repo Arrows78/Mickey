@@ -86,18 +86,20 @@ public final class AppModel {
     public func resetAllSettings() {
         let keepOnboarding = settings.general.hasCompletedOnboarding
         var fresh = MickeyDomain.Settings.defaults
+        fresh.hotkeys = HotkeyAction.defaultHotkeys(keyCode: KeyboardLayout.keyCode(for:))
         fresh.general.hasCompletedOnboarding = keepOnboarding
         set(fresh)
         flush()
     }
 
-    public func resetHotkeys() { update { $0.hotkeys = HotkeyAction.defaultHotkeys } }
+    public func resetHotkeys() { update { $0.hotkeys = HotkeyAction.defaultHotkeys(keyCode: KeyboardLayout.keyCode(for:)) } }
     public func clearHotkeys() { update { $0.hotkeys.removeAll() } }
     public func resetHotkey(_ action: HotkeyAction) {
+        let combo = KeyboardLayout.defaultHotkey(action)
         update { s in
             // The default may now belong to another action: free it first.
-            for (other, combo) in s.hotkeys where other != action && combo == action.defaultHotkey { s.hotkeys[other] = nil }
-            s.hotkeys[action] = action.defaultHotkey
+            for (other, used) in s.hotkeys where other != action && used == combo { s.hotkeys[other] = nil }
+            s.hotkeys[action] = combo
         }
     }
 

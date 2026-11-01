@@ -130,3 +130,30 @@ struct PersistenceTests {
         #expect(decoded.shake.style == .enlargedPointer)
     }
 }
+
+@Suite("Layout migration") struct LayoutMigrationTests {
+    let azerty: (Character) -> UInt32? = { c in
+        let codes: [Character: UInt32] = ["a": 12, "q": 0, "z": 13, "w": 6, "m": 41]
+        return codes[c] ?? HotkeyAction.allCases.first { Character($0.defaultLetter.lowercased()) == c }?.defaultHotkey.keyCode
+    }
+
+    @Test func version3DefaultsMoveToTheLayoutKeys() {
+        var v3 = Settings.defaults
+        v3.schemaVersion = 3
+        let s = SettingsCodec.decode(SettingsCodec.encode(v3), keyCode: azerty)
+        #expect(s.schemaVersion == Settings.currentSchemaVersion)
+        #expect(s.hotkeys[.toggleMaster]?.keyCode == 41)
+        #expect(s.hotkeys[.toggleCaptions]?.keyCode == 12)
+    }
+
+    @Test func version4IsLeftAlone() {
+        let s = SettingsCodec.decode(SettingsCodec.encode(.defaults), keyCode: azerty)
+        #expect(s.hotkeys == HotkeyAction.defaultHotkeys)
+    }
+
+    @Test func firstLaunchUsesTheLayout() {
+        let defaults = UserDefaults(suiteName: "mickey.test.\(UUID())")!
+        let store = UserDefaultsSettingsStore(defaults: defaults, keyCode: azerty)
+        #expect(store.loadSettings().hotkeys[.toggleMaster]?.keyCode == 41)
+    }
+}

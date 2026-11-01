@@ -47,31 +47,42 @@ public struct KeyCombo: Codable, Equatable, Hashable, Sendable {
         self.keyCode = keyCode; self.modifiers = modifiers; self.keyLabel = keyLabel
     }
 
-    public var displayString: String {
+    public var displayString: String { displayString(keyName: nil) }
+
+    /// `keyName` replaces the recorded label, e.g. with what the key prints in the current keyboard layout.
+    public func displayString(keyName: String?) -> String {
         var s = ""
         if modifiers.contains(.control) { s += "⌃" }
         if modifiers.contains(.option) { s += "⌥" }
         if modifiers.contains(.shift) { s += "⇧" }
         if modifiers.contains(.command) { s += "⌘" }
-        return s + keyLabel
+        return s + (keyName ?? keyLabel)
     }
 
     /// Function keys (F1–F20) may be used without modifiers.
     static let functionKeyCodes: Set<UInt32> = [122, 120, 99, 118, 96, 97, 98, 100, 101, 109, 103, 111,
                                                  105, 107, 113, 106, 64, 79, 80, 90]
 
+    public var isFunctionKey: Bool { Self.functionKeyCodes.contains(keyCode) }
+
     public enum ValidationError: Error, Equatable {
-        case needsModifier, commandOnlyReserved, shiftOnly
+        case needsModifier, commandOnlyReserved, shiftOnly, optionOnly
     }
 
     /// Rules for a combination to be accepted as a global hotkey.
     public func validate() -> ValidationError? {
-        if Self.functionKeyCodes.contains(keyCode) { return nil }
+        if isFunctionKey { return nil }
         if modifiers.isEmpty { return .needsModifier }
         if modifiers == .shift { return .shiftOnly }
         if modifiers == .command { return .commandOnlyReserved }
+        // ⌥ and ⌥⇧ type characters such as { [ | ~ on many layouts.
+        if modifiers.isSubset(of: [.option, .shift]) { return .optionOnly }
         return nil
     }
+
+    // The label only describes the key: two combos on the same key and modifiers are the same shortcut.
+    public static func == (a: KeyCombo, b: KeyCombo) -> Bool { a.keyCode == b.keyCode && a.modifiers == b.modifiers }
+    public func hash(into h: inout Hasher) { h.combine(keyCode); h.combine(modifiers) }
 }
 
 public struct GeneralSettings: Codable, Equatable, Sendable {
@@ -200,7 +211,8 @@ public struct AnnotationSettings: Codable, Equatable, Sendable {
 
 public struct Settings: Codable, Equatable, Sendable {
     /// 2: default hotkeys introduced. 3: presenter tools (keystrokes, zoom, loupe, focus, camera, captions, recorder).
-    public static let currentSchemaVersion = 3
+    /// 4: default hotkeys follow the keyboard layout (⌃⌥⌘M is the key printing M, not the US M position).
+    public static let currentSchemaVersion = 4
 
     public var schemaVersion = Settings.currentSchemaVersion
     public var general = GeneralSettings()
@@ -271,6 +283,18 @@ public struct Settings: Codable, Equatable, Sendable {
         s.captions.backgroundOpacity = s.captions.backgroundOpacity.clamped(to: 0...1)
         s.captions.maxLines = min(max(s.captions.maxLines, CaptionSettings.maxLinesRange.lowerBound), CaptionSettings.maxLinesRange.upperBound)
         s.recorder.countdown = min(max(s.recorder.countdown, RecorderSettings.countdownRange.lowerBound), RecorderSettings.countdownRange.upperBound)
+        return s
+    }
+
+    /// Moves every hotkey still on its US-layout default onto the key printing its letter in the current layout.
+    /// `keyCode` returns the virtual key code typing a letter, or nil when the layout has no such key.
+    public func localizingDefaultHotkeys(keyCode: (Character) -> UInt32?) -> Settings {
+        var s = self
+        let custom = Set(hotkeys.filter { $0.value != $0.key.defaultHotkey }.values)
+        for action in HotkeyAction.allCases where hotkeys[action] == action.defaultHotkey {
+            let localized = action.defaultHotkey(keyCode: keyCode)
+            if !custom.contains(localized) { s.hotkeys[action] = localized }
+        }
         return s
     }
 }
