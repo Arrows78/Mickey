@@ -15,6 +15,8 @@ final class StudioPanel: NSPanel {
         self.level = level
         collectionBehavior = [.canJoinAllSpaces, .stationary, .fullScreenAuxiliary, .ignoresCycle]
         isReleasedWhenClosed = false
+        // Hiding Mickey (⌘H, or Hide Others in another app) must not hide the overlays.
+        canHide = false
         let view = NSView()
         view.wantsLayer = true
         contentView = view

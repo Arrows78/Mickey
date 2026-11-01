@@ -112,6 +112,7 @@ public final class AnnotationController {
             panel.level = OverlayLevel.toolbar
             panel.collectionBehavior = [.canJoinAllSpaces, .fullScreenAuxiliary]
             panel.hasShadow = true
+            panel.canHide = false
             let host = NSHostingView(rootView: AnnotationToolbarView(controller: self))
             panel.contentView = host
             panel.setContentSize(host.fittingSize)
@@ -182,6 +183,7 @@ final class CanvasPanel: NSPanel {
         ignoresMouseEvents = true
         acceptsMouseMovedEvents = true
         isReleasedWhenClosed = false
+        canHide = false
     }
     override var canBecomeKey: Bool { true }
 }

@@ -16,6 +16,8 @@ final class OverlayPanel: NSPanel {
         level = OverlayLevel.effects
         collectionBehavior = [.canJoinAllSpaces, .stationary, .fullScreenAuxiliary, .ignoresCycle]
         isReleasedWhenClosed = false
+        // Hiding Mickey (⌘H, or Hide Others in another app) must not hide the effects.
+        canHide = false
         let view = NSView(frame: CGRect(origin: .zero, size: screen.frame.size))
         view.wantsLayer = true
         contentView = view
