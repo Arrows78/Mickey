@@ -52,6 +52,7 @@ public struct SettingsRootView: View {
                 }
                 .buttonStyle(.plain)
                 .padding(.horizontal, 8)
+                .help(section.title)
             }
             Spacer()
         }
@@ -84,6 +85,7 @@ public struct SettingsRootView: View {
                 .font(.callout)
             Spacer()
             Toggle("Enable", isOn: model.binding(\.general.masterEnabled)).toggleStyle(.switch).controlSize(.small)
+                .help(model.tooltip(.toggleMaster))
         }
         .padding(.horizontal, 16).padding(.vertical, 8)
     }
@@ -102,6 +104,7 @@ public struct StatusPopoverView: View {
                 Spacer()
                 Toggle("", isOn: model.binding(\.general.masterEnabled)).toggleStyle(.switch).labelsHidden()
                     .accessibilityLabel("Enable Mickey")
+                    .help(model.tooltip(.toggleMaster))
             }
             Divider()
             let items = MenuBarItem.allCases.filter { model.settings.general.menuBarItems.contains($0) }
@@ -115,6 +118,7 @@ public struct StatusPopoverView: View {
                         }
                     }
                 }
+                .help(item.hotkeyAction.map { model.tooltip($0) } ?? "Turn \(item.title) on or off")
             }
             if items.isEmpty {
                 Text("No quick toggles selected. Choose them in Settings › General.").font(.caption).foregroundStyle(.secondary)
@@ -123,6 +127,7 @@ public struct StatusPopoverView: View {
                 Divider()
                 HStack {
                     Button(model.isDrawing ? "Stop Drawing" : "Start Drawing") { model.actions?.toggleDrawing() }
+                        .help(model.tooltip(.toggleAnnotationMode, title: model.isDrawing ? "Stop drawing" : "Start drawing"))
                     Spacer()
                     if let combo = model.settings.hotkeys[.toggleAnnotationMode] {
                         Text(KeyboardLayout.displayString(combo)).font(.caption.monospaced()).foregroundStyle(.secondary)
@@ -137,21 +142,22 @@ public struct StatusPopoverView: View {
                           systemImage: model.isRecording ? "stop.circle.fill" : "record.circle")
                 }
                 .foregroundStyle(model.isRecording ? .red : .primary)
-                .help(model.settings.hotkeys[.toggleRecording].map(KeyboardLayout.displayString) ?? "")
+                .help(model.tooltip(.toggleRecording, title: model.isRecording ? "Stop recording" : "Record the screen under the pointer"))
                 Spacer()
                 Menu("Presets") {
-                    ForEach(Preset.allCases) { preset in Button(preset.title) { model.apply(preset) } }
+                    ForEach(Preset.allCases) { preset in Button(preset.title) { model.apply(preset) }.help(preset.detail) }
                 }
                 .fixedSize()
+                .help("Switch several effects at once")
             }
             if let message = model.studioMessage {
                 Text(message).font(.caption).foregroundStyle(.orange).fixedSize(horizontal: false, vertical: true)
             }
             Divider()
             HStack {
-                Button("Settings…") { model.actions?.showSettings(nil) }
+                Button("Settings…") { model.actions?.showSettings(nil) }.help("Open Mickey Settings")
                 Spacer()
-                Button("Quit Mickey") { model.actions?.quit() }
+                Button("Quit Mickey") { model.actions?.quit() }.help("Quit Mickey and restore the pointer")
             }
         }
         .toggleStyle(.switch)

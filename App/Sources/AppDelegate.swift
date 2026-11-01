@@ -114,6 +114,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             if old != nil { checkMenuBarIcon() }
         }
         statusItem?.isDimmed = !s.general.masterEnabled
+        let toggle = s.hotkeys[.toggleMaster].map { " — \(KeyboardLayout.displayString($0)) to turn \(s.general.masterEnabled ? "off" : "on")" } ?? ""
+        statusItem?.toolTip = "Mickey is \(s.general.masterEnabled ? "on" : "off")\(toggle)"
         studio.apply(s, old: old)
         if old?.autoMode != s.autoMode {
             if s.autoMode.enabled { appWatcher.start() } else { appWatcher.stop() }

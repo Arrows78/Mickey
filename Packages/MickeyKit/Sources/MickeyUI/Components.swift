@@ -8,6 +8,8 @@ struct FeatureCard<Content: View>: View {
     let symbol: String
     var subtitle: String?
     var isOn: Binding<Bool>?
+    /// Tooltip of the enable toggle, e.g. with its hotkey.
+    var help: String?
     @ViewBuilder var content: Content
 
     var body: some View {
@@ -15,7 +17,10 @@ struct FeatureCard<Content: View>: View {
             HStack(alignment: .firstTextBaseline) {
                 Label(title, systemImage: symbol).font(.headline)
                 Spacer()
-                if let isOn { Toggle("", isOn: isOn).toggleStyle(.switch).labelsHidden().accessibilityLabel(title) }
+                if let isOn {
+                    Toggle("", isOn: isOn).toggleStyle(.switch).labelsHidden().accessibilityLabel(title)
+                        .help(help ?? (isOn.wrappedValue ? "Turn off \(title)" : "Turn on \(title)"))
+                }
             }
             if let subtitle { Text(subtitle).font(.callout).foregroundStyle(.secondary) }
             if isOn?.wrappedValue ?? true {
@@ -69,11 +74,13 @@ struct ColorRow: View {
                         .overlay(Circle().strokeBorder(.primary.opacity(color == preset ? 0.9 : 0.15), lineWidth: color == preset ? 2 : 1))
                 }
                 .buttonStyle(.plain)
-                .accessibilityLabel("Color preset")
+                .help(preset.presetName ?? "Color")
+                .accessibilityLabel(preset.presetName ?? "Color preset")
             }
             ColorPicker("", selection: Binding(get: { Color(nsColor: color.nsColor) },
                                                set: { color = RGBAColor(NSColor($0)) }), supportsOpacity: false)
                 .labelsHidden()
+                .help("Custom color")
         }
     }
 }
@@ -134,6 +141,15 @@ struct PageHeader: View {
             Text(subtitle).foregroundStyle(.secondary)
         }
         .padding(.bottom, 4)
+    }
+}
+
+extension AppModel {
+    /// "Toggle Ring (⌃⌥⌘R)", or just the title when the action has no shortcut.
+    func tooltip(_ action: HotkeyAction, title: String? = nil) -> String {
+        let text = title ?? action.title
+        guard let combo = settings.hotkeys[action] else { return text }
+        return "\(text) (\(KeyboardLayout.displayString(combo)))"
     }
 }
 

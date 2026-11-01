@@ -25,6 +25,8 @@ struct AnnotationToolbarView: View {
                         .overlay(Circle().stroke(Color.white, lineWidth: controller.session.color == color ? 2 : 0.5))
                 }
                 .buttonStyle(.plain)
+                .help(color.presetName ?? "Color")
+                .accessibilityLabel(color.presetName ?? "Color")
             }
             Divider().frame(height: 22)
             Image(systemName: "lineweight").help("Stroke Width")

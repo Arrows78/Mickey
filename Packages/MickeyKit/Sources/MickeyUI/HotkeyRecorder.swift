@@ -23,9 +23,10 @@ struct HotkeyRecorder: View {
                         .frame(minWidth: 130)
                         .foregroundStyle(combo == nil && !recording ? .secondary : .primary)
                 }
+                .help(recording ? "Press the combination. Esc cancels, Delete clears." : "Click, then press a new shortcut")
                 if combo != nil && !recording {
                     Button { combo = nil } label: { Image(systemName: "xmark.circle.fill") }
-                        .buttonStyle(.plain).foregroundStyle(.secondary).accessibilityLabel("Clear shortcut")
+                        .buttonStyle(.plain).foregroundStyle(.secondary).accessibilityLabel("Clear shortcut").help("Clear shortcut")
                 }
             }
             if let error { Text(error).font(.caption2).foregroundStyle(.orange) }

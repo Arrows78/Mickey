@@ -12,6 +12,7 @@ struct AnnotationsPage: View {
                         isOn: model.binding(\.annotations.enabled)) {
                 HStack {
                     Button(model.isDrawing ? "Stop Drawing" : "Start Drawing") { model.actions?.toggleDrawing() }
+                        .help(model.tooltip(.toggleAnnotationMode, title: model.isDrawing ? "Stop drawing" : "Start drawing"))
                     Spacer()
                 }
                 ToggleRow(title: "Also hold Right Option (⌥) to draw",
@@ -93,8 +94,8 @@ struct HotkeysPage: View {
             }
             HStack {
                 Spacer()
-                Button("Clear All") { confirmClear = true }
-                Button("Reset to Defaults") { confirmReset = true }
+                Button("Clear All") { confirmClear = true }.help("Remove every shortcut")
+                Button("Reset to Defaults") { confirmReset = true }.help("Give every action its ⌃⌥⌘ default back")
             }
         }
         .confirmationDialog("Restore the default shortcuts?", isPresented: $confirmReset) {

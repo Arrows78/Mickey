@@ -32,6 +32,7 @@ struct StudioMessage: View {
                 NoteView(text: message, warning: true)
                 Spacer()
                 Button { model.studioMessage = nil } label: { Image(systemName: "xmark") }.buttonStyle(.plain)
+                    .help("Dismiss").accessibilityLabel("Dismiss")
             }
             .padding(10)
             .background(.orange.opacity(0.12), in: RoundedRectangle(cornerRadius: 8))
@@ -47,7 +48,7 @@ struct KeystrokesPage: View {
             PageHeader(title: "Keystrokes", subtitle: "Show the shortcuts you press, so viewers can follow along.")
             FeatureCard(title: "Show Keystrokes", symbol: "command.square",
                         subtitle: "Combinations appear in a bar on the screen under the pointer, then fade.",
-                        isOn: model.binding(\.keystrokes.enabled)) {
+                        isOn: model.binding(\.keystrokes.enabled), help: model.tooltip(.toggleKeystrokes)) {
                 PermissionRow(model: model, permission: .inputMonitoring)
                 Divider()
                 ToggleRow(title: "Shortcuts Only", detail: "Show only combinations with ⌘, ⌃ or ⌥ and keys like ↩ or ⎋ — never what you type.",
@@ -72,7 +73,7 @@ struct ZoomPage: View {
             PageHeader(title: "Live Zoom", subtitle: "Magnify the whole screen; the spot under the pointer stays where it is.")
             FeatureCard(title: "Live Zoom", symbol: "plus.magnifyingglass",
                         subtitle: "Toggle it with its hotkey while presenting; move the pointer to pan.",
-                        isOn: model.binding(\.zoom.enabled)) {
+                        isOn: model.binding(\.zoom.enabled), help: model.tooltip(.toggleLiveZoom)) {
                 PermissionRow(model: model, permission: .screenRecording)
                 Divider()
                 SliderRow(title: "Magnification", value: model.binding(\.zoom.factor), range: ZoomSettings.factorRange,
@@ -89,7 +90,7 @@ struct LoupePage: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
             PageHeader(title: "Loupe", subtitle: "A magnifying glass that follows the pointer.")
-            FeatureCard(title: "Loupe", symbol: "magnifyingglass.circle", isOn: model.binding(\.loupe.enabled)) {
+            FeatureCard(title: "Loupe", symbol: "magnifyingglass.circle", isOn: model.binding(\.loupe.enabled), help: model.tooltip(.toggleLoupe)) {
                 PermissionRow(model: model, permission: .screenRecording)
                 Divider()
                 PickerRow(title: "Shape", selection: model.binding(\.loupe.shape), options: BubbleShape.allCases) { Text($0.title) }
@@ -110,7 +111,7 @@ struct FocusPage: View {
             PageHeader(title: "Focus", subtitle: "Dim everything except the window you're working in.")
             FeatureCard(title: "Focus on Front Window", symbol: "macwindow.on.rectangle",
                         subtitle: "Follows the frontmost window as you switch apps. No permission needed.",
-                        isOn: model.binding(\.focus.enabled)) {
+                        isOn: model.binding(\.focus.enabled), help: model.tooltip(.toggleFocus)) {
                 SliderRow(title: "Dim Amount", value: model.binding(\.focus.dimOpacity), range: FocusSettings.dimOpacityRange, format: percent)
                 SliderRow(title: "Corner Radius", value: model.binding(\.focus.cornerRadius), range: FocusSettings.cornerRadiusRange)
                 SliderRow(title: "Margin", value: model.binding(\.focus.padding), range: FocusSettings.paddingRange, format: { "\(Int($0)) pt" })
@@ -132,6 +133,7 @@ struct RecorderPage: View {
                 HStack {
                     Button(model.isRecording ? "Stop Recording" : "Start Recording") { model.actions?.toggleRecording() }
                         .keyboardShortcut(.defaultAction)
+                        .help(model.tooltip(.toggleRecording, title: model.isRecording ? "Stop recording" : "Start recording after the countdown"))
                     if let start = model.recordingStartedAt {
                         TimelineView(.periodic(from: start, by: 1)) { context in
                             Label(RecordingNaming.elapsed(context.date.timeIntervalSince(start)), systemImage: "record.circle.fill")
@@ -147,7 +149,7 @@ struct RecorderPage: View {
                 IntSliderRow(title: "Countdown", value: model.binding(\.recorder.countdown), range: RecorderSettings.countdownRange)
             }
             FeatureCard(title: "Camera Bubble", symbol: "person.crop.circle", subtitle: "Drag the bubble anywhere on the screen.",
-                        isOn: model.binding(\.camera.enabled)) {
+                        isOn: model.binding(\.camera.enabled), help: model.tooltip(.toggleCameraBubble)) {
                 PermissionRow(model: model, permission: .camera)
                 Divider()
                 PickerRow(title: "Shape", selection: model.binding(\.camera.shape), options: BubbleShape.allCases) { Text($0.title) }
@@ -170,7 +172,7 @@ struct CaptionsPage: View {
             PageHeader(title: "Captions", subtitle: "Live subtitles of what you say, for talks and recordings.")
             FeatureCard(title: "Live Captions", symbol: "captions.bubble",
                         subtitle: "Recognition runs on your Mac when the language supports it.",
-                        isOn: model.binding(\.captions.enabled)) {
+                        isOn: model.binding(\.captions.enabled), help: model.tooltip(.toggleCaptions)) {
                 PermissionRow(model: model, permission: .microphone)
                 PermissionRow(model: model, permission: .speechRecognition)
                 Divider()
@@ -201,7 +203,7 @@ struct PresetsCard: View {
                         Text(preset.detail).font(.caption).foregroundStyle(.secondary)
                     }
                     Spacer()
-                    Button("Apply") { model.apply(preset) }
+                    Button("Apply") { model.apply(preset) }.help(preset.detail)
                 }
             }
         }

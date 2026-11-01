@@ -43,6 +43,11 @@ final class StatusItemController: NSObject {
 
     private static let log = Logger(subsystem: "dev.local.mickey", category: "menubar")
 
+    var toolTip: String? {
+        get { item.button?.toolTip }
+        set { item.button?.toolTip = newValue }
+    }
+
     /// Red record icon while a recording runs.
     var isRecording = false {
         didSet {

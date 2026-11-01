@@ -20,14 +20,14 @@ struct EffectsPage: View {
     private var masterCard: some View {
         FeatureCard(title: "Enable Mickey", symbol: "power",
                     subtitle: "Master switch for every cursor effect. Turning any effect on also turns this on.",
-                    isOn: model.binding(\.general.masterEnabled)) { EmptyView() }
+                    isOn: model.binding(\.general.masterEnabled), help: model.tooltip(.toggleMaster)) { EmptyView() }
     }
 
     private var spotlightCard: some View {
         let s = model.settings.spotlight
         return FeatureCard(title: "Spotlight", symbol: "circle.dashed",
                            subtitle: "Dims the screen except an area around the pointer.",
-                           isOn: model.binding(\.spotlight.enabled)) {
+                           isOn: model.binding(\.spotlight.enabled), help: model.tooltip(.toggleSpotlight)) {
             PickerRow(title: "Shape", selection: model.binding(\.spotlight.shape), options: SpotlightShape.allCases) { Text($0.title) }
             if s.shape == .circle {
                 SliderRow(title: "Size", value: model.binding(\.spotlight.radius), range: SpotlightSettings.radiusRange)
@@ -60,7 +60,7 @@ struct EffectsPage: View {
 
     private var ringCard: some View {
         FeatureCard(title: "Ring", symbol: "circle", subtitle: "A ring that follows the pointer.",
-                    isOn: model.binding(\.ring.enabled)) {
+                    isOn: model.binding(\.ring.enabled), help: model.tooltip(.toggleRing)) {
             SliderRow(title: "Ring Size", value: model.binding(\.ring.radius), range: RingSettings.radiusRange)
             SliderRow(title: "Thickness", value: model.binding(\.ring.thickness), range: RingSettings.thicknessRange, step: 0.5, format: decimal)
             ColorRow(title: "Ring Color", color: model.binding(\.ring.color))
@@ -75,10 +75,11 @@ struct EffectsPage: View {
     private var clickCard: some View {
         let c = model.settings.click
         return FeatureCard(title: "Click Feedback", symbol: "cursorarrow.click.2",
-                           subtitle: "A visual effect at each click.", isOn: model.binding(\.click.feedbackEnabled)) {
+                           subtitle: "A visual effect at each click.", isOn: model.binding(\.click.feedbackEnabled), help: model.tooltip(.toggleClickFeedback)) {
             HStack {
                 PickerRow(title: "Effect Type", selection: model.binding(\.click.effectType), options: ClickEffectType.allCases) { Text($0.title) }
                 Button("Preview") { model.actions?.previewClickEffect() }
+                    .help(model.tooltip(.showClickEffect, title: "Show the effect at the pointer"))
             }
             ColorRow(title: "Effect Color", color: model.binding(\.click.color))
             SliderRow(title: "Effect Size", value: model.binding(\.click.size), range: ClickSettings.sizeRange)
@@ -102,7 +103,7 @@ struct EffectsPage: View {
     private var soundCard: some View {
         let c = model.settings.click
         return FeatureCard(title: "Click Sounds", symbol: "speaker.wave.2", subtitle: "An audible click on each mouse press.",
-                           isOn: model.binding(\.click.soundEnabled)) {
+                           isOn: model.binding(\.click.soundEnabled), help: model.tooltip(.toggleClickSound)) {
             SliderRow(title: "Volume", value: model.binding(\.click.soundVolume), range: 0...1, format: percent)
             HStack {
                 Text("Sound").frame(width: 150, alignment: .leading)
@@ -117,7 +118,7 @@ struct EffectsPage: View {
 
     private var trailCard: some View {
         FeatureCard(title: "Trail", symbol: "scribble.variable", subtitle: "Leaves a fading trail behind the pointer.",
-                    isOn: model.binding(\.trail.enabled)) {
+                    isOn: model.binding(\.trail.enabled), help: model.tooltip(.toggleTrail)) {
             PickerRow(title: "Trail Style", selection: model.binding(\.trail.style), options: TrailStyle.allCases) { Text($0.title) }
             IntSliderRow(title: "Trail Length", value: model.binding(\.trail.length), range: TrailSettings.lengthRange)
             SliderRow(title: "Trail Width", value: model.binding(\.trail.width), range: TrailSettings.widthRange)
@@ -134,7 +135,7 @@ struct EffectsPage: View {
     private var shakeCard: some View {
         FeatureCard(title: "Shake to Locate", symbol: "scope",
                     subtitle: "Shake the mouse quickly to show a large locator around the pointer.",
-                    isOn: model.binding(\.shake.enabled)) {
+                    isOn: model.binding(\.shake.enabled), help: model.tooltip(.toggleShakeToLocate)) {
             SliderRow(title: "Sensitivity", value: model.binding(\.shake.sensitivity), range: ShakeSettings.sensitivityRange, format: percent)
             PickerRow(title: "Animation", selection: model.binding(\.shake.style), options: LocatorStyle.allCases) { Text($0.title) }
         }

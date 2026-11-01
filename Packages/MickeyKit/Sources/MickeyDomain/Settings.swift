@@ -19,6 +19,21 @@ public struct RGBAColor: Codable, Equatable, Hashable, Sendable {
 
     public static let presets: [RGBAColor] = [.red, .orange, .yellow, .green, .blue, .purple, .white, .black]
 
+    /// Name of a preset color, for tooltips and accessibility.
+    public var presetName: String? {
+        switch self {
+        case .red: "Red"
+        case .orange: "Orange"
+        case .yellow: "Yellow"
+        case .green: "Green"
+        case .blue: "Blue"
+        case .purple: "Purple"
+        case .white: "White"
+        case .black: "Black"
+        default: nil
+        }
+    }
+
     public func withAlpha(_ a: Double) -> RGBAColor { RGBAColor(red: red, green: green, blue: blue, alpha: a) }
 
     func clamped() -> RGBAColor {
