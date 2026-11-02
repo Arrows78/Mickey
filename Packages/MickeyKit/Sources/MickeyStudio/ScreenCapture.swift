@@ -1,20 +1,25 @@
 import AppKit
 import CoreMedia
 import ScreenCaptureKit
+import MickeyEffects
 
 /// IOSurface handed from the capture queue to the main thread.
 nonisolated struct SurfaceBox: @unchecked Sendable { let surface: IOSurfaceRef }
 
 /// Shared ScreenCaptureKit plumbing.
 enum ScreenCapture {
-    /// The display matching `screen`, plus Mickey itself so it can be excluded from what is captured.
-    static func target(for screen: NSScreen) async throws -> (SCDisplay, [SCRunningApplication]) {
+    /// The display matching `screen`, Mickey itself so it can be excluded from what is captured, and
+    /// Mickey's ordinary windows (Settings, popover…) that must stay in the picture.
+    static func target(for screen: NSScreen) async throws -> (SCDisplay, [SCRunningApplication], [SCWindow]) {
         let content = try await SCShareableContent.excludingDesktopWindows(false, onScreenWindowsOnly: true)
         guard let display = content.displays.first(where: { $0.displayID == screen.displayIDValue }) else {
             throw CaptureError.displayNotFound
         }
-        let me = content.applications.filter { $0.processID == ProcessInfo.processInfo.processIdentifier }
-        return (display, me)
+        let pid = ProcessInfo.processInfo.processIdentifier
+        let me = content.applications.filter { $0.processID == pid }
+        // Only the overlays (focus level and above) are left out, never the windows the user works in.
+        let kept = content.windows.filter { $0.owningApplication?.processID == pid && $0.windowLayer < OverlayLevel.focus.rawValue }
+        return (display, me, kept)
     }
 
     static func configuration(for screen: NSScreen, showsCursor: Bool) -> SCStreamConfiguration {
@@ -54,7 +59,7 @@ extension NSScreen {
     }
 }
 
-/// Live frames of one display, without Mickey's own windows (so the magnifiers never see themselves).
+/// Live frames of one display, without Mickey's overlays (so the magnifiers never see themselves).
 final class ScreenFrameSource: NSObject, SCStreamOutput, SCStreamDelegate {
     var onFrame: ((IOSurfaceRef) -> Void)?
     var onError: ((String) -> Void)?
@@ -78,8 +83,8 @@ final class ScreenFrameSource: NSObject, SCStreamOutput, SCStreamDelegate {
             defer { starting = false }
             await stopStream()
             do {
-                let (display, me) = try await ScreenCapture.target(for: screen)
-                let filter = SCContentFilter(display: display, excludingApplications: me, exceptingWindows: [])
+                let (display, me, kept) = try await ScreenCapture.target(for: screen)
+                let filter = SCContentFilter(display: display, excludingApplications: me, exceptingWindows: kept)
                 let stream = SCStream(filter: filter, configuration: ScreenCapture.configuration(for: screen, showsCursor: false), delegate: self)
                 try stream.addStreamOutput(self, type: .screen, sampleHandlerQueue: queue)
                 try await stream.startCapture()

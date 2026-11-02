@@ -98,7 +98,7 @@ final class ScreenRecorder: NSObject, SCStreamOutput, SCStreamDelegate {
         stopRequested = false
         Task {
             do {
-                let (display, _) = try await ScreenCapture.target(for: screen)
+                let (display, _, _) = try await ScreenCapture.target(for: screen)
                 let config = ScreenCapture.configuration(for: screen, showsCursor: settings.showCursor)
                 // Keep files and encoding load reasonable on large Retina screens.
                 let scale = min(1, 3840 / Double(config.width))
