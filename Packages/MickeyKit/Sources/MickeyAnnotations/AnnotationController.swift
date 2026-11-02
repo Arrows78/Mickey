@@ -123,6 +123,8 @@ public final class AnnotationController {
             panel.collectionBehavior = [.canJoinAllSpaces, .fullScreenAuxiliary]
             panel.hasShadow = true
             panel.canHide = false
+            // AppKit would show it again when Mickey gets focus back, even after drawing ended.
+            panel.hidesOnDeactivate = false
             let host = NSHostingView(rootView: AnnotationToolbarView(controller: self))
             panel.contentView = host
             panel.setContentSize(host.fittingSize)
@@ -194,6 +196,8 @@ final class CanvasPanel: NSPanel {
         acceptsMouseMovedEvents = true
         isReleasedWhenClosed = false
         canHide = false
+        // AppKit would show it again when Mickey gets focus back, even after it was hidden.
+        hidesOnDeactivate = false
     }
     override var canBecomeKey: Bool { true }
 }

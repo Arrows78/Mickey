@@ -17,6 +17,9 @@ final class StudioPanel: NSPanel {
         isReleasedWhenClosed = false
         // Hiding Mickey (⌘H, or Hide Others in another app) must not hide the overlays.
         canHide = false
+        // Otherwise AppKit hides the panel when Mickey loses focus and shows it again when Mickey gets focus
+        // back, even if the tool was turned off meanwhile: a turned-off zoom came back frozen over the screen.
+        hidesOnDeactivate = false
         let view = NSView()
         view.wantsLayer = true
         contentView = view

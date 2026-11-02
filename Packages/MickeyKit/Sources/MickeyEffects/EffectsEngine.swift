@@ -18,6 +18,8 @@ final class OverlayPanel: NSPanel {
         isReleasedWhenClosed = false
         // Hiding Mickey (⌘H, or Hide Others in another app) must not hide the effects.
         canHide = false
+        // AppKit would show it again when Mickey gets focus back, even if it was hidden meanwhile.
+        hidesOnDeactivate = false
         let view = NSView(frame: CGRect(origin: .zero, size: screen.frame.size))
         view.wantsLayer = true
         contentView = view
