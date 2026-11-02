@@ -629,10 +629,21 @@ struct InteractionTests {
         #expect(HotkeyAction.toggleRecording.introducedInSchema == 3)
     }
 
-    @Test func presenterToolsIgnoreTheMasterSwitch() {
+    @Test func presenterToolTurnsMasterOn() {
         var s = Settings(); s.general.masterEnabled = false
-        let n = SettingsRules.applying(.toggleLoupe, to: s)
-        #expect(n.loupe.enabled && !n.general.masterEnabled)
+        let n = SettingsRules.applying(.toggleLiveZoom, to: s)
+        #expect(n.zoom.enabled && n.general.masterEnabled)
+    }
+
+    @Test func masterOffHidesPresenterToolsButKeepsTheirSwitches() {
+        var s = Settings(); s.zoom.enabled = true; s.loupe.enabled = true; s.focus.enabled = true
+        s.keystrokes.enabled = true; s.camera.enabled = true; s.captions.enabled = true
+        #expect(SettingsRules.presenterTools(of: s) == s)
+        let off = SettingsRules.applying(.toggleMaster, to: s)
+        #expect(off.zoom.enabled && !off.general.masterEnabled)
+        let shown = SettingsRules.presenterTools(of: off)
+        #expect(!shown.zoom.enabled && !shown.loupe.enabled && !shown.focus.enabled)
+        #expect(!shown.keystrokes.enabled && !shown.camera.enabled && !shown.captions.enabled)
     }
 }
 

@@ -38,7 +38,10 @@ public final class StudioCoordinator {
 
     public var isRecording: Bool { recorder.isRecording || countdown.isRunning }
 
-    public func apply(_ s: Settings, old: Settings?) {
+    /// Turning Mickey off hides every overlay.
+    public func apply(_ settings: Settings, old previous: Settings?) {
+        let s = SettingsRules.presenterTools(of: settings)
+        let old = previous.map(SettingsRules.presenterTools(of:))
         if old?.keystrokes != s.keystrokes { keystrokes.apply(s.keystrokes) }
         if old?.zoom != s.zoom || old?.loupe != s.loupe { magnifier.apply(zoom: s.zoom, loupe: s.loupe) }
         if old?.focus != s.focus { focus.apply(s.focus) }

@@ -34,7 +34,7 @@
 - **Click sounds**: a built-in click or any audio file you choose, at the volume you set.
 - **Trail**: solid, dots, dashed, particles, glow, stars or hearts, with length, width, opacity, color and fade speed.
 - **Shake to locate**: shake the mouse and a large pointer flashes then shrinks back onto the real one (or a ring closes in on it).
-- A master switch turns every cursor effect on or off; switching an effect on while Mickey is off turns Mickey on for you, so no toggle is ever dead.
+- A master switch turns everything on or off: cursor effects, drawing, presenter tools and recording. Switching any of them on while Mickey is off turns Mickey on for you, so no toggle is ever dead.
 
 ### ✏️ Annotations
 

@@ -4,9 +4,8 @@ Mickey is a macOS menu-bar utility (macOS 14+) that makes the pointer easy to fo
 
 ## 1. Principles
 
-- **Master switch** (*Enable Mickey*, on by default): no cursor effect is drawn while it is off.
-- **No dead toggles**: turning a cursor effect on while the master switch is off turns the master switch on.
-- **Presenter tools are independent**: keystrokes, live zoom, loupe, focus, camera bubble, captions and the recorder work whatever the master switch says.
+- **Master switch** (*Enable Mickey*, on by default): while it is off, nothing runs. No cursor effect is drawn, drawing ends and its annotations are hidden, every presenter tool (keystrokes, live zoom, loupe, focus, camera bubble, captions) is hidden, and a running recording or countdown stops (the movie is saved). Each tool keeps its own switch, so tools and annotations come back when Mickey is turned on again.
+- **No dead toggles**: turning a cursor effect or a presenter tool on, drawing, or starting a recording while the master switch is off turns the master switch on.
 - **Immediate persistence**: every change is saved (debounced) and restored at launch.
 - **Always reachable**: the menu-bar icon and the Dock icon cannot both be off.
 - **Ask only what is used**: cursor effects, annotations and focus need no permission; each presenter tool requests only its own.
@@ -143,7 +142,7 @@ The enlarged-pointer animation flashes a pointer five times larger that shrinks 
 
 ### 4.7 Hotkeys
 
-Toggles invert the matching setting (cursor effects also turn the master switch on). Defaults are ⌃⌥⌘ plus a letter: M Mickey, S spotlight, R ring, T trail, C click feedback, K click sounds, F flash click effect, L shake to locate, D drawing, Y keystrokes, Z live zoom, O loupe, W focus, E camera bubble, A captions, V recording. The letters follow the keyboard layout (on AZERTY, A is the key marked A).
+Toggles invert the matching setting (cursor effects and presenter tools also turn the master switch on). Defaults are ⌃⌥⌘ plus a letter: M Mickey, S spotlight, R ring, T trail, C click feedback, K click sounds, F flash click effect, L shake to locate, D drawing, Y keystrokes, Z live zoom, O loupe, W focus, E camera bubble, A captions, V recording. The letters follow the keyboard layout (on AZERTY, A is the key marked A).
 
 Recording rules: at least one of ⌃, ⌥, ⌘ (F-keys may be used alone); ⌘ alone and ⇧ alone are refused. Conflicts:
 

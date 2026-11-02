@@ -74,6 +74,16 @@ public final class AnnotationController {
         onDrawingChanged?(false)
     }
 
+    /// While Mickey is off, drawing ends and the annotations left on screen are hidden; they come back with Mickey.
+    public func setSuspended(_ suspended: Bool) {
+        if suspended {
+            exit()
+            canvasPanel?.orderOut(nil)
+        } else if !session.annotations.isEmpty {
+            canvasPanel?.orderFrontRegardless()
+        }
+    }
+
     /// Momentary mode ends when the trigger key is released, unless the user made it sticky.
     public func endMomentary() { if isMomentary { exit() } }
 

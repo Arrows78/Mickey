@@ -97,8 +97,11 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
     private func apply(_ s: MickeyDomain.Settings, old: MickeyDomain.Settings?) {
         input.rateHz = s.general.updateRateHz
-        // Turning Mickey off ends drawing like every other cursor effect.
-        if old?.general.masterEnabled == true && !s.general.masterEnabled { annotations.exit() }
+        // Turning Mickey off stops everything: drawing and its annotations, and a running recording (saved).
+        if old?.general.masterEnabled != s.general.masterEnabled {
+            annotations.setSuspended(!s.general.masterEnabled)
+            if !s.general.masterEnabled && studio.isRecording { studio.stopRecording {} }
+        }
         if (old == nil || old?.hotkeys != s.hotkeys) && !recordingHotkey { registerHotkeys() }
         annotations.apply(s.annotations)
         if old == nil || old?.click.customSound != s.click.customSound, !sound.configure(custom: s.click.customSound) {
@@ -276,6 +279,8 @@ extension AppDelegate: AppActions {
 
     func toggleRecording() {
         statusItem?.closePopover()
+        // Like every other tool, starting a recording turns Mickey on.
+        if !studio.isRecording && !model.settings.general.masterEnabled { model.update { $0.general.masterEnabled = true } }
         studio.toggleRecording(settings: model.settings.recorder)
     }
 

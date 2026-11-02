@@ -6,7 +6,7 @@ public enum SettingsRules {
     public static func normalize(old: Settings, new: Settings) -> Settings {
         var s = new.clamped()
 
-        // An effect switched on while the master switch is off turns the master switch on.
+        // An effect or presenter tool switched on while the master switch is off turns the master switch on.
         if !s.general.masterEnabled && anyEffectTurnedOn(old: old, new: s) {
             s.general.masterEnabled = true
         }
@@ -36,13 +36,19 @@ public enum SettingsRules {
             (old.trail.enabled, new.trail.enabled),
             (old.shake.enabled, new.shake.enabled),
             (old.annotations.enabled, new.annotations.enabled),
+            (old.keystrokes.enabled, new.keystrokes.enabled),
+            (old.zoom.enabled, new.zoom.enabled),
+            (old.loupe.enabled, new.loupe.enabled),
+            (old.focus.enabled, new.focus.enabled),
+            (old.camera.enabled, new.camera.enabled),
+            (old.captions.enabled, new.captions.enabled),
         ]
         return pairs.contains { !$0.0 && $0.1 }
     }
 
     /// Settings change implied by a hotkey. `showClickEffect`, `toggleRecording` and `toggleAnnotationMode` are
-    /// runtime commands and leave settings untouched, except that drawing needs annotations and Mickey on.
-    /// Presenter tools (keystrokes, zoom, loupe, focus, camera, captions) do not depend on the master switch.
+    /// runtime commands and leave settings untouched, except that drawing needs annotations and Mickey on
+    /// (recording turns Mickey on where it starts).
     public static func applying(_ action: HotkeyAction, to settings: Settings) -> Settings {
         var s = settings
         switch action {
@@ -63,6 +69,20 @@ public enum SettingsRules {
         case .showClickEffect, .toggleRecording: break
         }
         return normalize(old: settings, new: s)
+    }
+
+    /// Presenter tools as they should appear on screen: all hidden while the master switch is off,
+    /// their own switches kept so they come back when Mickey is turned on again.
+    public static func presenterTools(of s: Settings) -> Settings {
+        guard !s.general.masterEnabled else { return s }
+        var n = s
+        n.keystrokes.enabled = false
+        n.zoom.enabled = false
+        n.loupe.enabled = false
+        n.focus.enabled = false
+        n.camera.enabled = false
+        n.captions.enabled = false
+        return n
     }
 
     public static func isOn(_ item: MenuBarItem, in s: Settings) -> Bool {
