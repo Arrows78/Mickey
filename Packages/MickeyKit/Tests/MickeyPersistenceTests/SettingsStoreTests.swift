@@ -239,3 +239,30 @@ struct PersistenceTests {
         #expect(s.hotkeys[.togglePauseRecording] == nil)
     }
 }
+
+@Suite("Settings written by a newer version") struct NewerDocumentTests {
+    @Test func anUnknownHotkeyActionDoesNotCostTheOtherShortcuts() throws {
+        var s = Settings()
+        s.ring.enabled = true
+        s.hotkeys[.toggleRing] = KeyCombo(keyCode: 1, modifiers: [.control], keyLabel: "X")
+        var json = try #require(JSONSerialization.jsonObject(with: SettingsCodec.encode(s)) as? [String: Any])
+        var hotkeys = try #require(json["hotkeys"] as? [String: Any])
+        hotkeys["actionFromTheFuture"] = ["keyCode": 35, "keyLabel": "P", "modifiers": 11]
+        json["hotkeys"] = hotkeys
+        let loaded = SettingsCodec.decode(try JSONSerialization.data(withJSONObject: json))
+        #expect(loaded.ring.enabled)
+        #expect(loaded.hotkeys[.toggleRing]?.keyLabel == "X")
+        #expect(loaded.hotkeys.count == s.hotkeys.count)
+    }
+
+    @Test func anUnknownEnumValueOnlyResetsThatField() throws {
+        var json = try #require(JSONSerialization.jsonObject(with: SettingsCodec.encode(Settings())) as? [String: Any])
+        var recorder = try #require(json["recorder"] as? [String: Any])
+        recorder["quality"] = "8k"   // a value this version does not know
+        recorder["countdown"] = 7
+        json["recorder"] = recorder
+        let loaded = SettingsCodec.decode(try JSONSerialization.data(withJSONObject: json))
+        #expect(loaded.recorder.quality == RecorderSettings().quality)
+        #expect(loaded.recorder.countdown == 7)
+    }
+}

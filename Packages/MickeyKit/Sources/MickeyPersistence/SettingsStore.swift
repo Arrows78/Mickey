@@ -86,8 +86,13 @@ public enum SettingsCodec {
 
     /// Copies stored leaves into `root` one at a time, keeping each only if the whole document still decodes.
     private static func merge(_ stored: [String: Any], into root: inout [String: Any], path: [String]) {
-        for (key, value) in stored {
+        for (key, storedValue) in stored {
             let keyPath = path + [key]
+            var value = storedValue
+            // A newer version may know actions this one does not: dropping them keeps every other shortcut.
+            if keyPath == ["hotkeys"], let known = value as? [String: Any] {
+                value = known.filter { HotkeyAction(rawValue: $0.key) != nil }
+            }
             if let sub = value as? [String: Any], lookup(keyPath, in: root) is [String: Any],
                !isDictionaryLeaf(keyPath) {
                 merge(sub, into: &root, path: keyPath)
