@@ -157,3 +157,47 @@ struct PersistenceTests {
         #expect(store.loadSettings().hotkeys[.toggleMaster]?.keyCode == 41)
     }
 }
+
+@Suite("Settings transfer") struct SettingsTransferTests {
+    @Test func exportThenImportKeepsSettings() throws {
+        var s = Settings.defaults
+        s.ring.enabled = true
+        s.ring.radius = 80
+        s.hotkeys[.toggleRing] = KeyCombo(keyCode: 15, modifiers: [.control, .option], keyLabel: "R")
+        let imported = try #require(SettingsTransfer.import(SettingsTransfer.export(s)))
+        #expect(imported.ring.enabled && imported.ring.radius == 80)
+        #expect(imported.hotkeys[.toggleRing] == s.hotkeys[.toggleRing])
+    }
+
+    @Test func exportLeavesTheCustomSoundOut() throws {
+        var s = Settings.defaults
+        s.click.customSound = SoundReference(bookmark: Data([1, 2, 3]), displayName: "pop.aiff")
+        let imported = try #require(SettingsTransfer.import(SettingsTransfer.export(s)))
+        #expect(imported.click.customSound == nil)
+    }
+
+    @Test func rejectsFilesThatAreNotMickeySettings() {
+        #expect(SettingsTransfer.import(Data("not json".utf8)) == nil)
+        #expect(SettingsTransfer.import(Data("[1, 2]".utf8)) == nil)
+        #expect(SettingsTransfer.import(Data(#"{"name": "other app"}"#.utf8)) == nil)
+    }
+
+    @Test func importRepairsOutOfRangeValues() throws {
+        let json = #"{"schemaVersion": 4, "ring": {"radius": 100000}}"#
+        let imported = try #require(SettingsTransfer.import(Data(json.utf8)))
+        #expect(imported.ring.radius == RingSettings.radiusRange.upperBound)
+    }
+
+    @Test func applyingKeepsWhatBelongsToThisMac() {
+        var current = Settings.defaults
+        current.click.customSound = SoundReference(bookmark: Data([9]), displayName: "mine.aiff")
+        current.general.launchAtLogin = true
+        current.general.hasCompletedOnboarding = true
+        var imported = Settings.defaults
+        imported.ring.enabled = true
+        let result = SettingsTransfer.applying(imported, to: current)
+        #expect(result.ring.enabled)
+        #expect(result.click.customSound?.displayName == "mine.aiff")
+        #expect(result.general.launchAtLogin && result.general.hasCompletedOnboarding)
+    }
+}

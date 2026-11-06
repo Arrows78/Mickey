@@ -155,6 +155,15 @@ struct GeneralPage: View {
                     Text(appVersion).foregroundStyle(.secondary).textSelection(.enabled)
                 }
             }
+            FeatureCard(title: "Backup", symbol: "square.and.arrow.up.on.square",
+                        subtitle: "Save your settings to a file, or load them on another Mac. Your custom click sound stays on this Mac.") {
+                HStack {
+                    Button("Export Settings…") { model.exportSettings() }.help("Save every setting to a JSON file")
+                    Button("Import Settings…") { model.importSettings() }.help("Replace your settings with an exported file")
+                    Spacer()
+                }
+                if let message = model.transferMessage { NoteView(text: message) }
+            }
             FeatureCard(title: "Reset", symbol: "arrow.counterclockwise") {
                 HStack {
                     Text("Restore every setting to its default value.").foregroundStyle(.secondary)

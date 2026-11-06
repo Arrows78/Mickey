@@ -18,6 +18,10 @@ public protocol AppActions: AnyObject {
     func request(_ permission: Permission)
     func toggleRecording()
     func revealRecordings()
+    /// Asks where to save the exported settings; nil when cancelled.
+    func chooseSettingsExportURL() -> URL?
+    /// Asks which exported settings file to load; nil when cancelled.
+    func chooseSettingsImportURL() -> URL?
 }
 
 /// Single source of truth for the UI. Every change goes through `update`, which applies the
@@ -38,6 +42,8 @@ public final class AppModel {
     public var lastRecordingURL: URL?
     /// Problem reported by a presenter tool.
     public var studioMessage: String?
+    /// Outcome of the last settings export or import.
+    public var transferMessage: String?
 
     public var isRecording: Bool { recordingStartedAt != nil }
 
@@ -101,6 +107,30 @@ public final class AppModel {
             for (other, used) in s.hotkeys where other != action && used == combo { s.hotkeys[other] = nil }
             s.hotkeys[action] = combo
         }
+    }
+
+    public func exportSettings() {
+        guard let url = actions?.chooseSettingsExportURL() else { return }
+        do {
+            try SettingsTransfer.export(settings).write(to: url, options: .atomic)
+            transferMessage = "Settings exported to \(url.lastPathComponent)."
+        } catch {
+            transferMessage = "Settings could not be exported: \(error.localizedDescription)"
+        }
+    }
+
+    public func importSettings() {
+        guard let url = actions?.chooseSettingsImportURL() else { return }
+        guard let data = try? Data(contentsOf: url),
+              let imported = SettingsTransfer.import(data, keyCode: KeyboardLayout.keyCode(for:))
+        else {
+            transferMessage = "This file is not a Mickey settings export."
+            return
+        }
+        let next = SettingsTransfer.applying(imported, to: settings)
+        update { $0 = next }
+        flush()
+        transferMessage = "Settings imported from \(url.lastPathComponent)."
     }
 
     public func setLaunchAtLogin(_ enabled: Bool) {

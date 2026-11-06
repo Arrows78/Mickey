@@ -38,7 +38,7 @@ targets:
       path: App/Mickey.entitlements
       properties:
         com.apple.security.app-sandbox: true
-        com.apple.security.files.user-selected.read-only: true
+        com.apple.security.files.user-selected.read-write: true
         com.apple.security.files.bookmarks.app-scope: true
         com.apple.security.assets.movies.read-write: true
         com.apple.security.device.camera: true

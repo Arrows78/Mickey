@@ -290,6 +290,24 @@ extension AppDelegate: AppActions {
         if let last = model.lastRecordingURL { NSWorkspace.shared.activateFileViewerSelecting([last]) } else { NSWorkspace.shared.open(folder) }
     }
 
+    func chooseSettingsExportURL() -> URL? {
+        let panel = NSSavePanel()
+        panel.title = "Export Mickey Settings"
+        panel.allowedContentTypes = [.json]
+        panel.nameFieldStringValue = "Mickey Settings.json"
+        NSApp.activate(ignoringOtherApps: true)
+        return panel.runModal() == .OK ? panel.url : nil
+    }
+
+    func chooseSettingsImportURL() -> URL? {
+        let panel = NSOpenPanel()
+        panel.title = "Import Mickey Settings"
+        panel.allowedContentTypes = [.json]
+        panel.allowsMultipleSelection = false
+        NSApp.activate(ignoringOtherApps: true)
+        return panel.runModal() == .OK ? panel.url : nil
+    }
+
     /// Registered hotkeys would swallow the combination being recorded, so they pause meanwhile.
     func setHotkeyRecording(_ recording: Bool) {
         recordingHotkey = recording
