@@ -109,7 +109,7 @@ struct EffectsPage: View {
                            isOn: model.binding(\.click.soundEnabled), help: model.tooltip(.toggleClickSound)) {
             SliderRow(title: "Volume", value: model.binding(\.click.soundVolume), range: 0...1, format: percent)
             HStack {
-                Text("Sound").frame(width: 150, alignment: .leading)
+                Text("Sound").frame(width: settingsLabelWidth, alignment: .leading)
                 Text(c.customSound?.displayName ?? tr("Default click")).foregroundStyle(.secondary)
                 Spacer()
                 Button("Choose Sound File…") { model.chooseCustomSound() }

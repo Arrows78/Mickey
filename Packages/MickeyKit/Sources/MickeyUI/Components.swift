@@ -35,6 +35,9 @@ struct FeatureCard<Content: View>: View {
     }
 }
 
+/// Width of the label column of every settings row, wide enough for the longer translations.
+let settingsLabelWidth: CGFloat = 190
+
 struct SliderRow: View {
     let title: String
     @Binding var value: Double
@@ -44,7 +47,7 @@ struct SliderRow: View {
 
     var body: some View {
         HStack {
-            Text(tr(title)).frame(width: 150, alignment: .leading)
+            Text(tr(title)).frame(width: settingsLabelWidth, alignment: .leading)
             Group {
                 if let step { Slider(value: $value, in: range, step: step) } else { Slider(value: $value, in: range) }
             }
@@ -72,7 +75,7 @@ struct ColorRow: View {
 
     var body: some View {
         HStack {
-            Text(tr(title)).frame(width: 150, alignment: .leading)
+            Text(tr(title)).frame(width: settingsLabelWidth, alignment: .leading)
             ForEach(RGBAColor.presets, id: \.self) { preset in
                 Button { color = preset } label: {
                     Circle().fill(Color(nsColor: preset.nsColor)).frame(width: 18, height: 18)
@@ -100,7 +103,7 @@ struct PickerRow<T: Hashable, Label: View>: View {
 
     var body: some View {
         HStack {
-            Text(tr(title)).frame(width: 150, alignment: .leading)
+            Text(tr(title)).frame(width: settingsLabelWidth, alignment: .leading)
             Picker("", selection: $selection) {
                 ForEach(options, id: \.self) { label($0).tag($0) }
             }
