@@ -173,6 +173,7 @@ public struct OnboardingView: View {
     @Bindable var model: AppModel
     let onFinish: () -> Void
     @State private var step = 0
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     public init(model: AppModel, onFinish: @escaping () -> Void) { self.model = model; self.onFinish = onFinish }
 
@@ -212,7 +213,7 @@ public struct OnboardingView: View {
                 if step < steps.count - 1 { Button("Skip") { finish() } }
                 Spacer()
                 Button(tr(step == steps.count - 1 ? "Get Started" : "Continue")) {
-                    if step == steps.count - 1 { finish() } else { withAnimation { step += 1 } }
+                    if step == steps.count - 1 { finish() } else if reduceMotion { step += 1 } else { withAnimation { step += 1 } }
                 }
                 .keyboardShortcut(.defaultAction)
             }

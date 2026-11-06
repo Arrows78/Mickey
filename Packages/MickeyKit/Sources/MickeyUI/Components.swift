@@ -4,6 +4,7 @@ import MickeyEffects
 
 /// Rounded card grouping one feature's controls, with an optional enable toggle in its header.
 struct FeatureCard<Content: View>: View {
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
     let title: String
     let symbol: String
     var subtitle: String?
@@ -30,7 +31,7 @@ struct FeatureCard<Content: View>: View {
         .padding(16)
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(.background.secondary, in: RoundedRectangle(cornerRadius: 12))
-        .animation(.easeInOut(duration: 0.15), value: isOn?.wrappedValue)
+        .animation(reduceMotion ? nil : .easeInOut(duration: 0.15), value: isOn?.wrappedValue)
     }
 }
 
