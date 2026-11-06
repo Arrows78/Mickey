@@ -32,11 +32,13 @@ public struct AnnotationSession: Sendable {
     public var color: RGBAColor
     public var editingTextID: UUID?
     private var undoStack: [[Annotation]] = []
+    private var redoStack: [[Annotation]] = []
 
     public init(tool: AnnotationTool, color: RGBAColor) { selectedTool = tool; self.color = color }
 
     public var nextCalloutNumber: Int { (annotations.compactMap(\.calloutNumber).max() ?? 0) + 1 }
     public var canUndo: Bool { !undoStack.isEmpty }
+    public var canRedo: Bool { !redoStack.isEmpty }
 
     public mutating func begin(at p: CGPoint, time: TimeInterval, settings: AnnotationSettings) {
         let isHighlighter = selectedTool == .highlighter
@@ -82,13 +84,22 @@ public struct AnnotationSession: Sendable {
 
     public mutating func undo() {
         guard let previous = undoStack.popLast() else { return }
+        redoStack.append(annotations)
         annotations = previous
+        current = nil
+    }
+
+    public mutating func redo() {
+        guard let next = redoStack.popLast() else { return }
+        undoStack.append(annotations)
+        annotations = next
         current = nil
     }
 
     public mutating func clearAll() {
         guard !annotations.isEmpty else { return }
         undoStack.append(annotations)
+        redoStack.removeAll()
         annotations.removeAll()
         current = nil
     }
@@ -103,6 +114,7 @@ public struct AnnotationSession: Sendable {
 
     private mutating func commit(_ a: Annotation) {
         undoStack.append(annotations)
+        redoStack.removeAll()
         if undoStack.count > 100 { undoStack.removeFirst() }
         annotations.append(a)
     }

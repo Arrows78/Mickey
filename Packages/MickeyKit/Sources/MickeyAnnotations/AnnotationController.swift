@@ -94,6 +94,7 @@ public final class AnnotationController {
         onSettingsEdited?(settings)
     }
     public func undo() { session.undo(); hideIfIdle() }
+    public func redo() { session.redo(); if isDrawing || !session.annotations.isEmpty { canvasPanel?.orderFrontRegardless() } }
     public func clearAll() { session.clearAll(); hideIfIdle() }
 
     private func hideIfIdle() { if !isDrawing && session.annotations.isEmpty { canvasPanel?.orderOut(nil) } }
@@ -176,6 +177,7 @@ public final class AnnotationController {
         if event.keyCode == 53 { exit(); return true } // Escape
         let cmd = event.modifierFlags.contains(.command)
         if cmd && event.charactersIgnoringModifiers == "z" { undo(); return true }
+        if cmd && event.charactersIgnoringModifiers == "Z" { redo(); return true } // ⇧⌘Z
         if cmd && (event.keyCode == 51 || event.keyCode == 117) { clearAll(); return true } // ⌘⌫ / ⌘⌦
         if !cmd, let c = event.charactersIgnoringModifiers?.first, let tool = AnnotationTool.forShortcut(c) {
             select(tool); return true

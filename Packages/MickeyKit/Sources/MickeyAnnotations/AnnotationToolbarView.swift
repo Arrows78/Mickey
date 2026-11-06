@@ -42,6 +42,8 @@ struct AnnotationToolbarView: View {
             Divider().frame(height: 22)
             Button { controller.undo() } label: { Image(systemName: "arrow.uturn.backward") }
                 .buttonStyle(.plain).help("Undo (⌘Z)").accessibilityLabel("Undo").disabled(!controller.session.canUndo)
+            Button { controller.redo() } label: { Image(systemName: "arrow.uturn.forward") }
+                .buttonStyle(.plain).help("Redo (⇧⌘Z)").accessibilityLabel("Redo").disabled(!controller.session.canRedo)
             Button { controller.clearAll() } label: { Image(systemName: "trash") }
                 .buttonStyle(.plain).help("Clear All (⌘⌫)").accessibilityLabel("Clear All")
             Button { controller.exit() } label: { Image(systemName: "xmark.circle.fill") }

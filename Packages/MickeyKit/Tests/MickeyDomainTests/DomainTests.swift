@@ -828,3 +828,49 @@ struct InteractionTests {
         #expect(s.from == 1.15 && s.to == 1.15)
     }
 }
+
+@Suite("Annotation redo") struct AnnotationRedoTests {
+    private func session() -> AnnotationSession {
+        var s = AnnotationSession(tool: .freehand, color: .red)
+        for x in [0.0, 50] {
+            s.begin(at: CGPoint(x: x, y: 0), time: 0, settings: AnnotationSettings())
+            s.drag(to: CGPoint(x: x + 20, y: 20))
+            s.end()
+        }
+        return s
+    }
+
+    @Test func redoRestoresWhatUndoRemoved() {
+        var s = session()
+        s.undo()
+        #expect(s.annotations.count == 1 && s.canRedo)
+        s.redo()
+        #expect(s.annotations.count == 2 && !s.canRedo)
+    }
+
+    @Test func drawingAfterUndoDropsTheRedoHistory() {
+        var s = session()
+        s.undo()
+        s.begin(at: CGPoint(x: 90, y: 0), time: 1, settings: AnnotationSettings())
+        s.drag(to: CGPoint(x: 120, y: 30))
+        s.end()
+        #expect(!s.canRedo)
+        s.redo()
+        #expect(s.annotations.count == 2)
+    }
+
+    @Test func clearAllCanBeUndoneAndRedone() {
+        var s = session()
+        s.clearAll()
+        s.undo()
+        #expect(s.annotations.count == 2)
+        s.redo()
+        #expect(s.annotations.isEmpty)
+    }
+
+    @Test func redoWithNothingToRedoChangesNothing() {
+        var s = session()
+        s.redo()
+        #expect(s.annotations.count == 2)
+    }
+}

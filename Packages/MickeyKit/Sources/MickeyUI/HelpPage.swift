@@ -44,7 +44,7 @@ public enum HelpContent {
                   body: "Enable Annotations, then hold Fn (🌐) to draw, use the Toggle Annotation Mode hotkey, or click Start Drawing. Press Escape to stop.",
                   section: .annotations),
         HelpEntry(id: "tools", group: "Annotations", title: "Tools and shortcuts",
-                  body: "F freehand, A arrow, R rectangle, C circle, L line, H highlighter, T text, N numbered callout. ⌘Z undoes, ⌘⌫ clears everything.",
+                  body: "F freehand, A arrow, R rectangle, C circle, L line, H highlighter, T text, N numbered callout. ⌘Z undoes, ⇧⌘Z redoes, ⌘⌫ clears everything.",
                   section: .annotations),
         HelpEntry(id: "keystrokes", group: "Presenter Tools", title: "Show keystrokes",
                   body: "Displays the shortcuts you press in a bar on screen. Needs Input Monitoring. Shortcuts Only (on by default) never shows plain typing.",
