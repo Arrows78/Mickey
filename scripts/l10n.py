@@ -38,6 +38,13 @@ UI_PATTERNS = [
 TUPLE_STEP = re.compile(r'^\s*\("[a-z0-9.]+",\s*' + LIT + r',\s*' + LIT + r'\)')
 # Units read the same in every language, so they are not translated.
 UNITS = {'fps', 'pt'}
+# AppKit does not translate literals: a text given to one of these must go through tr().
+APPKIT_PATTERNS = [
+    r'\bmakePanel\(title: ', r'\.title = ', r'\.messageText = ', r'\.informativeText = ', r'\baddButton\(withTitle: ',
+    r'\bwithTitle: ', r'\.placeholderString = ', r'\.toolTip = ', r'\.message = ',
+]
+# Texts that are the same in every language (product name) need no translation.
+BRAND_TEXTS = {'Mickey'}
 PLACEHOLDER = re.compile(r'%(?:lld|lf|d|f|@)')
 
 
@@ -118,6 +125,9 @@ def is_text(key):
     return bool(re.search(r'[A-Za-z]{3,}', words)) and words not in UNITS and not key.startswith('system')
 
 
+RAW_APPKIT = []
+
+
 def code_keys():
     """Every user-visible text of the sources: {key: 'file:line'}."""
     keys = {}
@@ -138,6 +148,12 @@ def code_keys():
                     lit = first_literal(line, m.end())
                     if lit is not None:
                         found.append(lit)
+            for pattern in APPKIT_PATTERNS:
+                for m in re.finditer(pattern, line):
+                    lit = first_literal(line, m.end())
+                    if lit is not None and lit not in BRAND_TEXTS and is_text(interpolation_to_placeholder(lit)):
+                        found.append(lit)
+                        RAW_APPKIT.append(f'{os.path.relpath(path, ROOT)}:{n}: "{lit}"')
             for lit in found:
                 key = interpolation_to_placeholder(lit)
                 if is_text(key):
@@ -169,6 +185,8 @@ def check():
         return 1
 
     code = {normalize(k): where for k, where in code_keys().items()}
+    for site in RAW_APPKIT:
+        problems.append(f'not translated at the call site (wrap it in tr()): {site}')
     reference = parse_table(table_path(REFERENCE))
     ref = {normalize(k): k for k in reference}
     for key, where in sorted(code.items()):

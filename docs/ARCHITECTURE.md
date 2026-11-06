@@ -103,5 +103,6 @@ The app icon (`scripts/make_app_icon.swift`) and the click sound (`scripts/make_
 
 - Texts are localized with the English text as key (`tr` / `trf` in `MickeyDomain`, SwiftUI literals directly); English is the reference and the fallback. See [`LOCALIZATION.md`](LOCALIZATION.md).
 - Reduce Motion (System Settings › Accessibility › Display) is honored by the effects engine (`ReducedMotion` in the domain decides the scale animation), the focus overlay, the HUDs, the onboarding and the settings cards.
+- Tooltips appear after 0.35 s instead of the system's two seconds (`App/Sources/ToolTips.swift`): AppKit's tooltip manager is a private class, so every step is guarded and a missing selector leaves the system delay.
 - Controls carry VoiceOver labels and values; selected tools, colors and sidebar pages are announced as selected.
 

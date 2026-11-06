@@ -205,6 +205,7 @@ open /Applications/Mickey.app
 | `swift scripts/make_app_icon.swift` | Redraws the app icon set from code. |
 | `python3 scripts/make_click_sound.py` | Synthesises the default click sound (`App/Resources/click.wav`). |
 | `python3 scripts/l10n.py sync` / `check` | Regenerates the English reference table / verifies every language ([`docs/LOCALIZATION.md`](docs/LOCALIZATION.md)). |
+| `scripts/run_dev.sh` | Builds and launches an isolated copy (own bundle identifier, settings and permissions), so testing never touches the installed app's data. |
 | `scripts/render_cask.sh VERSION SHA256` | Prints the Homebrew cask of a release (used by the Release workflow). |
 
 To publish a release:

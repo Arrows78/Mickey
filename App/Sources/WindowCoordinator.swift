@@ -31,7 +31,7 @@ final class WindowCoordinator: NSObject, NSWindowDelegate {
             self?.onboardingPanel?.close()
             self?.onboardingPanel = nil
         }
-        let panel = makePanel(title: "Welcome to Mickey", styleMask: [.titled, .closable, .fullSizeContentView])
+        let panel = makePanel(title: tr("Welcome to Mickey"), styleMask: [.titled, .closable, .fullSizeContentView])
         panel.titlebarAppearsTransparent = true
         panel.contentViewController = NSHostingController(rootView: view)
         panel.center()
