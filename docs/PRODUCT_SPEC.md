@@ -68,7 +68,7 @@ Toggle (off); Start/Stop Drawing; also hold Right Option (off); default tool (fr
 | Live Zoom | toggle (off); permission row; magnification 2× (1.25–6×) |
 | Loupe | toggle (off); permission row; shape circle / rounded square; size 240 pt; magnification 2.5× (1.5–8×); border color white |
 | Focus | toggle (off); dim amount 0.55; corner radius 10; margin 6 pt |
-| Recorder & Camera | start/stop and pause/resume with elapsed time (the time paused does not count); show recordings; show pointer (on); record system audio (on); countdown 3 s; quality 4K (Full HD 1920 px, QHD 2560 px, 4K 3840 px); frame rate 60 (30 or 60) · camera bubble toggle (off); shape; corner bottom right; size 200 pt; mirror (on); border color white |
+| Recorder & Camera | start/stop and pause/resume with elapsed time (the time paused does not count); show recordings; show pointer (on); record system audio (on); countdown 3 s; quality 4K (Full HD 1920 px, QHD 2560 px, 4K 3840 px); frame rate 60 (30 or 60); area whole screen or selected region · camera bubble toggle (off); shape; corner bottom right; size 200 pt; mirror (on); border color white |
 | Captions | toggle (off); microphone and speech permission rows; language (system); position bottom / top; text size 30; lines 2; background 0.65 |
 
 #### Hotkeys
@@ -168,7 +168,7 @@ Registered hotkeys pause while a shortcut is being recorded.
 | Focus | Ten times a second, finds the frontmost app's topmost normal window in the window list and dims every screen except a rounded hole around it. | — |
 | Camera bubble | Default camera in a draggable, always-on-top bubble; placed in the chosen corner, kept where dragged until size or corner change. | Camera |
 | Captions | Microphone → speech recogniser (on device when supported), partial results; a new task every 50 s or after silence; shows the end of the transcript at a word boundary within the line capacity. | Microphone, Speech Recognition |
-| Recorder | Countdown, then records the screen under the pointer, Mickey's effects included, as HEVC (at most 1920, 2560 or 3840 px wide as chosen, at 30 or 60 fps) with optional system audio to `~/Movies/Mickey/Mickey Recording <date> at <time>.mov`; the file is revealed in Finder. Pausing (⌃⌥⌘P, the popover or the settings page) stops adding to the movie while the capture keeps running; resuming continues right after the last frame, so the time paused is cut from the file. The menu-bar icon turns orange while paused. | Screen Recording |
+| Recorder | Countdown, then records the screen under the pointer, Mickey's effects included, as HEVC (at most 1920, 2560 or 3840 px wide as chosen, at 30 or 60 fps) with optional system audio to `~/Movies/Mickey/Mickey Recording <date> at <time>.mov`; the file is revealed in Finder. Pausing (⌃⌥⌘P, the popover or the settings page) stops adding to the movie while the capture keeps running; resuming continues right after the last frame, so the time paused is cut from the file. The menu-bar icon turns orange while paused. With the area set to *Selected Region*, starting a recording first dims the screen under the pointer and lets the user drag the rectangle to record (Esc or a rectangle smaller than 100 pt cancels); the movie is that region, scaled down to the chosen quality if needed. | Screen Recording |
 
 Each page shows its permission state with *Allow…* (system prompt) or *Open System Settings* (when previously refused). Tools waiting for a permission retry once it is granted.
 

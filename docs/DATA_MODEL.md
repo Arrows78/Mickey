@@ -66,7 +66,7 @@ Values are clamped to their range when decoded and whenever they change.
 | `focus` | `enabled` (false) · `dimOpacity` (0.55, 0.1…0.95) · `cornerRadius` (10, 0…30) · `padding` (6, 0…40) |
 | `camera` | `enabled` (false) · `size` (200, 100…480) · `shape` (circle) · `corner` (bottomRight) · `mirrored` (true) · `borderColor` (white) |
 | `captions` | `enabled` (false) · `fontSize` (30, 16…64) · `position` (bottomCenter) · `backgroundOpacity` (0.65, 0…1) · `maxLines` (2, 1…4) · `language` ("" = system) |
-| `recorder` | `showCursor` (true) · `captureSystemAudio` (true) · `countdown` (3 s, 0…10) · `quality` (uhd: hd 1920 px, qhd 2560 px, uhd 3840 px) · `frameRate` (60, one of 30 or 60) |
+| `recorder` | `showCursor` (true) · `captureSystemAudio` (true) · `countdown` (3 s, 0…10) · `quality` (uhd: hd 1920 px, qhd 2560 px, uhd 3840 px) · `frameRate` (60, one of 30 or 60) · `area` (screen, or region: the area is dragged at each start) |
 | `autoMode` | `enabled` (false) · `preset` (presentation) · `bundleIDs` (meeting, presentation and recording apps) · `appPresets` (bundle ID → preset used for that app instead of `preset`, empty) |
 
 ### Hotkeys

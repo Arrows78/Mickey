@@ -1081,3 +1081,45 @@ struct InteractionTests {
         #expect(MenuBarGroup.presenterTools.title == "Presenter Tools")
     }
 }
+
+@Suite("Recording region") struct RecordingRegionTests {
+    let screen = CGRect(x: 0, y: 0, width: 1440, height: 900)
+
+    @Test func theCornersMayBeDraggedInAnyDirection() throws {
+        let a = try #require(RecordingRegion.selection(from: CGPoint(x: 300, y: 400), to: CGPoint(x: 100, y: 150), in: screen))
+        #expect(a == CGRect(x: 100, y: 150, width: 200, height: 250))
+        let b = try #require(RecordingRegion.selection(from: CGPoint(x: 100, y: 150), to: CGPoint(x: 300, y: 400), in: screen))
+        #expect(a == b)
+    }
+
+    @Test func aSelectionIsKeptInsideTheScreen() throws {
+        let r = try #require(RecordingRegion.selection(from: CGPoint(x: 1300, y: 800), to: CGPoint(x: 1800, y: 1200), in: screen))
+        #expect(r == CGRect(x: 1300, y: 800, width: 140, height: 100))
+    }
+
+    @Test func aTooSmallSelectionIsRefused() {
+        #expect(RecordingRegion.selection(from: CGPoint(x: 50, y: 50), to: CGPoint(x: 90, y: 400), in: screen) == nil)
+        #expect(RecordingRegion.selection(from: CGPoint(x: 50, y: 50), to: CGPoint(x: 50, y: 50), in: screen) == nil)
+        #expect(RecordingRegion.selection(from: CGPoint(x: 2000, y: 50), to: CGPoint(x: 2500, y: 400), in: screen) == nil)
+    }
+
+    @Test func screenCaptureKitCountsFromTheTopLeft() {
+        let source = RecordingRegion.sourceRect(CGRect(x: 100, y: 100, width: 300, height: 200), in: screen)
+        #expect(source == CGRect(x: 100, y: 600, width: 300, height: 200))
+    }
+
+    @Test func aSecondDisplayIsRelativeToItself() {
+        let second = CGRect(x: 1440, y: -200, width: 1920, height: 1080)
+        let source = RecordingRegion.sourceRect(CGRect(x: 1500, y: -100, width: 200, height: 200), in: second)
+        #expect(source == CGRect(x: 60, y: 780, width: 200, height: 200))
+    }
+
+    @Test func theWholeScreenSelectionRoundTrips() throws {
+        let all = try #require(RecordingRegion.selection(from: .zero, to: CGPoint(x: 1440, y: 900), in: screen))
+        #expect(RecordingRegion.sourceRect(all, in: screen) == CGRect(x: 0, y: 0, width: 1440, height: 900))
+    }
+
+    @Test func theAreaIsWholeScreenByDefault() {
+        #expect(RecorderSettings().area == .screen)
+    }
+}

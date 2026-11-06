@@ -152,6 +152,10 @@ struct RecorderPage: View {
                 ToggleRow(title: "Record System Audio", detail: "Sound played by your Mac, including click sounds.",
                           isOn: model.binding(\.recorder.captureSystemAudio))
                 IntSliderRow(title: "Countdown", value: model.binding(\.recorder.countdown), range: RecorderSettings.countdownRange)
+            PickerRow(title: "Area", selection: model.binding(\.recorder.area), options: RecordingArea.allCases) { Text($0.title) }
+            if model.settings.recorder.area == .region {
+                NoteView(text: "With Selected Region, you drag the area to record each time you start.")
+            }
             PickerRow(title: "Quality", selection: model.binding(\.recorder.quality), options: RecordingQuality.allCases) { Text($0.title) }
             PickerRow(title: "Frame Rate", selection: model.binding(\.recorder.frameRate), options: RecorderSettings.frameRates) { Text("\($0) fps") }
             NoteView(text: "Screens wider than the chosen quality are scaled down. 30 fps and lower quality make smaller files.")

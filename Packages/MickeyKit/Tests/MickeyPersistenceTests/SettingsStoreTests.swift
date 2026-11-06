@@ -266,3 +266,21 @@ struct PersistenceTests {
         #expect(loaded.recorder.countdown == 7)
     }
 }
+
+@Suite("Recording area") struct RecordingAreaTests {
+    @Test func anUnknownAreaFallsBackToTheWholeScreen() throws {
+        var json = try #require(JSONSerialization.jsonObject(with: SettingsCodec.encode(Settings())) as? [String: Any])
+        var recorder = try #require(json["recorder"] as? [String: Any])
+        recorder["area"] = "windowPicker"
+        recorder["countdown"] = 4
+        json["recorder"] = recorder
+        let loaded = SettingsCodec.decode(try JSONSerialization.data(withJSONObject: json))
+        #expect(loaded.recorder.area == .screen && loaded.recorder.countdown == 4)
+    }
+
+    @Test func theChosenAreaIsKept() throws {
+        var s = Settings()
+        s.recorder.area = .region
+        #expect(SettingsCodec.decode(SettingsCodec.encode(s)).recorder.area == .region)
+    }
+}

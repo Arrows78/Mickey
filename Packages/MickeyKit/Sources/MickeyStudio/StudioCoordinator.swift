@@ -19,6 +19,7 @@ public final class StudioCoordinator {
     private let captions = Captions()
     private let recorder = ScreenRecorder()
     private let countdown = Countdown()
+    private let regionPicker = RegionPicker()
 
     public init() {
         keystrokes.onPermissionMissing = { [weak self] in
@@ -38,7 +39,7 @@ public final class StudioCoordinator {
 
     public static var recordingsFolder: URL { ScreenRecorder.folder }
 
-    public var isRecording: Bool { recorder.isRecording || countdown.isRunning }
+    public var isRecording: Bool { recorder.isRecording || countdown.isRunning || regionPicker.isActive }
     public var isPaused: Bool { recorder.isPaused }
 
     /// Turning Mickey off hides every overlay.
@@ -71,6 +72,7 @@ public final class StudioCoordinator {
 
     /// Stops a countdown or a recording; `completion` runs once the movie file is complete.
     public func stopRecording(completion: @escaping () -> Void) {
+        if regionPicker.isActive { regionPicker.cancel() }
         if countdown.isRunning { countdown.cancel() }
         recorder.stop(completion: completion)
     }
@@ -83,6 +85,7 @@ public final class StudioCoordinator {
     }
 
     public func toggleRecording(settings: RecorderSettings) {
+        if regionPicker.isActive { regionPicker.cancel(); return }
         if countdown.isRunning { countdown.cancel(); return }
         if recorder.isRecording { recorder.stop(); return }
         guard Permissions.status(.screenRecording) == .granted else {
@@ -92,8 +95,15 @@ public final class StudioCoordinator {
         }
         guard let screen = NSScreen.containing(NSEvent.mouseLocation) else { return }
         onMessage?(nil)
-        countdown.run(from: settings.countdown, on: screen) { [weak self] in
-            self?.recorder.start(on: screen, settings: settings)
+        let begin = { [weak self] (region: CGRect?) in
+            self?.countdown.run(from: settings.countdown, on: screen) { [weak self] in
+                self?.recorder.start(on: screen, settings: settings, region: region)
+            }
+        }
+        if settings.area == .region {
+            regionPicker.pick(on: screen) { rect in if let rect { begin(rect) } }
+        } else {
+            begin(nil)
         }
     }
 }

@@ -33,6 +33,7 @@
 "Annotations" = "Annotations";
 "Apply a preset while a meeting, presentation or recording app is running, and restore your settings afterwards." = "Applique un préréglage tant qu’une app de réunion, de présentation ou d’enregistrement est ouverte, puis rétablit vos réglages.";
 "Apply" = "Appliquer";
+"Area" = "Zone";
 "Arrow" = "Flèche";
 "At least one of Menu Bar or Dock stays on so Mickey is always reachable." = "Au moins l’un des deux, barre des menus ou Dock, reste activé pour que Mickey soit toujours accessible.";
 "Audible click" = "Clic sonore";
@@ -114,6 +115,7 @@
 "Displays the shortcuts you press in a bar on screen. Needs Input Monitoring. Shortcuts Only (on by default) never shows plain typing." = "Affiche les raccourcis que vous tapez dans une barre à l’écran. Nécessite la surveillance de l’entrée. « Raccourcis uniquement » (activé par défaut) n’affiche jamais la saisie ordinaire.";
 "Dots" = "Points";
 "Drag the bubble anywhere on the screen." = "Faites glisser la bulle n’importe où sur l’écran.";
+"Drag to choose the area to record. Esc cancels." = "Faites glisser pour choisir la zone à enregistrer. Échap annule.";
 "Draw arrows, shapes and freehand notes on top of everything." = "Dessinez des flèches, des formes et des notes à main levée par-dessus tout.";
 "Drawing on screen" = "Dessiner à l’écran";
 "Draws a ring around the pointer. Choose size, thickness, color, glow and pulse animation." = "Dessine un anneau autour du pointeur. Choisissez la taille, l’épaisseur, la couleur, la lueur et l’animation de pulsation.";
@@ -339,6 +341,7 @@
 "Screens wider than the chosen quality are scaled down. 30 fps and lower quality make smaller files." = "Les écrans plus larges que la qualité choisie sont réduits. 30 i/s et une qualité plus basse donnent des fichiers plus légers.";
 "Search help (⌘F)" = "Rechercher dans l’aide (⌘F)";
 "Select All" = "Tout sélectionner";
+"Selected Region" = "Zone choisie";
 "Sensitivity" = "Sensibilité";
 "Setting hotkeys" = "Définir des raccourcis";
 "Settings could not be exported: %@" = "Les réglages n’ont pas pu être exportés : %@";
@@ -471,7 +474,9 @@
 "When several watched apps run, the first one in this list decides." = "Quand plusieurs apps surveillées sont ouvertes, la première de cette liste décide.";
 "While drawing: F freehand · A arrow · R rectangle · C circle · L line · H highlighter · T text · N callout · ⌘Z undo · ⇧⌘Z redo · ⌘C copy image · ⌘⌫ clear · Esc stop." = "Pendant le dessin : F main levée · A flèche · R rectangle · C cercle · L ligne · H surligneur · T texte · N pastille · ⌘Z annuler · ⇧⌘Z rétablir · ⌘C copier l’image · ⌘⌫ effacer · Échap arrêter.";
 "White" = "Blanc";
+"Whole Screen" = "Tout l’écran";
 "Window" = "Fenêtre";
+"With Selected Region, you drag the area to record each time you start." = "Avec « Zone choisie », vous tracez la zone à enregistrer à chaque démarrage.";
 "Works best with a Toggle Spotlight hotkey. Cannot be combined with Hold a Key to Show." = "Fonctionne mieux avec un raccourci d’activation du projecteur. Ne peut pas être combiné avec « Maintenir une touche pour afficher ».";
 "Yellow" = "Jaune";
 "close all windows" = "fermer toutes les fenêtres";

@@ -53,7 +53,7 @@
 | 🪟 **Focus** | Dims everything except the frontmost window, following you as you switch apps. | — |
 | 📷 **Camera bubble** | Your webcam in a draggable circle or rounded square, mirrored if you like. | Camera |
 | 💬 **Captions** | Live subtitles of what you say, recognised on your Mac when the language supports it. | Microphone, Speech Recognition |
-| ⏺️ **Recorder** | Records the screen under the pointer, effects and annotations included, to `~/Movies/Mickey` after a countdown; quality (up to 4K) and frame rate (30 or 60) are adjustable, and it can be paused and resumed. | Screen Recording |
+| ⏺️ **Recorder** | Records the screen under the pointer (or a region you drag), effects and annotations included, to `~/Movies/Mickey` after a countdown; quality (up to 4K) and frame rate (30 or 60) are adjustable, and it can be paused and resumed. | Screen Recording |
 
 ### 🧰 Everyday use
 
@@ -223,7 +223,7 @@ Mickey/
 ├── project.yml                  # XcodeGen definition of the app target
 ├── App/
 │   ├── Sources/                 # Composition root: AppDelegate, status item, windows, menu, review prompt
-│   ├── Resources/               # Generated icon set and click sound
+│   ├── Resources/               # Generated icon set, click sound and the languages (en.lproj, fr.lproj)
 │   ├── Info.plist               # Generated from project.yml
 │   └── Mickey.entitlements      # Generated from project.yml
 ├── Packages/MickeyKit/
@@ -236,17 +236,19 @@ Mickey/
 │   │   ├── MickeyStudio/        # Presenter tools and their coordinator
 │   │   └── MickeyUI/            # Settings pages, popover, onboarding, help, hotkey recorder
 │   └── Tests/                   # Swift Testing suites per module
-├── scripts/                     # CI and asset generation
-└── docs/                        # Product spec, architecture, data model, system API map
+├── packaging/homebrew/          # Cask template of the Homebrew tap
+├── scripts/                     # CI, localization, release and asset tools
+└── docs/                        # Product spec, architecture, data model, system API map, localization, release notes
 ```
 
 ## 💾 Local data
 
 | What | Where |
 | --- | --- |
-| Settings | `UserDefaults` key `mickey.settings.v1`: one JSON document, schema version 3 |
+| Settings | `UserDefaults` key `mickey.settings.v1`: one JSON document, schema version 5 |
 | Review prompt counters | `UserDefaults` key `mickey.review.v1` |
 | Recordings | `~/Movies/Mickey/Mickey Recording <date> at <time>.mov` |
+| Exported settings | A JSON file you choose, from Settings › General › Backup |
 | Diagnostics | Unified log, subsystem `dev.local.mickey` |
 
 Unknown or invalid values fall back to their default one field at a time, so a damaged entry never resets everything. Migrations add new hotkeys and menu-bar toggles without overriding your choices.
@@ -268,7 +270,7 @@ Unknown or invalid values fall back to their default one field at a time, so a d
 - [ ] UI tests for the settings window and the popover.
 - [ ] Editable app list for automatic mode, and more caption languages.
 - [ ] Signed and notarised releases.
-- [ ] Localisation (French first).
+- [x] Localisation (English and French; more languages can be added).
 
 Known limitation: macOS only hides the system pointer for the active app, so **Spotlight › Hide Cursor** takes effect while Mickey is frontmost.
 

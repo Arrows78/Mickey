@@ -85,6 +85,7 @@ The app icon (`scripts/make_app_icon.swift`) and the click sound (`scripts/make_
 | Domain | shake detection on synthetic sequences, tap/hold recognisers, trail buffer, interaction rules, annotation session, undo and redo, annotation bounds, color contrast, preview layout, review policy, keystroke formatting and history, zoom geometry, focus selection, captions, presets, automatic mode, default hotkeys |
 | Persistence | settings export and import (`SettingsTransfer`), exact defaults, round trip, invalid fields, clamping, migrations (v1 → v3), fields added later |
 | Effects | spotlight hole, shapes |
+| Studio | recording sink (pause on a real movie built from synthetic frames), region picker (drawing and mouse/keyboard flow) |
 | Annotations | image rendering of a drawing (cropped, transparent, nothing outside the canvas) |
 | UI logic | popover rendered to an image (`ImageRenderer`; set `MICKEY_SNAPSHOT_DIR` to save the pictures), menu bar groups, model-level settings export and import (stubbed file panels), hotkey conflicts and key-equivalent parsing |
 

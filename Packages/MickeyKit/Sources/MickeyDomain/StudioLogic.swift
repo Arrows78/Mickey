@@ -187,6 +187,25 @@ public enum CaptionText {
     public static func capacity(lines: Int, charactersPerLine: Int = 46) -> Int { max(1, lines) * charactersPerLine }
 }
 
+/// Geometry of a recorded region. Selections are in Cocoa screen coordinates (origin at the bottom left, points);
+/// ScreenCaptureKit wants points from the top left of the display.
+public enum RecordingRegion {
+    /// Smaller selections are taken for an accidental click and cancel the selection.
+    public static let minimumSize = 100.0
+
+    /// Rectangle dragged from `a` to `b`, kept inside `screen`; nil when too small to record.
+    public static func selection(from a: CGPoint, to b: CGPoint, in screen: CGRect) -> CGRect? {
+        let rect = CGRect(x: min(a.x, b.x), y: min(a.y, b.y), width: abs(a.x - b.x), height: abs(a.y - b.y)).intersection(screen)
+        guard !rect.isNull, rect.width >= minimumSize, rect.height >= minimumSize else { return nil }
+        return rect
+    }
+
+    /// `selection` as ScreenCaptureKit's `sourceRect`: relative to the display, origin at its top left.
+    public static func sourceRect(_ selection: CGRect, in screen: CGRect) -> CGRect {
+        CGRect(x: selection.minX - screen.minX, y: screen.maxY - selection.maxY, width: selection.width, height: selection.height)
+    }
+}
+
 /// Elapsed time of a recording that can be paused: the time spent paused does not count.
 public struct RecordingClock: Equatable, Sendable {
     public let startedAt: Date

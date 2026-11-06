@@ -159,7 +159,8 @@ final class ScreenRecorder: NSObject, SCStreamOutput, SCStreamDelegate {
         FileManager.default.urls(for: .moviesDirectory, in: .userDomainMask)[0].appendingPathComponent("Mickey", isDirectory: true)
     }
 
-    func start(on screen: NSScreen, settings: RecorderSettings) {
+    /// `region` is the part of the screen to record, in Cocoa screen coordinates; nil records the whole screen.
+    func start(on screen: NSScreen, settings: RecorderSettings, region: CGRect? = nil) {
         guard stream == nil, !starting else { return }
         starting = true
         stopRequested = false
@@ -168,6 +169,12 @@ final class ScreenRecorder: NSObject, SCStreamOutput, SCStreamDelegate {
             do {
                 let (display, _, _) = try await ScreenCapture.target(for: screen)
                 let config = ScreenCapture.configuration(for: screen, showsCursor: settings.showCursor)
+                if let region {
+                    let source = RecordingRegion.sourceRect(region, in: screen.frame)
+                    config.sourceRect = source
+                    config.width = Int(source.width * screen.backingScaleFactor)
+                    config.height = Int(source.height * screen.backingScaleFactor)
+                }
                 // Keep files and encoding load reasonable on large Retina screens.
                 (config.width, config.height) = settings.quality.outputSize(width: config.width, height: config.height)
                 config.minimumFrameInterval = CMTime(value: 1, timescale: CMTimeScale(settings.frameRate))

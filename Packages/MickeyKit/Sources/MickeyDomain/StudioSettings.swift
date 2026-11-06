@@ -145,6 +145,20 @@ public enum RecordingQuality: String, CaseIterable, Codable, Sendable, Identifia
     }
 }
 
+/// What a recording covers.
+public enum RecordingArea: String, CaseIterable, Codable, Sendable, Identifiable {
+    case screen, region
+
+    public var id: String { rawValue }
+
+    public var title: String {
+        switch self {
+        case .screen: tr("Whole Screen")
+        case .region: tr("Selected Region")
+        }
+    }
+}
+
 /// Screen recording to a movie file.
 public struct RecorderSettings: Codable, Equatable, Sendable {
     public var showCursor = true
@@ -152,6 +166,7 @@ public struct RecorderSettings: Codable, Equatable, Sendable {
     public var countdown = 3
     public var quality = RecordingQuality.uhd
     public var frameRate = 60
+    public var area = RecordingArea.screen
     public init() {}
 
     public static let countdownRange = 0...10

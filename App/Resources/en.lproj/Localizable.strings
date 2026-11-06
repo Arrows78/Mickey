@@ -33,6 +33,7 @@
 "Annotations won't draw" = "Annotations won't draw";
 "Apply" = "Apply";
 "Apply a preset while a meeting, presentation or recording app is running, and restore your settings afterwards." = "Apply a preset while a meeting, presentation or recording app is running, and restore your settings afterwards.";
+"Area" = "Area";
 "Arrow" = "Arrow";
 "At least one of Menu Bar or Dock stays on so Mickey is always reachable." = "At least one of Menu Bar or Dock stays on so Mickey is always reachable.";
 "Audible click" = "Audible click";
@@ -114,6 +115,7 @@
 "Displays the shortcuts you press in a bar on screen. Needs Input Monitoring. Shortcuts Only (on by default) never shows plain typing." = "Displays the shortcuts you press in a bar on screen. Needs Input Monitoring. Shortcuts Only (on by default) never shows plain typing.";
 "Dots" = "Dots";
 "Drag the bubble anywhere on the screen." = "Drag the bubble anywhere on the screen.";
+"Drag to choose the area to record. Esc cancels." = "Drag to choose the area to record. Esc cancels.";
 "Draw arrows, shapes and freehand notes on top of everything." = "Draw arrows, shapes and freehand notes on top of everything.";
 "Drawing on screen" = "Drawing on screen";
 "Draws a ring around the pointer. Choose size, thickness, color, glow and pulse animation." = "Draws a ring around the pointer. Choose size, thickness, color, glow and pulse animation.";
@@ -339,6 +341,7 @@
 "Screens wider than the chosen quality are scaled down. 30 fps and lower quality make smaller files." = "Screens wider than the chosen quality are scaled down. 30 fps and lower quality make smaller files.";
 "Search help (⌘F)" = "Search help (⌘F)";
 "Select All" = "Select All";
+"Selected Region" = "Selected Region";
 "Sensitivity" = "Sensitivity";
 "Setting hotkeys" = "Setting hotkeys";
 "Settings could not be exported: %@" = "Settings could not be exported: %@";
@@ -471,7 +474,9 @@
 "When several watched apps run, the first one in this list decides." = "When several watched apps run, the first one in this list decides.";
 "While drawing: F freehand · A arrow · R rectangle · C circle · L line · H highlighter · T text · N callout · ⌘Z undo · ⇧⌘Z redo · ⌘C copy image · ⌘⌫ clear · Esc stop." = "While drawing: F freehand · A arrow · R rectangle · C circle · L line · H highlighter · T text · N callout · ⌘Z undo · ⇧⌘Z redo · ⌘C copy image · ⌘⌫ clear · Esc stop.";
 "White" = "White";
+"Whole Screen" = "Whole Screen";
 "Window" = "Window";
+"With Selected Region, you drag the area to record each time you start." = "With Selected Region, you drag the area to record each time you start.";
 "Works best with a Toggle Spotlight hotkey. Cannot be combined with Hold a Key to Show." = "Works best with a Toggle Spotlight hotkey. Cannot be combined with Hold a Key to Show.";
 "Yellow" = "Yellow";
 "close all windows" = "close all windows";
