@@ -1,5 +1,6 @@
 import AppKit
 import SwiftUI
+import MickeyDomain
 import MickeyUI
 
 /// Titled panel that closes on Escape and survives app deactivation.
@@ -40,7 +41,7 @@ final class WindowCoordinator: NSObject, NSWindowDelegate {
     }
 
     private func makeSettingsPanel(model: AppModel) -> NSPanel {
-        let panel = makePanel(title: "Mickey Settings", styleMask: [.titled, .closable, .miniaturizable, .resizable])
+        let panel = makePanel(title: tr("Mickey Settings"), styleMask: [.titled, .closable, .miniaturizable, .resizable])
         panel.contentViewController = NSHostingController(rootView: SettingsRootView(model: model))
         panel.setContentSize(NSSize(width: 940, height: 720))
         panel.setFrameAutosaveName("MickeySettings")

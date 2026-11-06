@@ -87,7 +87,7 @@ public enum HelpContent {
         guard !q.isEmpty else { return entries }
         let terms = q.split(separator: " ").map(String.init)
         return entries.filter { e in
-            let hay = "\(e.group) \(e.title) \(e.body)".lowercased()
+            let hay = "\(tr(e.group)) \(tr(e.title)) \(tr(e.body))".lowercased()
             return terms.allSatisfy(hay.contains)
         }
     }
@@ -124,8 +124,8 @@ struct HelpPage: View {
                 FeatureCard(title: group, symbol: "book") {
                     ForEach(items) { entry in
                         VStack(alignment: .leading, spacing: 4) {
-                            Text(entry.title).font(.subheadline.bold())
-                            Text(entry.body).foregroundStyle(.secondary).fixedSize(horizontal: false, vertical: true)
+                            Text(tr(entry.title)).font(.subheadline.bold())
+                            Text(tr(entry.body)).foregroundStyle(.secondary).fixedSize(horizontal: false, vertical: true)
                             if let section = entry.section {
                                 Button("Open \(section.title) ›") { model.selectedSection = section }.buttonStyle(.link).font(.caption)
                             }

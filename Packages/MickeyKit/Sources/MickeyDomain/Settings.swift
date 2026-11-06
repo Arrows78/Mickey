@@ -22,14 +22,14 @@ public struct RGBAColor: Codable, Equatable, Hashable, Sendable {
     /// Name of a preset color, for tooltips and accessibility.
     public var presetName: String? {
         switch self {
-        case .red: "Red"
-        case .orange: "Orange"
-        case .yellow: "Yellow"
-        case .green: "Green"
-        case .blue: "Blue"
-        case .purple: "Purple"
-        case .white: "White"
-        case .black: "Black"
+        case .red: tr("Red")
+        case .orange: tr("Orange")
+        case .yellow: tr("Yellow")
+        case .green: tr("Green")
+        case .blue: tr("Blue")
+        case .purple: tr("Purple")
+        case .white: tr("White")
+        case .black: tr("Black")
         default: nil
         }
     }

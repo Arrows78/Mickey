@@ -948,3 +948,20 @@ struct InteractionTests {
         #expect(session.update(settings: first, running: [zoom, "com.apple.FaceTime"]) == nil)
     }
 }
+
+@Suite("Localization") struct LocalizationTests {
+    @Test func aTextWithoutTranslationIsShownAsIs() {
+        #expect(tr("A text nobody translated") == "A text nobody translated")
+    }
+
+    @Test func placeholdersAreFilledIn() {
+        #expect(trf("Settings exported to %@.", "a.json") == "Settings exported to a.json.")
+        #expect(trf("Step %lld of %lld", 2, 4) == "Step 2 of 4")
+    }
+
+    @Test func displayNamesComeFromTheKeys() {
+        #expect(SpotlightShape.circle.title == "Circle")
+        #expect(HotkeyAction.toggleRing.title == "Toggle Ring")
+        #expect(Permission.camera.title == "Camera")
+    }
+}

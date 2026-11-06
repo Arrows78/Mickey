@@ -9,17 +9,17 @@ public enum Preset: String, CaseIterable, Codable, Sendable, Identifiable {
 
     public var title: String {
         switch self {
-        case .presentation: "Presentation"
-        case .tutorial: "Tutorial Video"
-        case .discreet: "Discreet"
+        case .presentation: tr("Presentation")
+        case .tutorial: tr("Tutorial Video")
+        case .discreet: tr("Discreet")
         }
     }
 
     public var detail: String {
         switch self {
-        case .presentation: "Ring, click feedback and spotlight on a key hold — easy to follow on a projector."
-        case .tutorial: "Ring, click feedback and sounds, and on-screen shortcuts for recordings."
-        case .discreet: "Only shake to locate and a click flash on demand."
+        case .presentation: tr("Ring, click feedback and spotlight on a key hold — easy to follow on a projector.")
+        case .tutorial: tr("Ring, click feedback and sounds, and on-screen shortcuts for recordings.")
+        case .discreet: tr("Only shake to locate and a click flash on demand.")
         }
     }
 

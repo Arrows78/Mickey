@@ -11,7 +11,7 @@ struct AnnotationsPage: View {
                         subtitle: "Hold Fn (🌐) to draw, or use the Toggle Annotation Mode hotkey, or Start Drawing in the menu bar.",
                         isOn: model.binding(\.annotations.enabled)) {
                 HStack {
-                    Button(model.isDrawing ? "Stop Drawing" : "Start Drawing") { model.actions?.toggleDrawing() }
+                    Button(tr(model.isDrawing ? "Stop Drawing" : "Start Drawing")) { model.actions?.toggleDrawing() }
                         .help(model.tooltip(.toggleAnnotationMode, title: model.isDrawing ? "Stop drawing" : "Start drawing"))
                     Spacer()
                 }
@@ -227,7 +227,7 @@ struct SupportPage: View {
                 Text("Copy a summary of your setup (version, macOS, permissions, settings) to paste into a bug report. It contains no personal data.")
                     .font(.callout).foregroundStyle(.secondary)
                 HStack {
-                    Button(copied ? "Copied" : "Copy Diagnostics") { copyDiagnostics() }
+                    Button(tr(copied ? "Copied" : "Copy Diagnostics")) { copyDiagnostics() }
                     Button("Show Recordings") { model.actions?.revealRecordings() }
                 }
             }

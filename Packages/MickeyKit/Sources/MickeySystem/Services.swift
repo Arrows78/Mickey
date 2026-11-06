@@ -23,8 +23,8 @@ public final class LoginItemService {
             return state
         } catch {
             let message = enabled
-                ? "macOS could not add Mickey to your login items. You can add it in System Settings › General › Login Items."
-                : "macOS could not remove Mickey from your login items. You can remove it in System Settings › General › Login Items."
+                ? tr("macOS could not add Mickey to your login items. You can add it in System Settings › General › Login Items.")
+                : tr("macOS could not remove Mickey from your login items. You can remove it in System Settings › General › Login Items.")
             return state == .requiresApproval ? .requiresApproval : .failed(message)
         }
     }
@@ -69,8 +69,8 @@ public final class SoundPlayer {
     /// Shows an open panel and returns a bookmark for the chosen audio file.
     public static func chooseCustomSound() -> SoundReference? {
         let panel = NSOpenPanel()
-        panel.title = "Choose a Click Sound"
-        panel.message = "Pick an audio file to play on each click."
+        panel.title = tr("Choose a Click Sound")
+        panel.message = tr("Pick an audio file to play on each click.")
         panel.allowedContentTypes = [.audio]
         panel.allowsMultipleSelection = false
         NSApp.activate(ignoringOtherApps: true)

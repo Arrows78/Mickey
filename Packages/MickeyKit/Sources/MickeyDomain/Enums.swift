@@ -5,9 +5,9 @@ public enum SpotlightShape: String, CaseIterable, Codable, Sendable {
 
     public var title: String {
         switch self {
-        case .circle: "Circle"
-        case .horizontalBar: "Horizontal Bar"
-        case .verticalBar: "Vertical Bar"
+        case .circle: tr("Circle")
+        case .horizontalBar: tr("Horizontal Bar")
+        case .verticalBar: tr("Vertical Bar")
         }
     }
 }
@@ -18,11 +18,11 @@ public enum TriggerKey: String, CaseIterable, Codable, Sendable {
 
     public var title: String {
         switch self {
-        case .leftControl: "Left Control (⌃)"
-        case .rightCommand: "Right Command (⌘)"
-        case .rightOption: "Right Option (⌥)"
-        case .rightShift: "Right Shift (⇧)"
-        case .rightControl: "Right Control (⌃)"
+        case .leftControl: tr("Left Control (⌃)")
+        case .rightCommand: tr("Right Command (⌘)")
+        case .rightOption: tr("Right Option (⌥)")
+        case .rightShift: tr("Right Shift (⇧)")
+        case .rightControl: tr("Right Control (⌃)")
         }
     }
 
@@ -50,9 +50,9 @@ public enum TriggerKey: String, CaseIterable, Codable, Sendable {
     /// Caveat shown next to the picker, if any.
     public var caveat: String? {
         switch self {
-        case .leftControl: "Also used for Control-click and Mission Control. Increase the delay if it triggers by accident."
-        case .rightShift: "Repeated or long Shift presses can trigger Sticky Keys or Slow Keys when enabled in Accessibility."
-        case .rightControl: "Most Apple keyboards have no Right Control key."
+        case .leftControl: tr("Also used for Control-click and Mission Control. Increase the delay if it triggers by accident.")
+        case .rightShift: tr("Repeated or long Shift presses can trigger Sticky Keys or Slow Keys when enabled in Accessibility.")
+        case .rightControl: tr("Most Apple keyboards have no Right Control key.")
         case .rightCommand, .rightOption: nil
         }
     }
@@ -64,8 +64,8 @@ public enum LocatorStyle: String, CaseIterable, Codable, Sendable {
 
     public var title: String {
         switch self {
-        case .enlargedPointer: "Enlarged Pointer"
-        case .ring: "Shrinking Ring"
+        case .enlargedPointer: tr("Enlarged Pointer")
+        case .ring: tr("Shrinking Ring")
         }
     }
 }
@@ -75,13 +75,13 @@ public enum ClickEffectType: String, CaseIterable, Codable, Sendable {
 
     public var title: String {
         switch self {
-        case .singleRing: "Single Ring"
-        case .ripple: "Ripple"
-        case .ringBurst: "Ring Burst"
-        case .colorFlash: "Color Flash"
-        case .particleBurst: "Particle Burst"
-        case .glowPulse: "Glow Pulse"
-        case .scaleBounce: "Scale Bounce"
+        case .singleRing: tr("Single Ring")
+        case .ripple: tr("Ripple")
+        case .ringBurst: tr("Ring Burst")
+        case .colorFlash: tr("Color Flash")
+        case .particleBurst: tr("Particle Burst")
+        case .glowPulse: tr("Glow Pulse")
+        case .scaleBounce: tr("Scale Bounce")
         }
     }
 }
@@ -91,13 +91,13 @@ public enum TrailStyle: String, CaseIterable, Codable, Sendable {
 
     public var title: String {
         switch self {
-        case .solid: "Solid"
-        case .dots: "Dots"
-        case .dashed: "Dashed"
-        case .particles: "Particles"
-        case .glow: "Glow"
-        case .stars: "Stars"
-        case .image: "Hearts"
+        case .solid: tr("Solid")
+        case .dots: tr("Dots")
+        case .dashed: tr("Dashed")
+        case .particles: tr("Particles")
+        case .glow: tr("Glow")
+        case .stars: tr("Stars")
+        case .image: tr("Hearts")
         }
     }
 
@@ -115,14 +115,14 @@ public enum AnnotationTool: String, CaseIterable, Codable, Sendable {
 
     public var title: String {
         switch self {
-        case .freehand: "Freehand"
-        case .arrow: "Arrow"
-        case .rectangle: "Rectangle"
-        case .circle: "Circle"
-        case .line: "Line"
-        case .highlighter: "Highlighter"
-        case .text: "Text"
-        case .callout: "Callout"
+        case .freehand: tr("Freehand")
+        case .arrow: tr("Arrow")
+        case .rectangle: tr("Rectangle")
+        case .circle: tr("Circle")
+        case .line: tr("Line")
+        case .highlighter: tr("Highlighter")
+        case .text: tr("Text")
+        case .callout: tr("Callout")
         }
     }
 
@@ -173,19 +173,19 @@ public enum SettingsSection: String, CaseIterable, Codable, Sendable, Identifiab
 
     public var title: String {
         switch self {
-        case .effects: "Cursor Effects"
-        case .annotations: "Annotations"
-        case .keystrokes: "Keystrokes"
-        case .zoom: "Live Zoom"
-        case .loupe: "Loupe"
-        case .focus: "Focus"
-        case .recorder: "Recorder & Camera"
-        case .captions: "Captions"
-        case .hotkeys: "Hotkeys"
-        case .general: "General"
-        case .advanced: "Advanced"
-        case .help: "Help"
-        case .support: "Support"
+        case .effects: tr("Cursor Effects")
+        case .annotations: tr("Annotations")
+        case .keystrokes: tr("Keystrokes")
+        case .zoom: tr("Live Zoom")
+        case .loupe: tr("Loupe")
+        case .focus: tr("Focus")
+        case .recorder: tr("Recorder & Camera")
+        case .captions: tr("Captions")
+        case .hotkeys: tr("Hotkeys")
+        case .general: tr("General")
+        case .advanced: tr("Advanced")
+        case .help: tr("Help")
+        case .support: tr("Support")
         }
     }
 
@@ -217,22 +217,22 @@ public enum HotkeyAction: String, CaseIterable, Codable, CodingKeyRepresentable,
 
     public var title: String {
         switch self {
-        case .toggleMaster: "Toggle Mickey"
-        case .toggleSpotlight: "Toggle Spotlight"
-        case .toggleRing: "Toggle Ring"
-        case .toggleTrail: "Toggle Trail"
-        case .toggleClickFeedback: "Toggle Click Feedback"
-        case .toggleClickSound: "Toggle Click Sounds"
-        case .showClickEffect: "Show Click Effect"
-        case .toggleShakeToLocate: "Toggle Shake to Locate"
-        case .toggleAnnotationMode: "Toggle Annotation Mode"
-        case .toggleKeystrokes: "Toggle Keystrokes"
-        case .toggleLiveZoom: "Toggle Live Zoom"
-        case .toggleLoupe: "Toggle Loupe"
-        case .toggleFocus: "Toggle Focus"
-        case .toggleCameraBubble: "Toggle Camera Bubble"
-        case .toggleCaptions: "Toggle Captions"
-        case .toggleRecording: "Start / Stop Recording"
+        case .toggleMaster: tr("Toggle Mickey")
+        case .toggleSpotlight: tr("Toggle Spotlight")
+        case .toggleRing: tr("Toggle Ring")
+        case .toggleTrail: tr("Toggle Trail")
+        case .toggleClickFeedback: tr("Toggle Click Feedback")
+        case .toggleClickSound: tr("Toggle Click Sounds")
+        case .showClickEffect: tr("Show Click Effect")
+        case .toggleShakeToLocate: tr("Toggle Shake to Locate")
+        case .toggleAnnotationMode: tr("Toggle Annotation Mode")
+        case .toggleKeystrokes: tr("Toggle Keystrokes")
+        case .toggleLiveZoom: tr("Toggle Live Zoom")
+        case .toggleLoupe: tr("Toggle Loupe")
+        case .toggleFocus: tr("Toggle Focus")
+        case .toggleCameraBubble: tr("Toggle Camera Bubble")
+        case .toggleCaptions: tr("Toggle Captions")
+        case .toggleRecording: tr("Start / Stop Recording")
         }
     }
 
@@ -293,22 +293,22 @@ public enum HotkeyAction: String, CaseIterable, Codable, CodingKeyRepresentable,
 
     public var detail: String {
         switch self {
-        case .toggleMaster: "Turn every effect on or off"
-        case .toggleSpotlight: "Dim the screen around the pointer"
-        case .toggleRing: "Ring that follows the pointer"
-        case .toggleTrail: "Trail behind the pointer"
-        case .toggleClickFeedback: "Visual effect on clicks"
-        case .toggleClickSound: "Audible click"
-        case .showClickEffect: "Flash the click effect at the pointer"
-        case .toggleShakeToLocate: "Shake the mouse to find the pointer"
-        case .toggleAnnotationMode: "Enter or leave drawing mode"
-        case .toggleKeystrokes: "Show typed shortcuts on screen"
-        case .toggleLiveZoom: "Magnify the whole screen around the pointer"
-        case .toggleLoupe: "Magnifying glass that follows the pointer"
-        case .toggleFocus: "Dim everything but the front window"
-        case .toggleCameraBubble: "Floating webcam bubble"
-        case .toggleCaptions: "Live subtitles from the microphone"
-        case .toggleRecording: "Record the screen to a movie"
+        case .toggleMaster: tr("Turn every effect on or off")
+        case .toggleSpotlight: tr("Dim the screen around the pointer")
+        case .toggleRing: tr("Ring that follows the pointer")
+        case .toggleTrail: tr("Trail behind the pointer")
+        case .toggleClickFeedback: tr("Visual effect on clicks")
+        case .toggleClickSound: tr("Audible click")
+        case .showClickEffect: tr("Flash the click effect at the pointer")
+        case .toggleShakeToLocate: tr("Shake the mouse to find the pointer")
+        case .toggleAnnotationMode: tr("Enter or leave drawing mode")
+        case .toggleKeystrokes: tr("Show typed shortcuts on screen")
+        case .toggleLiveZoom: tr("Magnify the whole screen around the pointer")
+        case .toggleLoupe: tr("Magnifying glass that follows the pointer")
+        case .toggleFocus: tr("Dim everything but the front window")
+        case .toggleCameraBubble: tr("Floating webcam bubble")
+        case .toggleCaptions: tr("Live subtitles from the microphone")
+        case .toggleRecording: tr("Record the screen to a movie")
         }
     }
 }
@@ -322,19 +322,19 @@ public enum MenuBarItem: String, CaseIterable, Codable, Sendable, Identifiable {
 
     public var title: String {
         switch self {
-        case .spotlight: "Spotlight"
-        case .ring: "Ring"
-        case .clickFeedback: "Click Feedback"
-        case .clickSound: "Click Sounds"
-        case .trail: "Trail"
-        case .shake: "Shake to Locate"
-        case .annotations: "Annotations"
-        case .keystrokes: "Keystrokes"
-        case .liveZoom: "Live Zoom"
-        case .loupe: "Loupe"
-        case .focus: "Focus"
-        case .cameraBubble: "Camera Bubble"
-        case .captions: "Captions"
+        case .spotlight: tr("Spotlight")
+        case .ring: tr("Ring")
+        case .clickFeedback: tr("Click Feedback")
+        case .clickSound: tr("Click Sounds")
+        case .trail: tr("Trail")
+        case .shake: tr("Shake to Locate")
+        case .annotations: tr("Annotations")
+        case .keystrokes: tr("Keystrokes")
+        case .liveZoom: tr("Live Zoom")
+        case .loupe: tr("Loupe")
+        case .focus: tr("Focus")
+        case .cameraBubble: tr("Camera Bubble")
+        case .captions: tr("Captions")
         }
     }
 

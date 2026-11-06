@@ -223,7 +223,7 @@ final class CanvasView: NSView {
         field.drawsBackground = false
         field.isBordered = false
         field.focusRingType = .none
-        field.placeholderString = "Type…"
+        field.placeholderString = tr("Type…")
         field.target = self
         field.action = #selector(commitText)
         addSubview(field)

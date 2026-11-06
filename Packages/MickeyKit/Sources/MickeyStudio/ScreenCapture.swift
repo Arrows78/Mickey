@@ -1,6 +1,7 @@
 import AppKit
 import CoreMedia
 import ScreenCaptureKit
+import MickeyDomain
 import MickeyEffects
 
 /// IOSurface handed from the capture queue to the main thread.
@@ -45,7 +46,7 @@ enum ScreenCapture {
 enum CaptureError: LocalizedError {
     case displayNotFound
 
-    var errorDescription: String? { "The screen to capture could not be found." }
+    var errorDescription: String? { tr("The screen to capture could not be found.") }
 }
 
 extension NSScreen {

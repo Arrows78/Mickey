@@ -38,7 +38,7 @@ public struct SettingsRootView: View {
             .padding(.horizontal, 12).padding(.vertical, 16)
             ForEach(SettingsSection.allCases) { section in
                 if section == .keystrokes || section == .hotkeys {
-                    Text(section == .keystrokes ? "PRESENTER TOOLS" : "SETTINGS")
+                    Text(tr(section == .keystrokes ? "PRESENTER TOOLS" : "SETTINGS"))
                         .font(.caption2.weight(.semibold)).foregroundStyle(.secondary)
                         .padding(.horizontal, 20).padding(.top, 10)
                 }
@@ -83,7 +83,7 @@ public struct SettingsRootView: View {
         HStack {
             Circle().fill(model.settings.general.masterEnabled ? Color.green : Color.secondary).frame(width: 8, height: 8)
                 .accessibilityHidden(true)
-            Text(model.settings.general.masterEnabled ? "Mickey is on — cursor effects are active." : "Mickey is off.")
+            Text(tr(model.settings.general.masterEnabled ? "Mickey is on — cursor effects are active." : "Mickey is off."))
                 .font(.callout)
             Spacer()
             Toggle("Enable", isOn: model.binding(\.general.masterEnabled)).toggleStyle(.switch).controlSize(.small)
@@ -128,7 +128,7 @@ public struct StatusPopoverView: View {
             if model.settings.annotations.enabled {
                 Divider()
                 HStack {
-                    Button(model.isDrawing ? "Stop Drawing" : "Start Drawing") { model.actions?.toggleDrawing() }
+                    Button(tr(model.isDrawing ? "Stop Drawing" : "Start Drawing")) { model.actions?.toggleDrawing() }
                         .help(model.tooltip(.toggleAnnotationMode, title: model.isDrawing ? "Stop drawing" : "Start drawing"))
                     Spacer()
                     if let combo = model.settings.hotkeys[.toggleAnnotationMode] {
@@ -140,7 +140,7 @@ public struct StatusPopoverView: View {
             Divider()
             HStack {
                 Button { model.actions?.toggleRecording() } label: {
-                    Label(model.isRecording ? "Stop Recording" : "Record Screen",
+                    Label(tr(model.isRecording ? "Stop Recording" : "Record Screen"),
                           systemImage: model.isRecording ? "stop.circle.fill" : "record.circle")
                 }
                 .foregroundStyle(model.isRecording ? .red : .primary)
@@ -153,7 +153,7 @@ public struct StatusPopoverView: View {
                 .help("Switch several effects at once")
             }
             if let message = model.studioMessage {
-                Text(message).font(.caption).foregroundStyle(.orange).fixedSize(horizontal: false, vertical: true)
+                Text(tr(message)).font(.caption).foregroundStyle(.orange).fixedSize(horizontal: false, vertical: true)
             }
             Divider()
             HStack {
@@ -194,8 +194,8 @@ public struct OnboardingView: View {
                             .background(Circle().fill(.background)).offset(x: 10, y: 4)
                     }
                 }
-            Text(s.1).font(.title.bold())
-            Text(s.2).multilineTextAlignment(.center).foregroundStyle(.secondary).frame(maxWidth: 380)
+            Text(tr(s.1)).font(.title.bold())
+            Text(tr(s.2)).multilineTextAlignment(.center).foregroundStyle(.secondary).frame(maxWidth: 380)
             switch step {
             case 1: Toggle("Turn on Spotlight", isOn: model.binding(\.spotlight.enabled)).toggleStyle(.switch)
             case 2: Toggle("Turn on Ring", isOn: model.binding(\.ring.enabled)).toggleStyle(.switch)
@@ -211,7 +211,7 @@ public struct OnboardingView: View {
             HStack {
                 if step < steps.count - 1 { Button("Skip") { finish() } }
                 Spacer()
-                Button(step == steps.count - 1 ? "Get Started" : "Continue") {
+                Button(tr(step == steps.count - 1 ? "Get Started" : "Continue")) {
                     if step == steps.count - 1 { finish() } else { withAnimation { step += 1 } }
                 }
                 .keyboardShortcut(.defaultAction)

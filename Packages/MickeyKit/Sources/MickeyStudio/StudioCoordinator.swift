@@ -20,7 +20,7 @@ public final class StudioCoordinator {
 
     public init() {
         keystrokes.onPermissionMissing = { [weak self] in
-            self?.onMessage?("Keystrokes need Input Monitoring: allow Mickey in System Settings › Privacy & Security.")
+            self?.onMessage?(tr("Keystrokes need Input Monitoring: allow Mickey in System Settings › Privacy & Security."))
         }
         magnifier.onError = { [weak self] in self?.onMessage?($0) }
         camera.onError = { [weak self] in self?.onMessage?($0) }
@@ -30,7 +30,7 @@ public final class StudioCoordinator {
             guard let self else { return }
             onRecordingChanged?(false, nil)
             if let url { onRecordingSaved?(url) }
-            if let error { onMessage?("Recording: \(error)") }
+            if let error { onMessage?(trf("Recording: %@", error)) }
         }
     }
 
@@ -76,7 +76,7 @@ public final class StudioCoordinator {
         if countdown.isRunning { countdown.cancel(); return }
         if recorder.isRecording { recorder.stop(); return }
         guard Permissions.status(.screenRecording) == .granted else {
-            onMessage?("Recording needs Screen Recording access: allow Mickey in System Settings › Privacy & Security.")
+            onMessage?(tr("Recording needs Screen Recording access: allow Mickey in System Settings › Privacy & Security."))
             Permissions.request(.screenRecording) { _ in }
             return
         }

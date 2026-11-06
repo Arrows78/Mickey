@@ -1,0 +1,4 @@
+/* Mickey — textes des demandes d’autorisation. */
+"NSCameraUsageDescription" = "Mickey affiche votre webcam dans la bulle caméra.";
+"NSMicrophoneUsageDescription" = "Mickey écoute votre voix pour afficher les sous-titres en direct.";
+"NSSpeechRecognitionUsageDescription" = "Mickey transforme votre voix en sous-titres, sur votre Mac lorsque la langue le permet.";

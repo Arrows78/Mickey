@@ -89,12 +89,12 @@ final class Captions {
 
     private func start() {
         guard Permissions.status(.microphone) == .granted, Permissions.status(.speechRecognition) == .granted else {
-            onError?("Captions need Microphone and Speech Recognition access.")
+            onError?(tr("Captions need Microphone and Speech Recognition access."))
             return
         }
         let locale = model.settings.language.isEmpty ? Locale.current : Locale(identifier: model.settings.language)
         guard let recognizer = SFSpeechRecognizer(locale: locale), recognizer.isAvailable else {
-            onError?("Speech recognition is not available for \(locale.localizedString(forIdentifier: locale.identifier) ?? locale.identifier).")
+            onError?(trf("Speech recognition is not available for %@.", locale.localizedString(forIdentifier: locale.identifier) ?? locale.identifier))
             return
         }
         self.recognizer = recognizer
@@ -104,7 +104,7 @@ final class Captions {
         engine.prepare()
         do { try engine.start() } catch {
             input.removeTap(onBus: 0)
-            onError?("The microphone could not start: \(error.localizedDescription)")
+            onError?(trf("The microphone could not start: %@", error.localizedDescription))
             return
         }
         running = true

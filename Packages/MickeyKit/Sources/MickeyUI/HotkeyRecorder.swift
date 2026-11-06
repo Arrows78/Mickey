@@ -19,7 +19,7 @@ struct HotkeyRecorder: View {
         VStack(alignment: .trailing, spacing: 2) {
             HStack(spacing: 4) {
                 Button { recording ? stop() : start() } label: {
-                    Text(recording ? "Press shortcut…" : (combo.map(KeyboardLayout.displayString) ?? "Record Shortcut"))
+                    Text(recording ? tr("Press shortcut…") : (combo.map(KeyboardLayout.displayString) ?? tr("Record Shortcut")))
                         .frame(minWidth: 130)
                         .foregroundStyle(combo == nil && !recording ? .secondary : .primary)
                 }
@@ -29,7 +29,7 @@ struct HotkeyRecorder: View {
                         .buttonStyle(.plain).foregroundStyle(.secondary).accessibilityLabel("Clear shortcut").help("Clear shortcut")
                 }
             }
-            if let error { Text(error).font(.caption2).foregroundStyle(.orange) }
+            if let error { Text(tr(error)).font(.caption2).foregroundStyle(.orange) }
         }
         .onDisappear(perform: stop)
         .onReceive(NotificationCenter.default.publisher(for: NSApplication.didResignActiveNotification)) { _ in stop() }

@@ -216,16 +216,16 @@ final class CameraBubble {
 
     private func start() -> Bool {
         guard Permissions.status(.camera) == .granted else {
-            onError?("Camera access is needed for the bubble.")
+            onError?(tr("Camera access is needed for the bubble."))
             return false
         }
         guard let device = AVCaptureDevice.default(for: .video), let input = try? AVCaptureDeviceInput(device: device) else {
-            onError?("No camera was found.")
+            onError?(tr("No camera was found."))
             return false
         }
         let session = AVCaptureSession()
         session.sessionPreset = .high
-        guard session.canAddInput(input) else { onError?("The camera is in use by another app."); return false }
+        guard session.canAddInput(input) else { onError?(tr("The camera is in use by another app.")); return false }
         session.addInput(input)
         let preview = AVCaptureVideoPreviewLayer(session: session)
         preview.videoGravity = .resizeAspectFill

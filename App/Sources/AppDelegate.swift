@@ -117,8 +117,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             if old != nil { checkMenuBarIcon() }
         }
         statusItem?.isDimmed = !s.general.masterEnabled
-        let toggle = s.hotkeys[.toggleMaster].map { " — \(KeyboardLayout.displayString($0)) to turn \(s.general.masterEnabled ? "off" : "on")" } ?? ""
-        statusItem?.toolTip = "Mickey is \(s.general.masterEnabled ? "on" : "off")\(toggle)"
+        let toggle = s.hotkeys[.toggleMaster].map { " — " + trf(s.general.masterEnabled ? "%@ to turn off" : "%@ to turn on", KeyboardLayout.displayString($0)) } ?? ""
+        statusItem?.toolTip = tr(s.general.masterEnabled ? "Mickey is on" : "Mickey is off") + toggle
         studio.apply(s, old: old)
         if old?.autoMode != s.autoMode {
             if s.autoMode.enabled { appWatcher.start() } else { appWatcher.stop() }
@@ -292,7 +292,7 @@ extension AppDelegate: AppActions {
 
     func chooseSettingsExportURL() -> URL? {
         let panel = NSSavePanel()
-        panel.title = "Export Mickey Settings"
+        panel.title = tr("Export Mickey Settings")
         panel.allowedContentTypes = [.json]
         panel.nameFieldStringValue = "Mickey Settings.json"
         NSApp.activate(ignoringOtherApps: true)
@@ -301,7 +301,7 @@ extension AppDelegate: AppActions {
 
     func chooseSettingsImportURL() -> URL? {
         let panel = NSOpenPanel()
-        panel.title = "Import Mickey Settings"
+        panel.title = tr("Import Mickey Settings")
         panel.allowedContentTypes = [.json]
         panel.allowsMultipleSelection = false
         NSApp.activate(ignoringOtherApps: true)

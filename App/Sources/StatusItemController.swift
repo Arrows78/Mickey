@@ -1,5 +1,6 @@
 import AppKit
 import SwiftUI
+import MickeyDomain
 import MickeyUI
 import os
 
@@ -52,7 +53,7 @@ final class StatusItemController: NSObject {
     var isRecording = false {
         didSet {
             item.button?.image = NSImage(systemSymbolName: isRecording ? "record.circle.fill" : "cursorarrow.rays",
-                                         accessibilityDescription: isRecording ? "Mickey — recording" : "Mickey")
+                                         accessibilityDescription: isRecording ? tr("Mickey — recording") : "Mickey")
             item.button?.contentTintColor = isRecording ? .systemRed : nil
         }
     }

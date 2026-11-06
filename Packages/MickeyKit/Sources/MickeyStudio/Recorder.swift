@@ -55,7 +55,7 @@ nonisolated final class RecordingSink: @unchecked Sendable {
         lock.withLock {
             guard started else {
                 writer.cancelWriting()
-                completion("No frame was captured.")
+                completion(tr("No frame was captured."))
                 return
             }
             video.markAsFinished()
@@ -140,7 +140,7 @@ final class ScreenRecorder: NSObject, SCStreamOutput, SCStreamDelegate {
         Task { [weak self] in
             try? await stream.stopCapture()
             guard let sink = box.current else {
-                self?.onFinished?(nil, "Recording failed.")
+                self?.onFinished?(nil, tr("Recording failed."))
                 self?.finishStopping()
                 return
             }

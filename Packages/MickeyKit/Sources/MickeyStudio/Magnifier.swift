@@ -53,7 +53,7 @@ final class Magnifier {
             panel.rootLayer.addSublayer(image)
         }
         source.onFrame = { [weak self] surface in self?.show(surface) }
-        source.onError = { [weak self] message in self?.onError?("Magnifier: \(message)") }
+        source.onError = { [weak self] message in self?.onError?(trf("Magnifier: %@", message)) }
     }
 
     var isActive: Bool { zoom.enabled || loupe.enabled }

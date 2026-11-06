@@ -26,10 +26,10 @@ enum HotkeyConflict: Equatable {
 
     var message: String {
         switch self {
-        case .system: "Already used by macOS (System Settings › Keyboard › Keyboard Shortcuts)."
-        case .action(let name): "Already used by \(name)."
-        case .userAppShortcut(let item): "Also your app shortcut for “\(item)”; Mickey will take it from every app."
-        case .commonAppShortcut(let use): "Often used by apps (\(use)); Mickey will take it from every app."
+        case .system: tr("Already used by macOS (System Settings › Keyboard › Keyboard Shortcuts).")
+        case .action(let name): trf("Already used by %@.", name)
+        case .userAppShortcut(let item): trf("Also your app shortcut for “%@”; Mickey will take it from every app.", item)
+        case .commonAppShortcut(let use): trf("Often used by apps (%@); Mickey will take it from every app.", tr(use))
         }
     }
 

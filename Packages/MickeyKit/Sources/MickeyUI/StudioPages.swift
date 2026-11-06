@@ -17,7 +17,7 @@ struct PermissionRow: View {
             }
             Spacer()
             if status != .granted {
-                Button(status == .denied ? "Open System Settings" : "Allow…") { model.actions?.request(permission) }
+                Button(tr(status == .denied ? "Open System Settings" : "Allow…")) { model.actions?.request(permission) }
             }
         }
     }
@@ -131,7 +131,7 @@ struct RecorderPage: View {
                 PermissionRow(model: model, permission: .screenRecording)
                 Divider()
                 HStack {
-                    Button(model.isRecording ? "Stop Recording" : "Start Recording") { model.actions?.toggleRecording() }
+                    Button(tr(model.isRecording ? "Stop Recording" : "Start Recording")) { model.actions?.toggleRecording() }
                         .keyboardShortcut(.defaultAction)
                         .help(model.tooltip(.toggleRecording, title: model.isRecording ? "Stop recording" : "Start recording after the countdown"))
                     if let start = model.recordingStartedAt {
@@ -180,7 +180,7 @@ struct CaptionsPage: View {
                 PermissionRow(model: model, permission: .speechRecognition)
                 Divider()
                 PickerRow(title: "Language", selection: model.binding(\.captions.language), options: Self.languages) { id in
-                    Text(id.isEmpty ? "System Language" : Locale.current.localizedString(forIdentifier: id) ?? id)
+                    Text(id.isEmpty ? tr("System Language") : Locale.current.localizedString(forIdentifier: id) ?? id)
                 }
                 PickerRow(title: "Position", selection: model.binding(\.captions.position), options: [HUDPosition.bottomCenter, .topCenter]) {
                     Text($0.title)
@@ -226,7 +226,7 @@ struct AutoModeCard: View {
             Text("Preset per app").font(.subheadline.weight(.medium))
             ForEach(model.settings.autoMode.bundleIDs, id: \.self) { id in
                 PickerRow(title: AutoModeSettings.appNames[id] ?? id, selection: model.binding(\.autoMode.appPresets[id]),
-                          options: [nil] + Preset.allCases.map(Optional.some)) { Text($0?.title ?? "Default preset") }
+                          options: [nil] + Preset.allCases.map(Optional.some)) { Text($0?.title ?? tr("Default preset")) }
             }
             NoteView(text: "When several watched apps run, the first one in this list decides.")
         }

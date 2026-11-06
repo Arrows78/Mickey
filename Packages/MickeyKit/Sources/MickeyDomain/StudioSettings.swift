@@ -6,10 +6,10 @@ public enum HUDPosition: String, CaseIterable, Codable, Sendable {
 
     public var title: String {
         switch self {
-        case .bottomCenter: "Bottom Center"
-        case .bottomLeft: "Bottom Left"
-        case .bottomRight: "Bottom Right"
-        case .topCenter: "Top Center"
+        case .bottomCenter: tr("Bottom Center")
+        case .bottomLeft: tr("Bottom Left")
+        case .bottomRight: tr("Bottom Right")
+        case .topCenter: tr("Top Center")
         }
     }
 }
@@ -19,10 +19,10 @@ public enum ScreenCorner: String, CaseIterable, Codable, Sendable {
 
     public var title: String {
         switch self {
-        case .bottomRight: "Bottom Right"
-        case .bottomLeft: "Bottom Left"
-        case .topRight: "Top Right"
-        case .topLeft: "Top Left"
+        case .bottomRight: tr("Bottom Right")
+        case .bottomLeft: tr("Bottom Left")
+        case .topRight: tr("Top Right")
+        case .topLeft: tr("Top Left")
         }
     }
 }
@@ -32,8 +32,8 @@ public enum BubbleShape: String, CaseIterable, Codable, Sendable {
 
     public var title: String {
         switch self {
-        case .circle: "Circle"
-        case .roundedSquare: "Rounded Square"
+        case .circle: tr("Circle")
+        case .roundedSquare: tr("Rounded Square")
         }
     }
 }
@@ -123,9 +123,9 @@ public enum RecordingQuality: String, CaseIterable, Codable, Sendable, Identifia
 
     public var title: String {
         switch self {
-        case .hd: "Full HD (1920 px)"
-        case .qhd: "QHD (2560 px)"
-        case .uhd: "4K (3840 px)"
+        case .hd: tr("Full HD (1920 px)")
+        case .qhd: tr("QHD (2560 px)")
+        case .uhd: tr("4K (3840 px)")
         }
     }
 
@@ -190,21 +190,21 @@ public enum Permission: String, CaseIterable, Sendable, Identifiable {
 
     public var title: String {
         switch self {
-        case .inputMonitoring: "Input Monitoring"
-        case .screenRecording: "Screen Recording"
-        case .camera: "Camera"
-        case .microphone: "Microphone"
-        case .speechRecognition: "Speech Recognition"
+        case .inputMonitoring: tr("Input Monitoring")
+        case .screenRecording: tr("Screen Recording")
+        case .camera: tr("Camera")
+        case .microphone: tr("Microphone")
+        case .speechRecognition: tr("Speech Recognition")
         }
     }
 
     public var reason: String {
         switch self {
-        case .inputMonitoring: "Needed to read which shortcuts you type. Mickey never records text."
-        case .screenRecording: "Needed to magnify the screen and to record it."
-        case .camera: "Needed to show your webcam in the bubble."
-        case .microphone: "Needed to hear you for live captions."
-        case .speechRecognition: "Needed to turn your voice into captions, on your Mac when supported."
+        case .inputMonitoring: tr("Needed to read which shortcuts you type. Mickey never records text.")
+        case .screenRecording: tr("Needed to magnify the screen and to record it.")
+        case .camera: tr("Needed to show your webcam in the bubble.")
+        case .microphone: tr("Needed to hear you for live captions.")
+        case .speechRecognition: tr("Needed to turn your voice into captions, on your Mac when supported.")
         }
     }
 }

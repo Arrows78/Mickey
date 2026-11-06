@@ -40,7 +40,7 @@ struct EffectsPage: View {
                       isOn: model.binding(\.spotlight.hideCursor))
             Divider()
             PickerRow(title: "Hold a Key to Show", selection: model.binding(\.spotlight.holdKey),
-                      options: [nil] + TriggerKey.allCases.map(Optional.some)) { Text($0?.title ?? "Always On") }
+                      options: [nil] + TriggerKey.allCases.map(Optional.some)) { Text($0?.title ?? tr("Always On")) }
             if s.holdKey != nil {
                 SliderRow(title: "Hold Delay", value: model.binding(\.spotlight.holdDelay), range: SpotlightSettings.holdDelayRange,
                           step: 0.05, format: seconds)
@@ -89,7 +89,7 @@ struct EffectsPage: View {
             ToggleRow(title: "Show on Mouse Clicks", detail: "Turn off to show the effect only on demand (key tap or hotkey).",
                       isOn: model.binding(\.click.showOnClicks))
             PickerRow(title: "Show With a Key Tap", selection: model.binding(\.click.tapKey),
-                      options: [nil] + TriggerKey.allCases.map(Optional.some)) { Text($0?.title ?? "None") }
+                      options: [nil] + TriggerKey.allCases.map(Optional.some)) { Text($0?.title ?? tr("None")) }
             if c.tapKey != nil { NoteView(text: "Tap the key on its own to flash the effect. Taps combined with another key, a click or a scroll are ignored.") }
             ForEach(SettingsRules.triggerKeyNotes(for: c.tapKey, role: .clickTap, settings: model.settings), id: \.self) {
                 NoteView(text: $0, warning: true)
@@ -107,7 +107,7 @@ struct EffectsPage: View {
             SliderRow(title: "Volume", value: model.binding(\.click.soundVolume), range: 0...1, format: percent)
             HStack {
                 Text("Sound").frame(width: 150, alignment: .leading)
-                Text(c.customSound?.displayName ?? "Default click").foregroundStyle(.secondary)
+                Text(c.customSound?.displayName ?? tr("Default click")).foregroundStyle(.secondary)
                 Spacer()
                 Button("Choose Sound File…") { model.chooseCustomSound() }
                 if c.customSound != nil { Button("Use Default") { model.update { $0.click.customSound = nil } } }

@@ -131,15 +131,15 @@ public enum SettingsRules {
         switch role {
         case .spotlightHold:
             if s.click.tapKey == key {
-                notes.append("This key is also the click-effect tap key: a quick tap flashes the effect, holding it shows the spotlight.")
+                notes.append(tr("This key is also the click-effect tap key: a quick tap flashes the effect, holding it shows the spotlight."))
             }
         case .clickTap:
             if s.spotlight.holdKey == key {
-                notes.append("This key also reveals the spotlight when held: a quick tap flashes the effect, holding it shows the spotlight.")
+                notes.append(tr("This key also reveals the spotlight when held: a quick tap flashes the effect, holding it shows the spotlight."))
             }
         }
         if key == .rightOption && s.annotations.rightOptionTrigger {
-            notes.append("Right Option is also the optional annotation trigger. Pick another key if you use both.")
+            notes.append(tr("Right Option is also the optional annotation trigger. Pick another key if you use both."))
         }
         return notes
     }

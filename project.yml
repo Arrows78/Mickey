@@ -4,6 +4,7 @@ options:
   deploymentTarget:
     macOS: "14.0"
   createIntermediateGroups: true
+  developmentLanguage: en
 packages:
   MickeyKit:
     path: Packages/MickeyKit
@@ -28,6 +29,7 @@ targets:
         CFBundleShortVersionString: "0.1.1"
         CFBundleVersion: "2"
         LSUIElement: true
+        CFBundleLocalizations: [en, fr]
         LSMinimumSystemVersion: "14.0"
         LSApplicationCategoryType: public.app-category.productivity
         NSHumanReadableCopyright: "Copyright © 2026 Thomas Jost. Released under the MIT License."

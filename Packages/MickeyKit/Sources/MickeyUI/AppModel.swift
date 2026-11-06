@@ -113,9 +113,9 @@ public final class AppModel {
         guard let url = actions?.chooseSettingsExportURL() else { return }
         do {
             try SettingsTransfer.export(settings).write(to: url, options: .atomic)
-            transferMessage = "Settings exported to \(url.lastPathComponent)."
+            transferMessage = trf("Settings exported to %@.", url.lastPathComponent)
         } catch {
-            transferMessage = "Settings could not be exported: \(error.localizedDescription)"
+            transferMessage = trf("Settings could not be exported: %@", error.localizedDescription)
         }
     }
 
@@ -124,13 +124,13 @@ public final class AppModel {
         guard let data = try? Data(contentsOf: url),
               let imported = SettingsTransfer.import(data, keyCode: KeyboardLayout.keyCode(for:))
         else {
-            transferMessage = "This file is not a Mickey settings export."
+            transferMessage = tr("This file is not a Mickey settings export.")
             return
         }
         let next = SettingsTransfer.applying(imported, to: settings)
         update { $0 = next }
         flush()
-        transferMessage = "Settings imported from \(url.lastPathComponent)."
+        transferMessage = trf("Settings imported from %@.", url.lastPathComponent)
     }
 
     public func setLaunchAtLogin(_ enabled: Bool) {
