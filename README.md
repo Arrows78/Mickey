@@ -48,7 +48,7 @@
 | Tool | What it does | Permission |
 | --- | --- | --- |
 | ⌨️ **Keystrokes** | Shows the shortcuts you press in an on-screen bar; repeats collapse into `×n`. **Shortcuts Only** (on by default) never shows plain typing. | Input Monitoring |
-| 🔍 **Live Zoom** | Magnifies the whole screen (×1.25 to ×6) while the spot under the pointer stays put; move the pointer to pan. | Screen Recording |
+| 🔍 **Live Zoom** | Magnifies the whole screen (×1.25 to ×6) while the spot under the pointer stays put; move the pointer to pan. It glides in and out, and can zoom in around each click instead of staying on. | Screen Recording |
 | 🔎 **Loupe** | A round or square magnifying glass that follows the pointer. | Screen Recording |
 | 🪟 **Focus** | Dims everything except the frontmost window, following you as you switch apps. | — |
 | 📷 **Camera bubble** | Your webcam in a draggable circle or rounded square, mirrored if you like. | Camera |

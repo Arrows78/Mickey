@@ -200,6 +200,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         let commands = interaction.mouseDown(at: point, settings: model.settings)
         // Clicks on the drawing canvas are strokes, not clicks to highlight.
         guard !annotations.isDrawing else { return }
+        studio.registerClick()
         commands.forEach(run)
     }
 

@@ -43,6 +43,8 @@ final class Magnifier {
     private var zoom = ZoomSettings()
     private var loupe = LoupeSettings()
     private var pointer = CGPoint.zero
+    /// Decides how much the screen is magnified at each frame: it glides in and out, and in click mode follows the clicks.
+    private var zoomController = ZoomController()
 
     init() {
         for (panel, image) in [(zoomPanel, zoomImage), (loupePanel, loupeImage)] {
@@ -56,7 +58,11 @@ final class Magnifier {
         source.onError = { [weak self] message in self?.onError?(trf("Magnifier: %@", message)) }
     }
 
-    var isActive: Bool { zoom.enabled || loupe.enabled }
+    /// True while something is shown or still gliding out, so the capture and the per-frame updates must go on.
+    var isActive: Bool { zoom.enabled || loupe.enabled || !zoomController.isIdle }
+
+    /// A mouse click: in click mode the zoom goes in around it.
+    func registerClick() { zoomController.click(at: ProcessInfo.processInfo.systemUptime, settings: zoom) }
 
     /// Tries capturing again after a failure (permission granted, screens changed).
     func retry() { source.retry() }
@@ -67,9 +73,13 @@ final class Magnifier {
         loupePanel.rootLayer.cornerRadius = loupe.shape == .circle ? loupe.size / 2 : 24
         loupePanel.rootLayer.borderWidth = 3
         loupePanel.rootLayer.borderColor = loupe.borderColor.cgColor
-        if !zoom.enabled { zoomPanel.orderOut(nil) }
         if !loupe.enabled { loupePanel.orderOut(nil) }
-        if isActive { update(pointer: NSEvent.mouseLocation) } else { source.stop() }
+        if isActive {
+            update(pointer: NSEvent.mouseLocation)
+        } else {
+            zoomPanel.orderOut(nil)
+            source.stop()
+        }
     }
 
     /// Per-frame update with the pointer position.
@@ -77,30 +87,35 @@ final class Magnifier {
         guard isActive, let screen = NSScreen.containing(p) else { return }
         pointer = p
         source.capture(screen)
+        let level = zoomController.level(at: ProcessInfo.processInfo.systemUptime, settings: zoom,
+                                         reduceMotion: NSWorkspace.shared.accessibilityDisplayShouldReduceMotion)
         CATransaction.begin()
         CATransaction.setDisableActions(true)
-        if zoom.enabled {
+        if level > 1.0001 {
             if zoomPanel.frame != screen.frame { zoomPanel.setFrame(screen.frame, display: false) }
-            let src = MagnifierGeometry.zoomSource(pointer: p, screen: screen.frame, factor: zoom.factor)
+            let src = MagnifierGeometry.zoomSource(pointer: p, screen: screen.frame, factor: level)
             zoomImage.frame = MagnifierGeometry.imageFrame(source: src, screen: screen.frame, viewSize: screen.frame.size)
+            if zoomImage.contents != nil, !zoomPanel.isVisible { zoomPanel.orderFrontRegardless() }
+        } else if zoomPanel.isVisible {
+            zoomPanel.orderOut(nil)
         }
         if loupe.enabled {
             let size = loupe.size
             loupePanel.setFrame(CGRect(x: p.x - size / 2, y: p.y - size / 2, width: size, height: size), display: false)
             // With the zoom on, the loupe magnifies the zoomed picture's source area.
-            let src = MagnifierGeometry.loupeSource(pointer: p, size: size, factor: loupe.factor * (zoom.enabled ? zoom.factor : 1))
+            let src = MagnifierGeometry.loupeSource(pointer: p, size: size, factor: loupe.factor * level)
             loupeImage.frame = MagnifierGeometry.imageFrame(source: src, screen: screen.frame, viewSize: CGSize(width: size, height: size))
         }
         CATransaction.commit()
+        // The zoom has glided back out and nothing else needs the screen: stop capturing.
+        if !isActive { source.stop() }
     }
 
     private func show(_ surface: IOSurfaceRef) {
         CATransaction.begin()
         CATransaction.setDisableActions(true)
-        if zoom.enabled {
-            zoomImage.contents = surface
-            if !zoomPanel.isVisible { zoomPanel.orderFrontRegardless() }
-        }
+        // The panel itself is shown by `update`, once there is something to magnify.
+        if zoom.enabled || !zoomController.isIdle { zoomImage.contents = surface }
         if loupe.enabled {
             loupeImage.contents = surface
             if !loupePanel.isVisible { loupePanel.orderFrontRegardless() }

@@ -61,7 +61,7 @@ Values are clamped to their range when decoded and whenever they change.
 | Group | Field (default, range) |
 | --- | --- |
 | `keystrokes` | `enabled` (false) · `shortcutsOnly` (true) · `position` (bottomCenter) · `fontSize` (28, 16…64) · `duration` (1.5 s, 0.5…5) |
-| `zoom` | `enabled` (false) · `factor` (2, 1.25…6) |
+| `zoom` | `enabled` (false) · `factor` (2, 1.25…6) · `trigger` (always, or onClick) · `animationDuration` (0.35 s, 0.1…1.5) · `holdDuration` (1.5 s, 0.5…5, onClick only) |
 | `loupe` | `enabled` (false) · `size` (240, 100…500) · `factor` (2.5, 1.5…8) · `shape` (circle) · `borderColor` (white) |
 | `focus` | `enabled` (false) · `dimOpacity` (0.55, 0.1…0.95) · `cornerRadius` (10, 0…30) · `padding` (6, 0…40) |
 | `camera` | `enabled` (false) · `size` (200, 100…480) · `shape` (circle) · `corner` (bottomRight) · `mirrored` (true) · `borderColor` (white) |

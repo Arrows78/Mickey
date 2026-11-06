@@ -1149,3 +1149,130 @@ struct InteractionTests {
         #expect(RecorderSettings().area == .screen)
     }
 }
+
+@Suite("Zoom controller") struct ZoomControllerTests {
+    private func settings(_ transform: (inout ZoomSettings) -> Void = { _ in }) -> ZoomSettings {
+        var z = ZoomSettings()
+        z.enabled = true
+        z.factor = 3
+        z.animationDuration = 0.5
+        z.holdDuration = 1
+        transform(&z)
+        return z
+    }
+
+    /// Asks for the level on every frame (60 per second) from `from` to `to`, as the app does, and returns the last one.
+    @discardableResult
+    private func run(_ c: inout ZoomController, _ z: ZoomSettings, from: Double, to: Double, reduceMotion: Bool = false) -> Double {
+        var t = from
+        var level = 1.0
+        while t <= to + 1e-9 {
+            level = c.level(at: t, settings: z, reduceMotion: reduceMotion)
+            t += 1.0 / 60
+        }
+        return level
+    }
+
+    @Test func aDisabledZoomStaysAtOne() {
+        var c = ZoomController()
+        #expect(run(&c, ZoomSettings(), from: 0, to: 2) == 1)
+        #expect(c.isIdle)
+    }
+
+    @Test func theZoomGlidesToItsFactor() {
+        var c = ZoomController()
+        let z = settings()
+        run(&c, z, from: 0, to: 0.1)
+        let early = c.level(at: 0.1, settings: z, reduceMotion: false)
+        let middle = run(&c, z, from: 0.1, to: 0.25)
+        let late = run(&c, z, from: 0.25, to: 0.4)
+        #expect(1 < early && early < middle && middle < late && late < 3)
+        #expect(abs(middle - 2) < 0.05, "halfway is halfway: \(middle)")
+        #expect(run(&c, z, from: 0.4, to: 0.6) == 3)
+        #expect(!c.isIdle)
+    }
+
+    @Test func theEasingStartsAndEndsSlowly() {
+        #expect(ZoomController.ease(0) == 0 && ZoomController.ease(1) == 1)
+        #expect(ZoomController.ease(0.1) < 0.1 && ZoomController.ease(0.9) > 0.9)
+    }
+
+    @Test func reduceMotionJumpsStraightThere() {
+        var c = ZoomController()
+        #expect(c.level(at: 0, settings: settings(), reduceMotion: true) == 3)
+        var off = settings(); off.enabled = false
+        #expect(c.level(at: 0.01, settings: off, reduceMotion: true) == 1)
+        #expect(c.isIdle)
+    }
+
+    @Test func turningTheZoomOffGlidesBackOut() {
+        var c = ZoomController()
+        let on = settings()
+        #expect(run(&c, on, from: 0, to: 1) == 3)
+        var off = on; off.enabled = false
+        let out = run(&c, off, from: 1.0, to: 1.25)
+        #expect(out > 1 && out < 3, "on its way out: \(out)")
+        #expect(!c.isIdle)
+        #expect(run(&c, off, from: 1.25, to: 2) == 1)
+        #expect(c.isIdle)
+    }
+
+    @Test func changingTheFactorWhileZoomedGlidesFromWhereItIs() {
+        var c = ZoomController()
+        let z = settings()
+        run(&c, z, from: 0, to: 1)
+        var bigger = z; bigger.factor = 5
+        let next = run(&c, bigger, from: 1.0, to: 1.25)
+        #expect(next > 3 && next < 5, "between the two factors: \(next)")
+        #expect(run(&c, bigger, from: 1.25, to: 2) == 5)
+    }
+
+    @Test func aClickZoomsInThenBackOutAfterTheHold() {
+        var c = ZoomController()
+        let z = settings { $0.trigger = .onClick }
+        #expect(run(&c, z, from: 0, to: 1) == 1)
+        #expect(c.isIdle)
+        c.click(at: 1, settings: z)                                  // in by 1.5, held until 2.5, back at 3.0
+        #expect(run(&c, z, from: 1, to: 1.6) == 3)
+        #expect(run(&c, z, from: 1.6, to: 2.4) == 3)
+        let leaving = run(&c, z, from: 2.4, to: 2.75)
+        #expect(leaving > 1 && leaving < 3, "on its way out: \(leaving)")
+        #expect(run(&c, z, from: 2.75, to: 4) == 1)
+        #expect(c.isIdle)
+    }
+
+    @Test func anotherClickExtendsTheHold() {
+        var c = ZoomController()
+        let z = settings { $0.trigger = .onClick }
+        c.click(at: 1, settings: z)
+        run(&c, z, from: 1, to: 2.4)
+        c.click(at: 2.4, settings: z)                                // it would have left at 2.5
+        #expect(run(&c, z, from: 2.4, to: 3.5) == 3)
+        #expect(run(&c, z, from: 3.5, to: 5) == 1)
+    }
+
+    @Test func clicksDoNothingInAlwaysModeOrWhenDisabled() {
+        var always = ZoomController()
+        always.click(at: 0, settings: settings())
+        #expect(run(&always, settings(), from: 0, to: 1) == 3)
+        let disabled = settings { $0.trigger = .onClick; $0.enabled = false }
+        var off = ZoomController()
+        off.click(at: 0, settings: disabled)
+        #expect(run(&off, disabled, from: 0, to: 1) == 1)
+        #expect(off.isIdle)
+    }
+
+    @Test func defaultsKeepTheFormerBehaviorWithAGlide() {
+        let z = ZoomSettings()
+        #expect(z.trigger == .always && z.animationDuration == 0.35 && z.holdDuration == 1.5)
+    }
+
+    @Test func outOfRangeValuesAreRepaired() {
+        var s = Settings.defaults
+        s.zoom.animationDuration = 99
+        s.zoom.holdDuration = -3
+        let c = s.clamped()
+        #expect(c.zoom.animationDuration == ZoomSettings.animationDurationRange.upperBound)
+        #expect(c.zoom.holdDuration == ZoomSettings.holdDurationRange.lowerBound)
+    }
+}

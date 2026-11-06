@@ -52,13 +52,35 @@ public struct KeystrokeSettings: Codable, Equatable, Sendable {
     public static let durationRange = 0.5...5.0
 }
 
+/// When the full-screen zoom is applied.
+public enum ZoomTrigger: String, CaseIterable, Codable, Sendable, Identifiable {
+    case always, onClick
+
+    public var id: String { rawValue }
+
+    public var title: String {
+        switch self {
+        case .always: tr("Always")
+        case .onClick: tr("On Click")
+        }
+    }
+}
+
 /// Full-screen magnification that keeps the point under the pointer in place.
 public struct ZoomSettings: Codable, Equatable, Sendable {
     public var enabled = false
     public var factor = 2.0
+    /// `always` keeps the zoom on while enabled; `onClick` zooms in around each click, then back out.
+    public var trigger = ZoomTrigger.always
+    /// Seconds the zoom takes to go in and out.
+    public var animationDuration = 0.35
+    /// Seconds the zoom stays in after a click (`onClick` only); another click starts the time again.
+    public var holdDuration = 1.5
     public init() {}
 
     public static let factorRange = 1.25...6.0
+    public static let animationDurationRange = 0.1...1.5
+    public static let holdDurationRange = 0.5...5.0
 }
 
 /// Magnifying glass that follows the pointer.

@@ -65,7 +65,7 @@ Toggle (off); Start/Stop Drawing; hold Fn to draw (on); also hold Right Option (
 | Page | Controls (default) |
 | --- | --- |
 | Keystrokes | toggle (off); permission row; Shortcuts Only (on); position bottom center / bottom left / bottom right / top center; text size 28; display time 1.5 s |
-| Live Zoom | toggle (off); permission row; magnification 2× (1.25–6×) |
+| Live Zoom | toggle (off); permission row; zoom always or on click (always); magnification 2× (1.25–6×); animation duration 0.35 s (0.1–1.5); stay zoomed for 1.5 s (0.5–5, on click only) |
 | Loupe | toggle (off); permission row; shape circle / rounded square; size 240 pt; magnification 2.5× (1.5–8×); border color white |
 | Focus | toggle (off); dim amount 0.55; corner radius 10; margin 6 pt |
 | Recorder & Camera | start/stop and pause/resume with elapsed time (the time paused does not count); show recordings; show pointer (on); record system audio (on); countdown 3 s; quality 4K (Full HD 1920 px, QHD 2560 px, 4K 3840 px); frame rate 60 (30 or 60); area whole screen or selected region · camera bubble toggle (off); shape; corner bottom right; size 200 pt; mirror (on); border color white |
@@ -163,7 +163,7 @@ Registered hotkeys pause while a shortcut is being recorded.
 | Tool | Behaviour | Permission |
 | --- | --- | --- |
 | Keystrokes | Listen-only event tap. Shows ⌃⌥⇧⌘ + key; repeats within 1 s collapse into `×n`; at most 4 items; each fades after the display time. Shortcuts Only hides plain typing (no ⌃/⌥/⌘, including Space and ⇧ + letter) but shows ↩, ⇥, ⌫, ⎋, arrows and F-keys. | Input Monitoring |
-| Live Zoom | Captures the screen under the pointer (without Mickey's windows) and shows the area `[s.min + (p − s.min)(1 − 1/f), size s/f]`, so the point under the pointer stays in place. | Screen Recording |
+| Live Zoom | Captures the screen under the pointer (without Mickey's windows) and shows the area `[s.min + (p − s.min)(1 − 1/f), size s/f]`, so the point under the pointer stays in place. The magnification glides between 1 and the factor (ease in and out; it jumps with Reduce Motion), and glides back out when the zoom is turned off. In *On Click* mode each click zooms in around the pointer, the zoom stays for the hold time (another click starts it again), then glides out; the screen is captured while the zoom waits. | Screen Recording |
 | Loupe | Shows an area of `size / magnification` around the pointer in a bubble; combined with live zoom it magnifies the zoomed area. | Screen Recording |
 | Focus | Ten times a second, finds the frontmost app's topmost normal window in the window list and dims every screen except a rounded hole around it. | — |
 | Camera bubble | Default camera in a draggable, always-on-top bubble; placed in the chosen corner, kept where dragged until size or corner change. | Camera |

@@ -308,6 +308,8 @@ public struct Settings: Codable, Equatable, Sendable {
         s.keystrokes.fontSize = s.keystrokes.fontSize.clamped(to: KeystrokeSettings.fontSizeRange)
         s.keystrokes.duration = s.keystrokes.duration.clamped(to: KeystrokeSettings.durationRange)
         s.zoom.factor = s.zoom.factor.clamped(to: ZoomSettings.factorRange)
+        s.zoom.animationDuration = s.zoom.animationDuration.clamped(to: ZoomSettings.animationDurationRange)
+        s.zoom.holdDuration = s.zoom.holdDuration.clamped(to: ZoomSettings.holdDurationRange)
         s.loupe.size = s.loupe.size.clamped(to: LoupeSettings.sizeRange)
         s.loupe.factor = s.loupe.factor.clamped(to: LoupeSettings.factorRange)
         s.loupe.borderColor = s.loupe.borderColor.clamped()

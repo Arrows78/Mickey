@@ -25,8 +25,10 @@
 "Also used for Control-click and Mission Control. Increase the delay if it triggers by accident." = "Aussi utilisée pour le clic contrôlé et Mission Control. Augmentez le délai si elle se déclenche par erreur.";
 "Also your app shortcut for “%@”; Mickey will take it from every app." = "C’est aussi votre raccourci d’app pour « %@ » ; Mickey le prendra à toutes les apps.";
 "Always On" = "Toujours actif";
+"Always" = "Toujours";
 "An audible click on each mouse press." = "Un clic sonore à chaque appui sur la souris.";
 "Animate Ring" = "Animer l’anneau";
+"Animation Duration" = "Durée de l’animation";
 "Animation Speed" = "Vitesse de l’animation";
 "Animation" = "Animation";
 "Annotations won't draw" = "Les annotations ne dessinent pas";
@@ -247,6 +249,7 @@
 "None" = "Aucune";
 "Nothing appears on screen" = "Rien n’apparaît à l’écran";
 "Often used by apps (%@); Mickey will take it from every app." = "Souvent utilisé par les apps (%@) ; Mickey le prendra à toutes les apps.";
+"On Click" = "Au clic";
 "Only shake to locate and a click flash on demand." = "Seulement la secousse pour localiser et un flash de clic à la demande.";
 "Open %@ ›" = "Ouvrir %@ ›";
 "Open Mickey Settings" = "Ouvrir les réglages de Mickey";
@@ -394,6 +397,7 @@
 "Start recording after the countdown" = "Démarrer l’enregistrement après le compte à rebours";
 "Startup & Visibility" = "Démarrage et visibilité";
 "Startup, visibility and menu-bar contents." = "Démarrage, visibilité et contenu de la barre des menus.";
+"Stay Zoomed For" = "Reste zoomé pendant";
 "Step %lld of %lld" = "Étape %lld sur %lld";
 "Stop Drawing (Esc)" = "Arrêter le dessin (Échap)";
 "Stop Drawing" = "Arrêter le dessin";
@@ -481,6 +485,8 @@
 "With Selected Region, you drag the area to record each time you start." = "Avec « Zone choisie », vous tracez la zone à enregistrer à chaque démarrage.";
 "Works best with a Toggle Spotlight hotkey. Cannot be combined with Hold a Key to Show." = "Fonctionne mieux avec un raccourci d’activation du projecteur. Ne peut pas être combiné avec « Maintenir une touche pour afficher ».";
 "Yellow" = "Jaune";
+"Zoom" = "Zoom";
+"Zooms in around each click, then back out. The screen is captured while it waits, which uses some power." = "Zoome autour de chaque clic, puis revient. L’écran est capturé pendant l’attente, ce qui consomme un peu d’énergie.";
 "close all windows" = "fermer toutes les fenêtres";
 "command palette" = "palette de commandes";
 "delete line" = "supprimer la ligne";

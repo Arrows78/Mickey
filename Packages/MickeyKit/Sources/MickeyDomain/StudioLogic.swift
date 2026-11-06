@@ -152,6 +152,57 @@ public enum MagnifierGeometry {
     }
 }
 
+/// Decides, at every frame, how much the screen is magnified: eases in and out between 1 and the zoom factor, and in
+/// `onClick` mode zooms in around a click and back out once the hold time is over.
+public struct ZoomController: Sendable {
+    private var level = 1.0
+    private var from = 1.0
+    private var to = 1.0
+    private var start: TimeInterval = 0
+    private var duration: TimeInterval = 0.35
+    private var zoomedUntil = -TimeInterval.infinity
+
+    public init() {}
+
+    /// True when the screen is shown unmagnified and no zoom is on its way: nothing needs to be drawn.
+    public var isIdle: Bool { level == 1 && to == 1 }
+
+    /// A click: starts (or extends) the zoom in `onClick` mode, and does nothing otherwise.
+    public mutating func click(at time: TimeInterval, settings z: ZoomSettings) {
+        guard z.enabled, z.trigger == .onClick else { return }
+        zoomedUntil = time + z.animationDuration + z.holdDuration
+    }
+
+    /// Magnification to show at `time`. With `reduceMotion` the zoom jumps instead of gliding.
+    public mutating func level(at time: TimeInterval, settings z: ZoomSettings, reduceMotion: Bool) -> Double {
+        let target: Double
+        if !z.enabled {
+            zoomedUntil = -.infinity
+            target = 1
+        } else {
+            switch z.trigger {
+            case .always: target = max(z.factor, 1)
+            case .onClick: target = time < zoomedUntil ? max(z.factor, 1) : 1
+            }
+        }
+        if target != to {
+            from = level
+            to = target
+            start = time
+            duration = z.animationDuration
+        }
+        if reduceMotion || duration <= 0 {
+            level = to
+        } else {
+            level = from + (to - from) * Self.ease(min(max((time - start) / duration, 0), 1))
+        }
+        return level
+    }
+
+    /// Ease in and out: slow start, fast middle, slow end.
+    static func ease(_ p: Double) -> Double { p < 0.5 ? 2 * p * p : 1 - pow(-2 * p + 2, 2) / 2 }
+}
+
 /// A window as listed by the window server (top-left origin, front to back).
 public struct WindowInfo: Equatable, Sendable {
     public var pid: Int32

@@ -76,8 +76,18 @@ struct ZoomPage: View {
                         isOn: model.binding(\.zoom.enabled), help: model.tooltip(.toggleLiveZoom)) {
                 PermissionRow(model: model, permission: .screenRecording)
                 Divider()
+                PickerRow(title: "Zoom", selection: model.binding(\.zoom.trigger), options: ZoomTrigger.allCases) { Text($0.title) }
+                if model.settings.zoom.trigger == .onClick {
+                    NoteView(text: "Zooms in around each click, then back out. The screen is captured while it waits, which uses some power.")
+                }
                 SliderRow(title: "Magnification", value: model.binding(\.zoom.factor), range: ZoomSettings.factorRange,
                           step: 0.25, format: { String(format: "%.2g×", $0) })
+                SliderRow(title: "Animation Duration", value: model.binding(\.zoom.animationDuration),
+                          range: ZoomSettings.animationDurationRange, step: 0.05, format: seconds)
+                if model.settings.zoom.trigger == .onClick {
+                    SliderRow(title: "Stay Zoomed For", value: model.binding(\.zoom.holdDuration),
+                              range: ZoomSettings.holdDurationRange, step: 0.1, format: seconds)
+                }
                 NoteView(text: "Clicks go to what is really under the pointer, which is the magnified spot.")
             }
         }

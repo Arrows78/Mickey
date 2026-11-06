@@ -58,6 +58,9 @@ public final class StudioCoordinator {
         if magnifier.isActive { magnifier.update(pointer: pointer) }
     }
 
+    /// A mouse click, for the zoom that follows clicks.
+    public func registerClick() { magnifier.registerClick() }
+
     public func screensChanged() {
         focus.screensChanged()
         magnifier.retry()
