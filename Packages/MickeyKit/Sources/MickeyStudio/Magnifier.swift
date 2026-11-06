@@ -55,7 +55,7 @@ final class Magnifier {
             panel.rootLayer.addSublayer(image)
         }
         source.onFrame = { [weak self] surface in self?.show(surface) }
-        source.onError = { [weak self] message in self?.onError?(trf("Magnifier: %@", message)) }
+        source.onError = { [weak self] message in self?.onError?(message) }
     }
 
     /// True while something is shown or still gliding out, so the capture and the per-frame updates must go on.

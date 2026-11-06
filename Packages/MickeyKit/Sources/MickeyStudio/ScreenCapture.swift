@@ -34,6 +34,16 @@ enum ScreenCapture {
         return config
     }
 
+    /// What to tell the user about a failed capture: what to do when the permission is missing (the system's own
+    /// text is English and says nothing useful), the system's text otherwise.
+    nonisolated static func userMessage(for error: Error) -> String {
+        let e = error as NSError
+        if e.domain == SCStreamErrorDomain, e.code == SCStreamError.Code.userDeclined.rawValue {
+            return tr("The zoom and the loupe need Screen Recording: allow Mickey in System Settings › Privacy & Security.")
+        }
+        return trf("Zoom and loupe: %@", e.localizedDescription)
+    }
+
     /// True for sample buffers that carry a new, complete frame.
     nonisolated static func isCompleteFrame(_ sample: CMSampleBuffer) -> Bool {
         guard let attachments = CMSampleBufferGetSampleAttachmentsArray(sample, createIfNecessary: false) as? [[SCStreamFrameInfo: Any]],
@@ -95,7 +105,7 @@ final class ScreenFrameSource: NSObject, SCStreamOutput, SCStreamDelegate {
             } catch {
                 guard generation == self.generation else { return }
                 failedFrame = frame
-                onError?(error.localizedDescription)
+                onError?(ScreenCapture.userMessage(for: error))
             }
         }
     }
@@ -124,7 +134,7 @@ final class ScreenFrameSource: NSObject, SCStreamOutput, SCStreamDelegate {
     }
 
     nonisolated func stream(_ stream: SCStream, didStopWithError error: Error) {
-        let message = error.localizedDescription
+        let message = ScreenCapture.userMessage(for: error)
         DispatchQueue.main.async {
             MainActor.assumeIsolated {
                 // Not restarted on its own: a stream that died (permission revoked…) would fail again every frame.

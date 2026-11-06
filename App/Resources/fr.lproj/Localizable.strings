@@ -212,7 +212,6 @@
 "Loupe" = "Loupe";
 "Lower spacing draws more items." = "Un espacement plus faible dessine plus d’éléments.";
 "Magnification" = "Grossissement";
-"Magnifier: %@" = "Loupe : %@";
 "Magnifies the whole screen while the point under the pointer stays put; move the pointer to pan. Needs Screen Recording." = "Agrandit tout l’écran tandis que le point sous le pointeur reste en place ; déplacez le pointeur pour vous déplacer dans l’image. Nécessite l’enregistrement de l’écran.";
 "Magnify the whole screen around the pointer" = "Agrandit tout l’écran autour du pointeur";
 "Magnify the whole screen; the spot under the pointer stays where it is." = "Agrandit tout l’écran ; le point sous le pointeur reste en place.";
@@ -427,6 +426,7 @@
 "The enabled effects, on a light and a dark background." = "Les effets activés, sur un fond clair et un fond sombre.";
 "The microphone could not start: %@" = "Le microphone n’a pas pu démarrer : %@";
 "The screen to capture could not be found." = "L’écran à capturer est introuvable.";
+"The zoom and the loupe need Screen Recording: allow Mickey in System Settings › Privacy & Security." = "Le zoom et la loupe nécessitent l’enregistrement de l’écran : autorisez Mickey dans Réglages Système › Confidentialité et sécurité.";
 "Thickness" = "Épaisseur";
 "This file is not a Mickey settings export." = "Ce fichier n’est pas un export de réglages Mickey.";
 "This key also reveals the spotlight when held: a quick tap flashes the effect, holding it shows the spotlight." = "Cette touche affiche aussi le projecteur lorsqu’on la maintient : un appui bref affiche l’effet, un appui prolongé affiche le projecteur.";
@@ -492,6 +492,7 @@
 "With Selected Region, you drag the area to record each time you start." = "Avec « Zone choisie », vous tracez la zone à enregistrer à chaque démarrage.";
 "Works best with a Toggle Spotlight hotkey. Cannot be combined with Hold a Key to Show." = "Fonctionne mieux avec un raccourci d’activation du projecteur. Ne peut pas être combiné avec « Maintenir une touche pour afficher ».";
 "Yellow" = "Jaune";
+"Zoom and loupe: %@" = "Zoom et loupe : %@";
 "Zoom" = "Zoom";
 "Zooms in around each click, then back out. The screen is captured while it waits, which uses some power." = "Zoome autour de chaque clic, puis revient. L’écran est capturé pendant l’attente, ce qui consomme un peu d’énergie.";
 "close all windows" = "fermer toutes les fenêtres";

@@ -212,7 +212,6 @@
 "Loupe" = "Loupe";
 "Lower spacing draws more items." = "Lower spacing draws more items.";
 "Magnification" = "Magnification";
-"Magnifier: %@" = "Magnifier: %@";
 "Magnifies the whole screen while the point under the pointer stays put; move the pointer to pan. Needs Screen Recording." = "Magnifies the whole screen while the point under the pointer stays put; move the pointer to pan. Needs Screen Recording.";
 "Magnify the whole screen around the pointer" = "Magnify the whole screen around the pointer";
 "Magnify the whole screen; the spot under the pointer stays where it is." = "Magnify the whole screen; the spot under the pointer stays where it is.";
@@ -427,6 +426,7 @@
 "The enabled effects, on a light and a dark background." = "The enabled effects, on a light and a dark background.";
 "The microphone could not start: %@" = "The microphone could not start: %@";
 "The screen to capture could not be found." = "The screen to capture could not be found.";
+"The zoom and the loupe need Screen Recording: allow Mickey in System Settings › Privacy & Security." = "The zoom and the loupe need Screen Recording: allow Mickey in System Settings › Privacy & Security.";
 "Thickness" = "Thickness";
 "This file is not a Mickey settings export." = "This file is not a Mickey settings export.";
 "This key also reveals the spotlight when held: a quick tap flashes the effect, holding it shows the spotlight." = "This key also reveals the spotlight when held: a quick tap flashes the effect, holding it shows the spotlight.";
@@ -493,6 +493,7 @@
 "Works best with a Toggle Spotlight hotkey. Cannot be combined with Hold a Key to Show." = "Works best with a Toggle Spotlight hotkey. Cannot be combined with Hold a Key to Show.";
 "Yellow" = "Yellow";
 "Zoom" = "Zoom";
+"Zoom and loupe: %@" = "Zoom and loupe: %@";
 "Zooms in around each click, then back out. The screen is captured while it waits, which uses some power." = "Zooms in around each click, then back out. The screen is captured while it waits, which uses some power.";
 "close all windows" = "close all windows";
 "command palette" = "command palette";
