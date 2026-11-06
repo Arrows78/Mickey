@@ -120,7 +120,7 @@ public struct StatusPopoverView: View {
                         }
                     }
                 }
-                .help(item.hotkeyAction.map { model.tooltip($0) } ?? "Turn \(item.title) on or off")
+                .help(item.hotkeyAction.map { model.tooltip($0) } ?? trf("Turn %@ on or off", item.title))
             }
             if items.isEmpty {
                 Text("No quick toggles selected. Choose them in Settings › General.").font(.caption).foregroundStyle(.secondary)
@@ -207,7 +207,7 @@ public struct OnboardingView: View {
                 }
             }
             .accessibilityElement(children: .ignore)
-            .accessibilityLabel("Step \(step + 1) of \(steps.count)")
+            .accessibilityLabel(trf("Step %lld of %lld", step + 1, steps.count))
             HStack {
                 if step < steps.count - 1 { Button("Skip") { finish() } }
                 Spacer()

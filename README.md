@@ -129,7 +129,7 @@ flowchart LR
 - **Thin system adapters**: `MickeySystem` wraps input, hotkeys, login item, sound, permissions and window-server queries; `MickeyEffects`, `MickeyAnnotations` and `MickeyStudio` render; the app target only wires everything together.
 - **Window levels** sit just below the cursor so effects stay above menus, the Dock and full-screen apps: focus, zoom, effects, drawing, then toolbars and HUDs. Zoom and loupe capture the screen without Mickey's own windows; the recorder keeps them, so effects appear in recordings.
 
-More detail in [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md), [`docs/DATA_MODEL.md`](docs/DATA_MODEL.md) and [`docs/PRODUCT_SPEC.md`](docs/PRODUCT_SPEC.md).
+More detail in [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md), [`docs/LOCALIZATION.md`](docs/LOCALIZATION.md), [`docs/DATA_MODEL.md`](docs/DATA_MODEL.md) and [`docs/PRODUCT_SPEC.md`](docs/PRODUCT_SPEC.md).
 
 ## 📦 Prerequisites
 

@@ -169,7 +169,7 @@ public struct AutoModeSettings: Codable, Equatable, Sendable {
 
     /// Names of the apps watched by default, for display.
     public static let appNames = [
-        "us.zoom.xos": "Zoom", "com.microsoft.teams2": "Microsoft Teams", "com.microsoft.teams": "Microsoft Teams (classic)",
+        "us.zoom.xos": "Zoom", "com.microsoft.teams2": "Microsoft Teams", "com.microsoft.teams": tr("Microsoft Teams (classic)"),
         "com.apple.FaceTime": "FaceTime", "com.apple.Keynote": "Keynote", "com.microsoft.Powerpoint": "PowerPoint",
         "com.apple.QuickTimePlayerX": "QuickTime Player", "com.obsproject.obs-studio": "OBS", "com.loom.desktop": "Loom",
         "com.cisco.webexmeetingsapp": "Webex", "com.hnc.Discord": "Discord",

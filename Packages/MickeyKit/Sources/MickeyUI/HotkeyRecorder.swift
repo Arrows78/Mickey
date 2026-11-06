@@ -23,7 +23,7 @@ struct HotkeyRecorder: View {
                         .frame(minWidth: 130)
                         .foregroundStyle(combo == nil && !recording ? .secondary : .primary)
                 }
-                .help(recording ? "Press the combination. Esc cancels, Delete clears." : "Click, then press a new shortcut")
+                .help(tr(recording ? "Press the combination. Esc cancels, Delete clears." : "Click, then press a new shortcut"))
                 if combo != nil && !recording {
                     Button { combo = nil } label: { Image(systemName: "xmark.circle.fill") }
                         .buttonStyle(.plain).foregroundStyle(.secondary).accessibilityLabel("Clear shortcut").help("Clear shortcut")
@@ -67,10 +67,10 @@ struct HotkeyRecorder: View {
         if flags.contains(.command) { mods.insert(.command) }
         let candidate = KeyCombo(keyCode: UInt32(event.keyCode), modifiers: mods, keyLabel: Self.label(for: event))
         switch candidate.validate() {
-        case .needsModifier?: error = "Add Control, Option or Command."
-        case .commandOnlyReserved?: error = "⌘ + key alone is reserved by macOS; add another modifier."
-        case .shiftOnly?: error = "Shift alone is not enough; add another modifier."
-        case .optionOnly?: error = "⌥ alone types characters such as { [ | ~; add ⌃ or ⌘."
+        case .needsModifier?: error = tr("Add Control, Option or Command.")
+        case .commandOnlyReserved?: error = tr("⌘ + key alone is reserved by macOS; add another modifier.")
+        case .shiftOnly?: error = tr("Shift alone is not enough; add another modifier.")
+        case .optionOnly?: error = tr("⌥ alone types characters such as { [ | ~; add ⌃ or ⌘.")
         case nil:
             // Refuse combinations that could never fire; softer conflicts are shown next to the row.
             if let conflict = HotkeyConflict.check(candidate, otherActions: otherActions), conflict.blocks {
