@@ -32,6 +32,7 @@ final class KeystrokeHUDModel {
 
 struct KeystrokeHUDView: View {
     let model: KeystrokeHUDModel
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     var body: some View {
         let stack = HStack(spacing: 10) {
@@ -42,10 +43,10 @@ struct KeystrokeHUDView: View {
                     .padding(.horizontal, model.settings.fontSize * 0.55)
                     .padding(.vertical, model.settings.fontSize * 0.3)
                     .background(.black.opacity(0.72), in: RoundedRectangle(cornerRadius: model.settings.fontSize * 0.4))
-                    .transition(.opacity.combined(with: .scale(scale: 0.9)))
+                    .transition(reduceMotion ? .opacity : .opacity.combined(with: .scale(scale: 0.9)))
             }
         }
-        .animation(.easeOut(duration: 0.15), value: model.history.entries)
+        .animation(reduceMotion ? nil : .easeOut(duration: 0.15), value: model.history.entries)
         return stack.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: hudAlignment(model.settings.position))
     }
 }
@@ -111,6 +112,7 @@ final class CountdownModel { var value = 0 }
 
 struct CountdownView: View {
     let model: CountdownModel
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     var body: some View {
         Text("\(model.value)")
@@ -119,7 +121,7 @@ struct CountdownView: View {
             .frame(width: 220, height: 220)
             .background(.black.opacity(0.7), in: Circle())
             .contentTransition(.numericText(countsDown: true))
-            .animation(.easeOut(duration: 0.2), value: model.value)
+            .animation(reduceMotion ? nil : .easeOut(duration: 0.2), value: model.value)
     }
 }
 

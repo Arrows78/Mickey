@@ -89,7 +89,14 @@ public final class EffectsEngine {
                                                object: nil, queue: .main) { [weak self] _ in
             MainActor.assumeIsolated { self?.rebuildScreens() }
         }
+        NSWorkspace.shared.notificationCenter.addObserver(forName: NSWorkspace.accessibilityDisplayOptionsDidChangeNotification,
+                                                          object: nil, queue: .main) { [weak self] _ in
+            MainActor.assumeIsolated { self?.lastRingKey = "" }
+        }
     }
+
+    /// "Reduce motion" in System Settings › Accessibility › Display: effects fade in place instead of moving.
+    private var reduceMotion: Bool { NSWorkspace.shared.accessibilityDisplayShouldReduceMotion }
 
     public func rebuildScreens() {
         screens.forEach { $0.panel.orderOut(nil) }
@@ -153,7 +160,7 @@ public final class EffectsEngine {
         l.ring.isHidden = !(on && isCurrent)
         guard on && isCurrent else { return }
         l.ring.position = l.local(pointer)
-        let key = "\(s.radius)-\(s.thickness)-\(s.color)-\(s.animated)-\(s.animationSpeed)-\(s.neon)-\(l.panel.screenID)"
+        let key = "\(s.radius)-\(s.thickness)-\(s.color)-\(s.animated)-\(s.animationSpeed)-\(s.neon)-\(l.panel.screenID)-\(reduceMotion)"
         guard key != lastRingKey || l.ring.path == nil else { return }
         lastRingKey = key
         l.ring.path = Shapes.circle(radius: s.radius)
@@ -164,7 +171,7 @@ public final class EffectsEngine {
         l.ring.shadowOpacity = s.neon ? 1 : 0
         l.ring.shadowOffset = .zero
         l.ring.removeAnimation(forKey: "pulse")
-        if s.animated {
+        if s.animated && !reduceMotion {
             let a = CABasicAnimation(keyPath: "transform.scale")
             a.fromValue = 0.9; a.toValue = 1.1
             a.duration = 0.8 / s.animationSpeed
@@ -227,7 +234,7 @@ public final class EffectsEngine {
 
     /// Particles drift slightly away from their spawn point as they age.
     private func jittered(_ p: CGPoint, index: Int, birth: TimeInterval, style: TrailStyle, time: TimeInterval) -> CGPoint {
-        guard style == .particles else { return p }
+        guard style == .particles, !reduceMotion else { return p }
         let seed = Double(Int(birth * 1000) % 360) * .pi / 180
         let age = min(time - birth, 1) * 14
         return CGPoint(x: p.x + cos(seed * 7) * age, y: p.y + sin(seed * 11) * age)
@@ -242,6 +249,7 @@ public final class EffectsEngine {
         let duration = ClickEffectTiming.duration(type: s.effectType, speed: s.speed)
         let radius = CGFloat(s.size / 2)
         let color = s.color.cgColor
+        let reduced = reduceMotion
         var layers: [CALayer] = []
 
         func ring(_ r: CGFloat, delay: Double = 0, from: CGFloat = 0.2, to: CGFloat = 1, dashed: Bool = false) {
@@ -253,7 +261,7 @@ public final class EffectsEngine {
             layer.lineWidth = s.lineWidth
             layer.opacity = 0
             if dashed { layer.lineDashPattern = [6, 5] }
-            layer.add(group(duration: duration, delay: delay, scale: (from, to), opacity: (1, 0)), forKey: "fx")
+            layer.add(group(duration: duration, delay: delay, scale: (from, to), opacity: (1, 0), reduced: reduced), forKey: "fx")
             layers.append(layer)
         }
 
@@ -271,7 +279,7 @@ public final class EffectsEngine {
             layer.position = center
             layer.fillColor = color
             layer.opacity = 0
-            layer.add(group(duration: duration, scale: (0.5, 1), opacity: (0.6, 0)), forKey: "fx")
+            layer.add(group(duration: duration, scale: (0.5, 1), opacity: (0.6, 0), reduced: reduced), forKey: "fx")
             layers.append(layer)
         case .particleBurst:
             for i in 0..<12 {
@@ -282,8 +290,9 @@ public final class EffectsEngine {
                 dot.position = center
                 dot.opacity = 0
                 let move = CABasicAnimation(keyPath: "position")
-                move.fromValue = NSValue(point: center)
-                move.toValue = NSValue(point: CGPoint(x: center.x + cos(angle) * radius, y: center.y + sin(angle) * radius))
+                let end = CGPoint(x: center.x + cos(angle) * radius, y: center.y + sin(angle) * radius)
+                move.fromValue = NSValue(point: reduced ? end : center)
+                move.toValue = NSValue(point: end)
                 let fade = CABasicAnimation(keyPath: "opacity")
                 fade.fromValue = 1; fade.toValue = 0
                 let g = CAAnimationGroup()
@@ -303,7 +312,7 @@ public final class EffectsEngine {
             layer.shadowOpacity = 1
             layer.shadowOffset = .zero
             layer.opacity = 0
-            layer.add(group(duration: duration, scale: (0.6, 1.15), opacity: (1, 0)), forKey: "fx")
+            layer.add(group(duration: duration, scale: (0.6, 1.15), opacity: (1, 0), reduced: reduced), forKey: "fx")
             layers.append(layer)
         case .scaleBounce:
             let layer = CAShapeLayer()
@@ -314,8 +323,8 @@ public final class EffectsEngine {
             layer.lineWidth = s.lineWidth
             layer.opacity = 0
             let spring = CASpringAnimation(keyPath: "transform.scale")
-            spring.fromValue = 0.2; spring.toValue = 1
-            spring.damping = 8; spring.initialVelocity = 12
+            spring.fromValue = ReducedMotion.scale(from: 0.2, to: 1, reduced: reduced).from; spring.toValue = 1
+            spring.damping = 8; spring.initialVelocity = reduced ? 0 : 12
             spring.duration = duration
             let fade = CAKeyframeAnimation(keyPath: "opacity")
             fade.values = [1, 1, 0]; fade.keyTimes = [0, 0.6, 1]
@@ -359,7 +368,7 @@ public final class EffectsEngine {
         layer.opacity = 0
         let d = LocatorAnimation.duration
         let scale = CAKeyframeAnimation(keyPath: "transform.scale")
-        scale.values = [1, 5, 5, 1]
+        scale.values = reduceMotion ? [5, 5, 5, 5] : [1, 5, 5, 1]
         scale.keyTimes = [0, 0.15, 0.55, 1]
         scale.timingFunctions = [CAMediaTimingFunction(name: .easeOut), CAMediaTimingFunction(name: .linear), CAMediaTimingFunction(name: .easeInEaseOut)]
         let fade = CAKeyframeAnimation(keyPath: "opacity")
@@ -389,7 +398,7 @@ public final class EffectsEngine {
         layer.opacity = 0
         let d = LocatorAnimation.duration
         let scale = CABasicAnimation(keyPath: "transform.scale")
-        scale.fromValue = LocatorAnimation.startRadius / LocatorAnimation.endRadius
+        scale.fromValue = ReducedMotion.scale(from: LocatorAnimation.startRadius / LocatorAnimation.endRadius, to: 1, reduced: reduceMotion).from
         scale.toValue = 1
         scale.timingFunction = CAMediaTimingFunction(controlPoints: 0.2, 0.8, 0.3, 1)
         let fade = CAKeyframeAnimation(keyPath: "opacity")
@@ -402,9 +411,11 @@ public final class EffectsEngine {
         DispatchQueue.main.asyncAfter(deadline: .now() + d + 0.1) { layer.removeFromSuperlayer() }
     }
 
-    private func group(duration: Double, delay: Double = 0, scale: (CGFloat, CGFloat), opacity: (Float, Float)) -> CAAnimationGroup {
+    private func group(duration: Double, delay: Double = 0, scale: (CGFloat, CGFloat), opacity: (Float, Float),
+                       reduced: Bool) -> CAAnimationGroup {
         let sc = CABasicAnimation(keyPath: "transform.scale")
-        sc.fromValue = scale.0; sc.toValue = scale.1
+        let range = ReducedMotion.scale(from: Double(scale.0), to: Double(scale.1), reduced: reduced)
+        sc.fromValue = range.from; sc.toValue = range.to
         sc.timingFunction = CAMediaTimingFunction(name: .easeOut)
         let op = CABasicAnimation(keyPath: "opacity")
         op.fromValue = opacity.0; op.toValue = opacity.1

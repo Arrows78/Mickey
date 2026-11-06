@@ -170,7 +170,7 @@ final class FocusOverlay {
             dim.fillColor = CGColor(gray: 0, alpha: settings.dimOpacity)
             // A short animation makes the hole glide when the front window changes.
             CATransaction.begin()
-            CATransaction.setAnimationDuration(force ? 0 : 0.15)
+            CATransaction.setAnimationDuration(force || NSWorkspace.shared.accessibilityDisplayShouldReduceMotion ? 0 : 0.15)
             dim.path = path
             CATransaction.commit()
         }

@@ -68,3 +68,11 @@ public enum LocatorAnimation {
         return startRadius + (endRadius - startRadius) * eased
     }
 }
+
+/// How effects move when macOS asks to reduce motion: they fade in place instead of scaling or travelling.
+public enum ReducedMotion {
+    /// The scale animation to play: unchanged normally, held at its end value when motion is reduced.
+    public static func scale(from: Double, to: Double, reduced: Bool) -> (from: Double, to: Double) {
+        reduced ? (to, to) : (from, to)
+    }
+}

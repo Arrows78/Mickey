@@ -816,3 +816,15 @@ struct InteractionTests {
         #expect(session.settingsToPersist(applied) == base)
     }
 }
+
+@Suite("Reduced motion") struct ReducedMotionTests {
+    @Test func scaleIsUntouchedByDefault() {
+        let s = ReducedMotion.scale(from: 0.2, to: 1, reduced: false)
+        #expect(s.from == 0.2 && s.to == 1)
+    }
+
+    @Test func reducedMotionHoldsTheEndScale() {
+        let s = ReducedMotion.scale(from: 0.2, to: 1.15, reduced: true)
+        #expect(s.from == 1.15 && s.to == 1.15)
+    }
+}
