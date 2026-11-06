@@ -903,3 +903,48 @@ struct InteractionTests {
         #expect(s.clamped().recorder.frameRate == 60)
     }
 }
+
+@Suite("Automatic Mode per app") struct AutoModePerAppTests {
+    let zoom = "us.zoom.xos", keynote = "com.apple.Keynote"
+    var base: Settings {
+        var s = Settings.defaults
+        s.autoMode.enabled = true
+        s.autoMode.preset = .presentation
+        s.autoMode.appPresets = ["com.apple.Keynote": .discreet]
+        return s
+    }
+
+    @Test func anAppWithoutOverrideUsesTheDefaultPreset() {
+        #expect(AutoModeRule.preset(running: [zoom], settings: base.autoMode) == .presentation)
+    }
+
+    @Test func anAppWithOverrideUsesItsOwnPreset() {
+        #expect(AutoModeRule.preset(running: [keynote], settings: base.autoMode) == .discreet)
+    }
+
+    @Test func theFirstWatchedAppDecides() {
+        #expect(AutoModeRule.preset(running: [zoom, keynote], settings: base.autoMode) == .presentation)
+    }
+
+    @Test func nothingRunningFallsBackToTheDefault() {
+        #expect(AutoModeRule.preset(running: [], settings: base.autoMode) == .presentation)
+    }
+
+    @Test func switchingAppSwitchesPresetAndRestoresAtTheEnd() throws {
+        var session = AutoModeSession()
+        let firstStep = session.update(settings: base, running: [zoom])
+        let first = try #require(firstStep)
+        #expect(first.ring.enabled)
+        let secondStep = session.update(settings: first, running: [keynote])
+        let second = try #require(secondStep)
+        #expect(!second.ring.enabled)
+        #expect(session.update(settings: second, running: []) == base)
+    }
+
+    @Test func sameWantedPresetDoesNotReapply() throws {
+        var session = AutoModeSession()
+        let firstStep = session.update(settings: base, running: [zoom])
+        let first = try #require(firstStep)
+        #expect(session.update(settings: first, running: [zoom, "com.apple.FaceTime"]) == nil)
+    }
+}

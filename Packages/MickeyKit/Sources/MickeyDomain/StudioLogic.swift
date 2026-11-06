@@ -206,6 +206,12 @@ public enum AutoModeRule {
     public static func shouldActivate(running: Set<String>, watched: [String]) -> Bool {
         !running.isDisjoint(with: watched)
     }
+
+    /// The preset for the running apps: the first watched app that runs decides, with its own preset if it has one.
+    public static func preset(running: Set<String>, settings a: AutoModeSettings) -> Preset {
+        guard let first = a.bundleIDs.first(where: running.contains) else { return a.preset }
+        return a.appPresets[first] ?? a.preset
+    }
 }
 
 /// Applies the Automatic Mode preset while a watched app runs, and gives the user's own settings back afterwards
@@ -213,6 +219,7 @@ public enum AutoModeRule {
 public struct AutoModeSession: Sendable {
     /// The user's settings before the preset, and the settings the preset produced.
     public private(set) var snapshot: (before: Settings, applied: Settings)?
+    private var appliedPreset = Preset.presentation
 
     public init() {}
 
@@ -221,10 +228,12 @@ public struct AutoModeSession: Sendable {
     /// Settings to switch to after `settings` or the running apps changed, if any.
     public mutating func update(settings s: Settings, running: Set<String>) -> Settings? {
         let active = s.autoMode.enabled && AutoModeRule.shouldActivate(running: running, watched: s.autoMode.bundleIDs)
+        let wanted = AutoModeRule.preset(running: running, settings: s.autoMode)
         guard let current = snapshot else {
             guard active else { return nil }
-            let applied = s.autoMode.preset.apply(to: s)
+            let applied = wanted.apply(to: s)
             snapshot = (s, applied)
+            appliedPreset = wanted
             return applied
         }
         let untouched = Self.ignoringAutoMode(s) == Self.ignoringAutoMode(current.applied)
@@ -234,9 +243,10 @@ public struct AutoModeSession: Sendable {
             snapshot = nil
             return untouched ? before : nil
         }
-        if untouched && s.autoMode.preset != current.applied.autoMode.preset {
-            let applied = s.autoMode.preset.apply(to: before)
+        if untouched && wanted != appliedPreset {
+            let applied = wanted.apply(to: before)
             snapshot = (before, applied)
+            appliedPreset = wanted
             return applied
         }
         return nil

@@ -222,8 +222,13 @@ struct AutoModeCard: View {
                     subtitle: "Apply a preset while a meeting, presentation or recording app is running, and restore your settings afterwards.",
                     isOn: model.binding(\.autoMode.enabled)) {
             PickerRow(title: "Preset", selection: model.binding(\.autoMode.preset), options: Preset.allCases) { Text($0.title) }
-            Text("Watched apps: Zoom, Microsoft Teams, FaceTime, Keynote, PowerPoint, QuickTime Player, OBS, Loom, Webex, Discord.")
-                .font(.caption).foregroundStyle(.secondary)
+            Divider()
+            Text("Preset per app").font(.subheadline.weight(.medium))
+            ForEach(model.settings.autoMode.bundleIDs, id: \.self) { id in
+                PickerRow(title: AutoModeSettings.appNames[id] ?? id, selection: model.binding(\.autoMode.appPresets[id]),
+                          options: [nil] + Preset.allCases.map(Optional.some)) { Text($0?.title ?? "Default preset") }
+            }
+            NoteView(text: "When several watched apps run, the first one in this list decides.")
         }
     }
 }

@@ -163,7 +163,17 @@ public struct AutoModeSettings: Codable, Equatable, Sendable {
     public var enabled = false
     public var preset = Preset.presentation
     public var bundleIDs = AutoModeSettings.defaultBundleIDs
+    /// Preset to use for a given watched app instead of `preset`.
+    public var appPresets: [String: Preset] = [:]
     public init() {}
+
+    /// Names of the apps watched by default, for display.
+    public static let appNames = [
+        "us.zoom.xos": "Zoom", "com.microsoft.teams2": "Microsoft Teams", "com.microsoft.teams": "Microsoft Teams (classic)",
+        "com.apple.FaceTime": "FaceTime", "com.apple.Keynote": "Keynote", "com.microsoft.Powerpoint": "PowerPoint",
+        "com.apple.QuickTimePlayerX": "QuickTime Player", "com.obsproject.obs-studio": "OBS", "com.loom.desktop": "Loom",
+        "com.cisco.webexmeetingsapp": "Webex", "com.hnc.Discord": "Discord",
+    ]
 
     public static let defaultBundleIDs = [
         "us.zoom.xos", "com.microsoft.teams2", "com.microsoft.teams", "com.apple.FaceTime",
