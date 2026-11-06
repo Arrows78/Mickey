@@ -29,6 +29,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
     func applicationDidFinishLaunching(_ notification: Notification) {
         let launchedAsLoginItem = Self.isLaunchingAsLoginItem()
+        ToolTips.shortenDelay()
         NSApp.mainMenu = MainMenu.make()
         effects = EffectsEngine()
         model.actions = self
