@@ -4,6 +4,12 @@ All notable changes to Mickey are listed here, newest first. The file is generat
 from the commit messages (Conventional Commits) and the `v*` tags: do not edit it by hand. See
 `docs/RELEASING.md`. Versions follow [Semantic Versioning](https://semver.org).
 
+## [0.3.1] - 2026-11-06
+
+### Fixed
+
+- **annotations**: Drawing shortcuts work on layouts without Latin letters
+
 ## [0.3.0] - 2026-11-06
 
 ### Added
@@ -62,6 +68,7 @@ from the commit messages (Conventional Commits) and the `v*` tags: do not edit i
 
 - Initial release.
 
+[0.3.1]: https://github.com/Arrows78/Mickey/compare/v0.3.0...v0.3.1
 [0.3.0]: https://github.com/Arrows78/Mickey/compare/v0.2.0...v0.3.0
 [0.2.0]: https://github.com/Arrows78/Mickey/compare/v0.1.0...v0.2.0
 [0.1.0]: https://github.com/Arrows78/Mickey/releases/tag/v0.1.0
