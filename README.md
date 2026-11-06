@@ -206,13 +206,14 @@ open /Applications/Mickey.app
 | `python3 scripts/make_click_sound.py` | Synthesises the default click sound (`App/Resources/click.wav`). |
 | `python3 scripts/l10n.py sync` / `check` | Regenerates the English reference table / verifies every language ([`docs/LOCALIZATION.md`](docs/LOCALIZATION.md)). |
 | `scripts/run_dev.sh` | Builds and launches an isolated copy (own bundle identifier, settings and permissions), so testing never touches the installed app's data. |
+| `python3 scripts/release.py prepare` | Next version, version bump and changelog from the commit messages ([`docs/RELEASING.md`](docs/RELEASING.md)). |
 | `scripts/render_cask.sh VERSION SHA256` | Prints the Homebrew cask of a release (used by the Release workflow). |
 
-To publish a release:
+To publish a release (details in [`docs/RELEASING.md`](docs/RELEASING.md)):
 
-1. Bump `CFBundleShortVersionString` and `CFBundleVersion` in `project.yml`, run `xcodegen generate` and commit `App/Info.plist` with it. The workflow refuses a tag that differs from `CFBundleShortVersionString`.
-2. Write the notes of the version in `docs/releases/<version>.md`; they come first in the GitHub release, followed by the generated changelog.
-3. Push a matching tag (`git tag v0.2.0 && git push origin v0.2.0`). The [Release workflow](.github/workflows/release.yml) runs the tests and the localization check, builds a universal app, attaches the zip to a new GitHub release (`0.x` versions are marked as pre-releases) and updates the Homebrew tap.
+1. `python3 scripts/release.py prepare`: picks the next version from the commit messages (Conventional Commits), bumps `project.yml` and `App/Info.plist`, and rewrites `CHANGELOG.md`. Add `--dry-run` to preview it.
+2. Commit it (`chore(release): X.Y.Z`) and push the matching tag: `git tag vX.Y.Z && git push origin main vX.Y.Z`. The [Release workflow](.github/workflows/release.yml) checks the version and the changelog, runs the tests and the localization check, builds a universal app, attaches the zip to a new GitHub release (`0.x` versions are marked as pre-releases) and updates the Homebrew tap.
+3. The release notes are the changelog section of the version, or `docs/releases/<version>.md` if you wrote one.
 
 The tap is the `Arrows78/homebrew-mickey` repository. The workflow updates it when the `HOMEBREW_TAP_TOKEN` secret holds a fine-grained token with *Contents: read and write* on that repository; without it the release is still published and the tap is left alone. The cask template is `packaging/homebrew/mickey.rb.in`.
 
@@ -286,7 +287,7 @@ Issues and pull requests are welcome.
    ./scripts/ci.sh
    ```
 
-4. Commit using [Conventional Commits](https://www.conventionalcommits.org/).
+4. Commit using [Conventional Commits](https://www.conventionalcommits.org/): the type decides the version bump and the changelog entry ([`docs/RELEASING.md`](docs/RELEASING.md)), and CI checks it on pull requests.
 5. Push the branch and open a pull request.
 
 Keep pull requests focused and describe user-facing behaviour changes.

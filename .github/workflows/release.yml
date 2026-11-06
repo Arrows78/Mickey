@@ -14,6 +14,8 @@ jobs:
     runs-on: macos-15
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - uses: maxim-lobanov/setup-xcode@v1
         with:
@@ -37,6 +39,11 @@ jobs:
       - name: Check localization
         run: python3 -B scripts/l10n.py check
 
+      - name: Check release files
+        run: |
+          python3 -B -m unittest discover -s scripts/tests -q
+          python3 -B scripts/release.py check
+
       - name: Build
         run: |
           xcodegen generate --quiet
@@ -56,11 +63,14 @@ jobs:
           prerelease=""
           case "$VERSION" in 0.*|*-*) prerelease="--prerelease" ;; esac
           : > release-notes.md
-          # Hand-written notes of this version come first; GitHub's generated changelog follows them.
+          # Hand-written notes (docs/releases/<version>.md) when there are some, the changelog section otherwise.
           if [ -f "docs/releases/$VERSION.md" ]; then
             cat "docs/releases/$VERSION.md" >> release-notes.md
-            echo >> release-notes.md
+          else
+            printf "## What's new in %s\n\n" "$VERSION" >> release-notes.md
+            python3 -B scripts/release.py notes "$VERSION" >> release-notes.md
           fi
+          echo >> release-notes.md
           cat >> release-notes.md <<'EOF'
           ## Install
 
@@ -89,7 +99,7 @@ jobs:
           # The heredoc above keeps the step's indentation: strip it.
           sed -i.bak 's/^          //' release-notes.md && rm release-notes.md.bak
           gh release create "$GITHUB_REF_NAME" "Mickey-$VERSION.zip" "Mickey-$VERSION.zip.sha256" \
-            --title "Mickey $VERSION" --generate-notes $prerelease --notes-file release-notes.md
+            --title "Mickey $VERSION" $prerelease --notes-file release-notes.md
 
       # Needs a fine-grained token with "Contents: read and write" on Arrows78/homebrew-mickey, stored as the
       # HOMEBREW_TAP_TOKEN secret. Without it the release is still published and the tap is left alone.

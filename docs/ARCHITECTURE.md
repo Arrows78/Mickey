@@ -94,7 +94,8 @@ The app icon (`scripts/make_app_icon.swift`) and the click sound (`scripts/make_
 ## 9. Release and distribution
 
 - `.github/workflows/ci.yml` runs `scripts/ci.sh` (tests, localization check, build) on every push to `main` and every pull request.
-- A `v*` tag runs `.github/workflows/release.yml`: version check against `project.yml`, tests, localization check, universal Release build, zip and SHA-256, GitHub release (notes from `docs/releases/<version>.md` plus the generated changelog), then the Homebrew tap.
+- Versions, `CHANGELOG.md` and the release notes come from the commit messages (Conventional Commits) through `scripts/release.py` (see [`RELEASING.md`](RELEASING.md)); CI lints the commit subjects of pull requests and checks that the version files and the changelog agree.
+- A `v*` tag runs `.github/workflows/release.yml`: version check against `project.yml`, tests, localization and release files checks, universal Release build, zip and SHA-256, GitHub release (notes from `docs/releases/<version>.md` plus the generated changelog), then the Homebrew tap.
 - The app is signed ad hoc and not notarized. Homebrew requires signing and notarization only for the official `homebrew/cask` tap, so Mickey is distributed through its own tap, `Arrows78/homebrew-mickey`, with a single `Casks/mickey.rb` rendered from `packaging/homebrew/mickey.rb.in` by `scripts/render_cask.sh`.
 - Homebrew applies the macOS quarantine to the download, so Gatekeeper blocks the first launch exactly as with the manual download; the cask prints the way around it as a caveat.
 - The cask removes only the app's container and preferences on `zap`, never the recordings in `~/Movies/Mickey`.
