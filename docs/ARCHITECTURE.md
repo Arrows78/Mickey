@@ -108,3 +108,9 @@ The app icon (`scripts/make_app_icon.swift`) and the click sound (`scripts/make_
 - Tooltips appear after 0.35 s instead of the system's two seconds (`App/Sources/ToolTips.swift`): AppKit's tooltip manager is a private class, so every step is guarded and a missing selector leaves the system delay.
 - Controls carry VoiceOver labels and values; selected tools, colors and sidebar pages are announced as selected.
 
+## 11. Keyboard layouts
+
+- Global hotkeys are tied to physical keys (virtual key codes) and shown with the letter the current layout prints on that key (`KeyboardLayout`, built from `UCKeyTranslate`). Defaults are placed once, when settings are first created or migrated, on the key printing their letter; a layout with no such letter falls back to the US position. Switching layout later keeps the physical keys and changes the letters shown; *Reset to Defaults* places them again for the new layout.
+- While drawing, a tool shortcut is the character typed (right on every Latin layout: the key marked A is the arrow, wherever it is). When the character is not a Latin letter, `ShortcutKey` falls back to the key's place on a US keyboard.
+- `RealKeyboardLayoutTests` reads the layouts macOS ships (US, French, Belgian, German, Spanish, Dvorak, Russian, Greek, Arabic…) without switching anything, and checks that every default lands on the key printing its letter, that no two defaults share a key, and that every drawing tool is reachable.
+

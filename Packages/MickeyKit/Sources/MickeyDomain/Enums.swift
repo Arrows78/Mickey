@@ -153,6 +153,12 @@ public enum AnnotationTool: String, CaseIterable, Codable, Sendable {
         }
     }
 
+    /// Tool for a key press: by the character typed, which is right on every Latin layout (AZERTY, QWERTZ, Dvorak…),
+    /// and by the key's place on a US keyboard when the layout has no Latin letters (Russian, Greek, Arabic…).
+    public static func forKey(characters: String?, keyCode: UInt16) -> AnnotationTool? {
+        ShortcutKey.letter(characters: characters, keyCode: keyCode).flatMap(forShortcut)
+    }
+
     public static func forShortcut(_ key: Character) -> AnnotationTool? {
         allCases.first { $0.shortcutKey == Character(key.lowercased()) }
     }
@@ -388,4 +394,20 @@ public enum MenuBarItem: String, CaseIterable, Codable, Sendable, Identifiable {
 
 public enum LoginItemState: Equatable, Sendable {
     case enabled, disabled, requiresApproval, failed(String)
+}
+
+/// The letter of a key press, for shortcuts that are named after letters.
+public enum ShortcutKey {
+    /// US (ANSI) key codes of the letters.
+    private static let ansiLetters: [UInt16: Character] = [
+        0: "a", 1: "s", 2: "d", 3: "f", 4: "h", 5: "g", 6: "z", 7: "x", 8: "c", 9: "v", 11: "b", 12: "q", 13: "w", 14: "e",
+        15: "r", 16: "y", 17: "t", 31: "o", 32: "u", 34: "i", 35: "p", 37: "l", 38: "j", 40: "k", 45: "n", 46: "m",
+    ]
+
+    /// Lowercase Latin letter of the key: the character typed when it is one, else the letter on that key of a US
+    /// keyboard, so shortcuts keep working on layouts without Latin letters. nil for keys that are neither.
+    public static func letter(characters: String?, keyCode: UInt16) -> Character? {
+        if let c = characters?.first, c.isASCII, c.isLetter { return Character(c.lowercased()) }
+        return ansiLetters[keyCode]
+    }
 }

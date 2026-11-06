@@ -33,13 +33,31 @@ nonisolated public enum KeyboardLayout {
     public static func defaultHotkey(_ action: HotkeyAction) -> KeyCombo { action.defaultHotkey(keyCode: keyCode(for:)) }
 
     private static func current() -> Table {
-        guard let source = TISCopyCurrentKeyboardLayoutInputSource()?.takeRetainedValue(),
-              let idPointer = TISGetInputSourceProperty(source, kTISPropertyInputSourceID),
-              let dataPointer = TISGetInputSourceProperty(source, kTISPropertyUnicodeKeyLayoutData)
+        guard let source = TISCopyCurrentKeyboardLayoutInputSource()?.takeRetainedValue(), let id = inputSourceID(source)
         else { return Table(id: "") }
-        let id = Unmanaged<CFString>.fromOpaque(idPointer).takeUnretainedValue() as String
         if let table, table.id == id { return table }
+        let built = build(from: source) ?? Table(id: id)
+        table = built
+        return built
+    }
 
+    private static func inputSourceID(_ source: TISInputSource) -> String? {
+        guard let pointer = TISGetInputSourceProperty(source, kTISPropertyInputSourceID) else { return nil }
+        return Unmanaged<CFString>.fromOpaque(pointer).takeUnretainedValue() as String
+    }
+
+    /// The keys of an installed layout by its identifier ("com.apple.keylayout.French"), for tests; nil when not installed.
+    static func table(forLayoutID id: String) -> (labels: [UInt32: String], codes: [Character: UInt32])? {
+        let filter: [CFString: Any] = [kTISPropertyInputSourceID: id]
+        guard let list = TISCreateInputSourceList(filter as CFDictionary, true)?.takeRetainedValue() as? [TISInputSource],
+              let source = list.first, let table = build(from: source)
+        else { return nil }
+        return (table.labels, table.codes)
+    }
+
+    private static func build(from source: TISInputSource) -> Table? {
+        guard let id = inputSourceID(source), let dataPointer = TISGetInputSourceProperty(source, kTISPropertyUnicodeKeyLayoutData)
+        else { return nil }
         let data = Unmanaged<CFData>.fromOpaque(dataPointer).takeUnretainedValue()
         var built = Table(id: id)
         // Character-producing keys all sit below 0x60 (F-keys, arrows and the keypad come after).
@@ -60,7 +78,6 @@ nonisolated public enum KeyboardLayout {
                 if built.codes[Character(text.lowercased())] == nil { built.codes[Character(text.lowercased())] = code }
             }
         }
-        table = built
         return built
     }
 }

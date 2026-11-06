@@ -144,7 +144,7 @@ The enlarged-pointer animation flashes a pointer five times larger that shrinks 
 
 ### 4.7 Hotkeys
 
-Toggles invert the matching setting (cursor effects and presenter tools also turn the master switch on). Defaults are ⌃⌥⌘ plus a letter: M Mickey, S spotlight, R ring, T trail, C click feedback, K click sounds, F flash click effect, L shake to locate, D drawing, Y keystrokes, Z live zoom, O loupe, W focus, E camera bubble, A captions, V recording, P pause or resume the recording. The letters follow the keyboard layout (on AZERTY, A is the key marked A).
+Toggles invert the matching setting (cursor effects and presenter tools also turn the master switch on). Defaults are ⌃⌥⌘ plus a letter: M Mickey, S spotlight, R ring, T trail, C click feedback, K click sounds, F flash click effect, L shake to locate, D drawing, Y keystrokes, Z live zoom, O loupe, W focus, E camera bubble, A captions, V recording, P pause or resume the recording. The letters follow the keyboard layout (layouts without Latin letters use the US key positions) (on AZERTY, A is the key marked A).
 
 Recording rules: at least one of ⌃, ⌥, ⌘ (F-keys may be used alone); ⌘ alone and ⇧ alone are refused. Conflicts:
 

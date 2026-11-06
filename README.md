@@ -83,7 +83,7 @@ Every action defaults to **⌃⌥⌘** plus a letter, a combination macOS and mo
 | `⌃⌥⌘L` | Toggle shake to locate | `⌃⌥⌘V` | Start / stop recording |
 | `⌃⌥⌘P` | Pause / resume recording | | |
 
-Letters follow your keyboard layout: on AZERTY, `⌃⌥⌘A` is the key marked A. All of them can be changed or cleared in **Settings › Hotkeys**.
+Letters follow your keyboard layout: on AZERTY, `⌃⌥⌘A` is the key marked A. On layouts without Latin letters (Russian, Greek, Arabic…) the defaults sit on the US key positions, and the drawing shortcuts (F, A, R…, ⌘Z, ⌘C) answer to those positions too. All of them can be changed or cleared in **Settings › Hotkeys**.
 
 ## 🔐 Permissions
 

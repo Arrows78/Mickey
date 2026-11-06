@@ -184,11 +184,11 @@ public final class AnnotationController {
     func keyDown(_ event: NSEvent) -> Bool {
         if event.keyCode == 53 { exit(); return true } // Escape
         let cmd = event.modifierFlags.contains(.command)
-        if cmd && event.charactersIgnoringModifiers == "z" { undo(); return true }
-        if cmd && event.charactersIgnoringModifiers == "Z" { redo(); return true } // ⇧⌘Z
-        if cmd && event.charactersIgnoringModifiers == "c" { copyImage(); return true }
+        let letter = ShortcutKey.letter(characters: event.charactersIgnoringModifiers, keyCode: event.keyCode)
+        if cmd && letter == "z" { if event.modifierFlags.contains(.shift) { redo() } else { undo() }; return true } // ⌘Z, ⇧⌘Z
+        if cmd && letter == "c" && !event.modifierFlags.contains(.shift) { copyImage(); return true }
         if cmd && (event.keyCode == 51 || event.keyCode == 117) { clearAll(); return true } // ⌘⌫ / ⌘⌦
-        if !cmd, let c = event.charactersIgnoringModifiers?.first, let tool = AnnotationTool.forShortcut(c) {
+        if !cmd, let tool = AnnotationTool.forKey(characters: event.charactersIgnoringModifiers, keyCode: event.keyCode) {
             select(tool); return true
         }
         return false

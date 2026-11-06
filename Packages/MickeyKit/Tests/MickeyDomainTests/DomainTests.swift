@@ -1309,3 +1309,29 @@ struct InteractionTests {
         #expect(KeystrokeStyle.allCases.filter(\.usesAccent) == [.glass, .neon])
     }
 }
+
+@Suite("Shortcut keys") struct ShortcutKeyTests {
+    @Test func aLatinLetterIsTakenAsTyped() {
+        #expect(ShortcutKey.letter(characters: "a", keyCode: 12) == "a", "AZERTY: the key printing A is where QWERTY has Q")
+        #expect(ShortcutKey.letter(characters: "Z", keyCode: 6) == "z")
+    }
+
+    @Test func aLayoutWithoutLatinLettersFallsBackToTheUSKey() {
+        #expect(ShortcutKey.letter(characters: "ф", keyCode: 0) == "a")
+        #expect(ShortcutKey.letter(characters: "я", keyCode: 6) == "z")
+        #expect(ShortcutKey.letter(characters: "ب", keyCode: 3) == "f")
+    }
+
+    @Test func aKeyThatIsNeitherGivesNothing() {
+        #expect(ShortcutKey.letter(characters: "1", keyCode: 18) == nil)
+        #expect(ShortcutKey.letter(characters: nil, keyCode: 53) == nil)
+        #expect(ShortcutKey.letter(characters: "", keyCode: 200) == nil)
+    }
+
+    @Test func toolsAreFoundByCharacterOnLatinLayoutsAndByPositionOtherwise() {
+        #expect(AnnotationTool.forKey(characters: "a", keyCode: 12) == .arrow)       // AZERTY A
+        #expect(AnnotationTool.forKey(characters: "q", keyCode: 0) == nil)           // AZERTY Q: no tool on Q
+        #expect(AnnotationTool.forKey(characters: "а", keyCode: 3) == .freehand)     // Russian key at the US F position
+        #expect(AnnotationTool.forKey(characters: "1", keyCode: 18) == nil)
+    }
+}
