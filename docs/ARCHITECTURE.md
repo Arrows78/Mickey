@@ -90,7 +90,15 @@ The app icon (`scripts/make_app_icon.swift`) and the click sound (`scripts/make_
 
 `./scripts/ci.sh` runs the tests, the localization check (`scripts/l10n.py`), regenerates the project and builds the app.
 
-## 9. Localization and accessibility
+## 9. Release and distribution
+
+- A `v*` tag runs `.github/workflows/release.yml`: version check against `project.yml`, tests, localization check, universal Release build, zip and SHA-256, GitHub release (notes from `docs/releases/<version>.md` plus the generated changelog), then the Homebrew tap.
+- The app is signed ad hoc and not notarized. Homebrew requires signing and notarization only for the official `homebrew/cask` tap, so Mickey is distributed through its own tap, `Arrows78/homebrew-mickey`, with a single `Casks/mickey.rb` rendered from `packaging/homebrew/mickey.rb.in` by `scripts/render_cask.sh`.
+- Homebrew applies the macOS quarantine to the download, so Gatekeeper blocks the first launch exactly as with the manual download; the cask prints the way around it as a caveat.
+- The cask removes only the app's container and preferences on `zap`, never the recordings in `~/Movies/Mickey`.
+- The tap update needs the `HOMEBREW_TAP_TOKEN` secret and is skipped without it.
+
+## 10. Localization and accessibility
 
 - Texts are localized with the English text as key (`tr` / `trf` in `MickeyDomain`, SwiftUI literals directly); English is the reference and the fallback. See [`LOCALIZATION.md`](LOCALIZATION.md).
 - Reduce Motion (System Settings › Accessibility › Display) is honored by the effects engine (`ReducedMotion` in the domain decides the scale animation), the focus overlay, the HUDs, the onboarding and the settings cards.
