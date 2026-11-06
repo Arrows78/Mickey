@@ -83,6 +83,8 @@
 "Copy" = "Copy";
 "Copy Diagnostics" = "Copy Diagnostics";
 "Copy a summary of your setup (version, macOS, permissions, settings) to paste into a bug report. It contains no personal data." = "Copy a summary of your setup (version, macOS, permissions, settings) to paste into a bug report. It contains no personal data.";
+"Copy as Image" = "Copy as Image";
+"Copy as Image (⌘C)" = "Copy as Image (⌘C)";
 "Corner" = "Corner";
 "Corner Radius" = "Corner Radius";
 "Countdown" = "Countdown";
@@ -131,7 +133,7 @@
 "Every key is shown, including passwords you type. Turn Shortcuts Only back on when you're done." = "Every key is shown, including passwords you type. Turn Shortcuts Only back on when you're done.";
 "Export Mickey Settings" = "Export Mickey Settings";
 "Export Settings…" = "Export Settings…";
-"F freehand, A arrow, R rectangle, C circle, L line, H highlighter, T text, N numbered callout. ⌘Z undoes, ⇧⌘Z redoes, ⌘⌫ clears everything." = "F freehand, A arrow, R rectangle, C circle, L line, H highlighter, T text, N numbered callout. ⌘Z undoes, ⇧⌘Z redoes, ⌘⌫ clears everything.";
+"F freehand, A arrow, R rectangle, C circle, L line, H highlighter, T text, N numbered callout. ⌘Z undoes, ⇧⌘Z redoes, ⌘C copies the drawing as an image, ⌘⌫ clears everything." = "F freehand, A arrow, R rectangle, C circle, L line, H highlighter, T text, N numbered callout. ⌘Z undoes, ⇧⌘Z redoes, ⌘C copies the drawing as an image, ⌘⌫ clears everything.";
 "Fade After" = "Fade After";
 "Fade Speed" = "Fade Speed";
 "Find the pointer, then move away and the spotlight switches itself off." = "Find the pointer, then move away and the spotlight switches itself off.";
@@ -454,7 +456,7 @@
 "Waiting for your approval in System Settings › General › Login Items." = "Waiting for your approval in System Settings › General › Login Items.";
 "Welcome to Mickey" = "Welcome to Mickey";
 "When several watched apps run, the first one in this list decides." = "When several watched apps run, the first one in this list decides.";
-"While drawing: F freehand · A arrow · R rectangle · C circle · L line · H highlighter · T text · N callout · ⌘Z undo · ⇧⌘Z redo · ⌘⌫ clear · Esc stop." = "While drawing: F freehand · A arrow · R rectangle · C circle · L line · H highlighter · T text · N callout · ⌘Z undo · ⇧⌘Z redo · ⌘⌫ clear · Esc stop.";
+"While drawing: F freehand · A arrow · R rectangle · C circle · L line · H highlighter · T text · N callout · ⌘Z undo · ⇧⌘Z redo · ⌘C copy image · ⌘⌫ clear · Esc stop." = "While drawing: F freehand · A arrow · R rectangle · C circle · L line · H highlighter · T text · N callout · ⌘Z undo · ⇧⌘Z redo · ⌘C copy image · ⌘⌫ clear · Esc stop.";
 "White" = "White";
 "Window" = "Window";
 "Works best with a Toggle Spotlight hotkey. Cannot be combined with Hold a Key to Show." = "Works best with a Toggle Spotlight hotkey. Cannot be combined with Hold a Key to Show.";

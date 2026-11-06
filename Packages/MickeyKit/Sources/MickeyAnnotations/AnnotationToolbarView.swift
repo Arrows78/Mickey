@@ -44,6 +44,9 @@ struct AnnotationToolbarView: View {
                 .buttonStyle(.plain).help("Undo (⌘Z)").accessibilityLabel("Undo").disabled(!controller.session.canUndo)
             Button { controller.redo() } label: { Image(systemName: "arrow.uturn.forward") }
                 .buttonStyle(.plain).help("Redo (⇧⌘Z)").accessibilityLabel("Redo").disabled(!controller.session.canRedo)
+            Button { controller.copyImage() } label: { Image(systemName: "doc.on.clipboard") }
+                .buttonStyle(.plain).help("Copy as Image (⌘C)").accessibilityLabel("Copy as Image")
+                .disabled(controller.session.annotations.isEmpty)
             Button { controller.clearAll() } label: { Image(systemName: "trash") }
                 .buttonStyle(.plain).help("Clear All (⌘⌫)").accessibilityLabel("Clear All")
             Button { controller.exit() } label: { Image(systemName: "xmark.circle.fill") }

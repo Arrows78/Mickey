@@ -965,3 +965,36 @@ struct InteractionTests {
         #expect(Permission.camera.title == "Camera")
     }
 }
+
+@Suite("Annotation bounds") struct AnnotationBoundsTests {
+    private func line(_ a: CGPoint, _ b: CGPoint, width: Double = 4, tool: AnnotationTool = .line) -> Annotation {
+        Annotation(tool: tool, points: [a, b], color: .red, width: width, createdAt: 0)
+    }
+
+    @Test func noAnnotationsHaveNoBounds() {
+        #expect(AnnotationBounds.union([]) == nil)
+    }
+
+    @Test func strokeWidthWidensTheBounds() {
+        let b = line(CGPoint(x: 10, y: 10), CGPoint(x: 110, y: 60)).drawnBounds
+        #expect(b.minX < 10 && b.maxX > 110 && b.minY < 10 && b.maxY > 60)
+    }
+
+    @Test func arrowHeadFitsInTheBounds() {
+        let arrow = line(CGPoint(x: 0, y: 0), CGPoint(x: 100, y: 0), tool: .arrow)
+        let plain = line(CGPoint(x: 0, y: 0), CGPoint(x: 100, y: 0))
+        #expect(arrow.drawnBounds.height > plain.drawnBounds.height)
+    }
+
+    @Test func unionCoversEveryAnnotation() throws {
+        let a = line(CGPoint(x: 0, y: 0), CGPoint(x: 10, y: 10))
+        let b = line(CGPoint(x: 500, y: 400), CGPoint(x: 520, y: 420))
+        let u = try #require(AnnotationBounds.union([a, b]))
+        #expect(u.contains(a.drawnBounds) && u.contains(b.drawnBounds))
+    }
+
+    @Test func calloutBoundsAreItsDisc() {
+        let c = Annotation(tool: .callout, points: [CGPoint(x: 100, y: 100)], color: .red, width: 20, calloutNumber: 1, createdAt: 0)
+        #expect(c.drawnBounds == CGRect(x: 80, y: 80, width: 40, height: 40))
+    }
+}

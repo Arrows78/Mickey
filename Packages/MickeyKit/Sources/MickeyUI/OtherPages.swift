@@ -36,7 +36,7 @@ struct AnnotationsPage: View {
                               range: AnnotationSettings.autoFadeDelayRange, step: 0.5, format: seconds)
                 }
                 ToggleRow(title: "Clear on Exit", detail: "Erase everything when leaving draw mode.", isOn: model.binding(\.annotations.clearOnExit))
-                NoteView(text: "While drawing: F freehand · A arrow · R rectangle · C circle · L line · H highlighter · T text · N callout · ⌘Z undo · ⇧⌘Z redo · ⌘⌫ clear · Esc stop.")
+                NoteView(text: "While drawing: F freehand · A arrow · R rectangle · C circle · L line · H highlighter · T text · N callout · ⌘Z undo · ⇧⌘Z redo · ⌘C copy image · ⌘⌫ clear · Esc stop.")
             }
         }
     }

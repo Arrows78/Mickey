@@ -93,6 +93,14 @@ public final class AnnotationController {
         settings.strokeWidth = w
         onSettingsEdited?(settings)
     }
+    /// Puts the drawn annotations on the clipboard as a transparent image, cropped to what was drawn.
+    @discardableResult
+    public func copyImage() -> Bool {
+        commitTextEditing()
+        guard let canvas, let image = AnnotationImage.render(session.annotations, canvas: canvas.bounds) else { return false }
+        NSPasteboard.general.clearContents()
+        return NSPasteboard.general.writeObjects([image])
+    }
     public func undo() { session.undo(); hideIfIdle() }
     public func redo() { session.redo(); if isDrawing || !session.annotations.isEmpty { canvasPanel?.orderFrontRegardless() } }
     public func clearAll() { session.clearAll(); hideIfIdle() }
@@ -178,6 +186,7 @@ public final class AnnotationController {
         let cmd = event.modifierFlags.contains(.command)
         if cmd && event.charactersIgnoringModifiers == "z" { undo(); return true }
         if cmd && event.charactersIgnoringModifiers == "Z" { redo(); return true } // ⇧⌘Z
+        if cmd && event.charactersIgnoringModifiers == "c" { copyImage(); return true }
         if cmd && (event.keyCode == 51 || event.keyCode == 117) { clearAll(); return true } // ⌘⌫ / ⌘⌦
         if !cmd, let c = event.charactersIgnoringModifiers?.first, let tool = AnnotationTool.forShortcut(c) {
             select(tool); return true
@@ -244,6 +253,30 @@ final class CanvasView: NSView {
         guard let c = NSGraphicsContext.current?.cgContext, let controller else { return }
         let items = controller.session.annotations + (controller.session.current.map { [$0] } ?? [])
         for a in items where a.id != controller.session.editingTextID { AnnotationRenderer.draw(a, in: c) }
+    }
+}
+
+enum AnnotationImage {
+    /// Transparent image of `annotations`, cropped to what they cover inside `canvas`, at twice the screen resolution.
+    static func render(_ annotations: [Annotation], canvas: CGRect, scale: CGFloat = 2) -> NSImage? {
+        guard let bounds = AnnotationBounds.union(annotations)?.intersection(canvas), !bounds.isNull, !bounds.isEmpty else { return nil }
+        let box = bounds.integral
+        guard let rep = NSBitmapImageRep(bitmapDataPlanes: nil, pixelsWide: Int(box.width * scale), pixelsHigh: Int(box.height * scale),
+                                         bitsPerSample: 8, samplesPerPixel: 4, hasAlpha: true, isPlanar: false,
+                                         colorSpaceName: .deviceRGB, bytesPerRow: 0, bitsPerPixel: 0),
+              let context = NSGraphicsContext(bitmapImageRep: rep)
+        else { return nil }
+        rep.size = box.size
+        NSGraphicsContext.saveGraphicsState()
+        NSGraphicsContext.current = context
+        let c = context.cgContext
+        c.scaleBy(x: scale, y: scale)
+        c.translateBy(x: -box.minX, y: -box.minY)
+        annotations.forEach { AnnotationRenderer.draw($0, in: c) }
+        NSGraphicsContext.restoreGraphicsState()
+        let image = NSImage(size: box.size)
+        image.addRepresentation(rep)
+        return image
     }
 }
 

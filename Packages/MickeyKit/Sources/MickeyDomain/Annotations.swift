@@ -24,6 +24,33 @@ public struct Annotation: Identifiable, Equatable, Sendable {
     }
 }
 
+extension Annotation {
+    /// Area covered once drawn: the points widened by the stroke, the arrow head, the text or the numbered disc.
+    public var drawnBounds: CGRect {
+        guard let first = points.first else { return .null }
+        switch tool {
+        case .text:
+            let count = max(text?.count ?? 0, 1)
+            return CGRect(x: first.x, y: first.y - width * 0.7, width: width * 0.65 * Double(count), height: width * 1.5)
+        case .callout:
+            return CGRect(x: first.x - width, y: first.y - width, width: width * 2, height: width * 2)
+        case .arrow:
+            return boundingBox.insetBy(dx: -(width * 4 + 2), dy: -(width * 4 + 2))
+        default:
+            return boundingBox.insetBy(dx: -(width / 2 + 2), dy: -(width / 2 + 2))
+        }
+    }
+}
+
+public enum AnnotationBounds {
+    /// Smallest rectangle holding every annotation, or nil when there are none.
+    public static func union(_ annotations: [Annotation]) -> CGRect? {
+        let rects = annotations.map(\.drawnBounds).filter { !$0.isNull }
+        guard let first = rects.first else { return nil }
+        return rects.dropFirst().reduce(first) { $0.union($1) }
+    }
+}
+
 /// Drawing state for one draw-mode session: strokes, undo history, current tool.
 public struct AnnotationSession: Sendable {
     public private(set) var annotations: [Annotation] = []

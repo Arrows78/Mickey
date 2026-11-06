@@ -136,9 +136,9 @@ The enlarged-pointer animation flashes a pointer five times larger that shrinks 
 
 - Enter draw mode by holding Fn (≥ 0.25 s; releasing ends it), holding Right Option when enabled (same rule), the Toggle Annotation Mode hotkey, or Start Drawing.
 - The canvas covers the screen under the pointer; a toolbar at the top offers the eight tools, preset colors, stroke width, undo, clear all and stop.
-- Shortcuts while drawing, including while Fn is held: F freehand, A arrow, R rectangle, C circle, L line, H highlighter, T text, N callout, ⌘Z undo, ⇧⌘Z redo, ⌘⌫ clear all, Esc stop.
+- Shortcuts while drawing, including while Fn is held: F freehand, A arrow, R rectangle, C circle, L line, H highlighter, T text, N callout, ⌘Z undo, ⇧⌘Z redo, ⌘C copy the drawing as an image, ⌘⌫ clear all, Esc stop.
 - Text: a click opens an inline editor; callouts are numbered automatically. Two-point shapes smaller than 2 pt are ignored.
-- Auto-fade removes each annotation after the delay; clear on exit erases everything when leaving draw mode. Undo keeps up to 100 steps; drawing after an undo drops the redo history.
+- Auto-fade removes each annotation after the delay; clear on exit erases everything when leaving draw mode. Undo keeps up to 100 steps; drawing after an undo drops the redo history. ⌘C (or the toolbar button) puts a transparent image of the drawing, cropped to what was drawn, on the clipboard.
 
 ### 4.7 Hotkeys
 

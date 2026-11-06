@@ -40,7 +40,7 @@
 
 - Draw on top of everything: freehand, arrow, rectangle, circle, line, highlighter, text and numbered callouts.
 - Hold **Fn (🌐)** (or optionally **Right Option**) to draw while the key is held, or toggle a persistent drawing mode with a hotkey or the menu bar. Arrow keys and F-keys, which macOS reports with the Fn flag, never start drawing, and nothing draws while Mickey is off.
-- A floating toolbar offers tools, colors, stroke width, undo, redo and clear; single-letter shortcuts (F, A, R, C, L, H, T, N), ⌘Z, ⇧⌘Z, ⌘⌫ and Esc work even while holding Fn.
+- A floating toolbar offers tools, colors, stroke width, undo, redo, copy as an image and clear; single-letter shortcuts (F, A, R, C, L, H, T, N), ⌘Z, ⇧⌘Z, ⌘⌫ and Esc work even while holding Fn.
 - Optional auto-fade and clear-on-exit.
 
 ### 🎬 Presenter tools

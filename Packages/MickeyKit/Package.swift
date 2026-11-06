@@ -19,6 +19,7 @@ let package = Package(
         .target(name: "MickeyAnnotations", dependencies: ["MickeyDomain", "MickeyEffects"], swiftSettings: mainActorByDefault),
         .target(name: "MickeyUI", dependencies: ["MickeyDomain", "MickeyPersistence", "MickeyEffects"], swiftSettings: mainActorByDefault),
         .testTarget(name: "MickeyDomainTests", dependencies: ["MickeyDomain"]),
+        .testTarget(name: "MickeyAnnotationsTests", dependencies: ["MickeyAnnotations", "MickeyDomain"]),
         .testTarget(name: "MickeyPersistenceTests", dependencies: ["MickeyPersistence"]),
         .testTarget(name: "MickeyEffectsTests", dependencies: ["MickeyEffects", "MickeyDomain"]),
         .testTarget(name: "MickeyUITests", dependencies: ["MickeyUI", "MickeyDomain", "MickeyPersistence"]),
