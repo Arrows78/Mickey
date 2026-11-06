@@ -105,6 +105,8 @@ Master switch; the toggles selected in General, each with its shortcut; Start/St
 - *Turn Off When Moving*: when the spotlight is switched on, an anchor is taken (re-anchored during the first 0.25 s); moving farther than the distance switches the spotlight off.
 - *Hide Cursor*: hides the system pointer while the spotlight is visible; macOS honours this only while Mickey is the active app. The pointer is always restored.
 
+The Cursor Effects page opens with a live preview of the enabled spotlight and ring on a light and a dark background, scaled down when they are large.
+
 ### 4.2 Ring
 
 A ring of the chosen size, thickness and color follows the pointer; neon adds a glow, animation a pulse whose period shrinks as speed grows. The contrast outline adds a 2 pt black or white edge, whichever contrasts more with the ring color (WCAG luminance), so the ring stays visible on light and dark backgrounds. With Reduce Motion on, the pulse is not played.

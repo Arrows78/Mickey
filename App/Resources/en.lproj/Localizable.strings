@@ -193,6 +193,7 @@
 "Line Width" = "Line Width";
 "Lines" = "Lines";
 "Live Captions" = "Live Captions";
+"Live Preview" = "Live Preview";
 "Live Zoom" = "Live Zoom";
 "Live captions" = "Live captions";
 "Live subtitles from the microphone" = "Live subtitles from the microphone";
@@ -269,6 +270,7 @@
 "Press shortcut…" = "Press shortcut…";
 "Press the combination. Esc cancels, Delete clears." = "Press the combination. Esc cancels, Delete clears.";
 "Preview" = "Preview";
+"Preview of the enabled effects" = "Preview of the enabled effects";
 "Purple" = "Purple";
 "QHD (2560 px)" = "QHD (2560 px)";
 "Quality" = "Quality";
@@ -400,6 +402,7 @@
 "Text Size" = "Text Size";
 "The camera is in use by another app." = "The camera is in use by another app.";
 "The chosen file could not be played. Using the default sound." = "The chosen file could not be played. Using the default sound.";
+"The enabled effects, on a light and a dark background." = "The enabled effects, on a light and a dark background.";
 "The microphone could not start: %@" = "The microphone could not start: %@";
 "The screen to capture could not be found." = "The screen to capture could not be found.";
 "Thickness" = "Thickness";
@@ -444,6 +447,7 @@
 "Turn on Enable Mickey, then switch on the effects you want. Switching on an effect while Mickey is off turns it on for you." = "Turn on Enable Mickey, then switch on the effects you want. Switching on an effect while Mickey is off turns it on for you.";
 "Turn on Ring" = "Turn on Ring";
 "Turn on Spotlight" = "Turn on Spotlight";
+"Turn on Spotlight or Ring to see them here." = "Turn on Spotlight or Ring to see them here.";
 "Tutorial Video" = "Tutorial Video";
 "Type…" = "Type…";
 "Undo" = "Undo";

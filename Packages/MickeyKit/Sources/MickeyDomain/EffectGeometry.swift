@@ -76,3 +76,19 @@ public enum ReducedMotion {
         reduced ? (to, to) : (from, to)
     }
 }
+
+/// Layout of the effects preview in the settings: real sizes shrunk so the largest effect fits.
+public enum EffectPreviewLayout {
+    /// Scale for sizes in points, never above 1. `largest` is the biggest radius shown; `height` that of the preview.
+    public static func scale(largest: Double, height: Double) -> Double {
+        guard largest > 0, height > 0 else { return 1 }
+        return min(1, height * 0.42 / largest)
+    }
+
+    /// Biggest radius of what the preview shows: the spotlight spot (or half its bar) and the ring, when on.
+    public static func largestRadius(in s: Settings) -> Double {
+        let spot = s.spotlight.enabled ? (s.spotlight.shape == .circle ? s.spotlight.radius : s.spotlight.barThickness / 2) : 0
+        let ring = s.ring.enabled ? s.ring.radius + s.ring.thickness : 0
+        return max(spot, ring)
+    }
+}

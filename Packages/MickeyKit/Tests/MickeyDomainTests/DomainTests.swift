@@ -1027,3 +1027,36 @@ struct InteractionTests {
         #expect(RingSettings().contrastOutline == false)
     }
 }
+
+@Suite("Effects preview layout") struct EffectPreviewLayoutTests {
+    @Test func smallEffectsAreShownAtRealSize() {
+        #expect(EffectPreviewLayout.scale(largest: 40, height: 140) == 1)
+    }
+
+    @Test func bigEffectsShrinkToFit() {
+        let scale = EffectPreviewLayout.scale(largest: 300, height: 140)
+        #expect(scale < 1 && 300 * scale <= 140 / 2)
+    }
+
+    @Test func nothingShownKeepsRealSize() {
+        #expect(EffectPreviewLayout.scale(largest: 0, height: 140) == 1)
+    }
+
+    @Test func largestRadiusOnlyCountsEnabledEffects() {
+        var s = Settings.defaults
+        s.spotlight.enabled = false
+        s.ring.enabled = false
+        #expect(EffectPreviewLayout.largestRadius(in: s) == 0)
+        s.ring.enabled = true
+        s.ring.radius = 80
+        s.ring.thickness = 4
+        #expect(EffectPreviewLayout.largestRadius(in: s) == 84)
+        s.spotlight.enabled = true
+        s.spotlight.shape = .circle
+        s.spotlight.radius = 200
+        #expect(EffectPreviewLayout.largestRadius(in: s) == 200)
+        s.spotlight.shape = .horizontalBar
+        s.spotlight.barThickness = 60
+        #expect(EffectPreviewLayout.largestRadius(in: s) == 84)
+    }
+}

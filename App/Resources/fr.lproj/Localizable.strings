@@ -193,6 +193,7 @@
 "Line" = "Ligne";
 "Lines" = "Lignes";
 "Live Captions" = "Sous-titres en direct";
+"Live Preview" = "Aperçu en direct";
 "Live Zoom" = "Zoom en direct";
 "Live captions" = "Sous-titres en direct";
 "Live subtitles from the microphone" = "Sous-titres en direct depuis le microphone";
@@ -268,6 +269,7 @@
 "Presets" = "Préréglages";
 "Press shortcut…" = "Tapez le raccourci…";
 "Press the combination. Esc cancels, Delete clears." = "Tapez la combinaison. Échap annule, Supprimer efface.";
+"Preview of the enabled effects" = "Aperçu des effets activés";
 "Preview" = "Aperçu";
 "Purple" = "Violet";
 "QHD (2560 px)" = "QHD (2560 px)";
@@ -400,6 +402,7 @@
 "Text" = "Texte";
 "The camera is in use by another app." = "La caméra est utilisée par une autre app.";
 "The chosen file could not be played. Using the default sound." = "Le fichier choisi n’a pas pu être lu. Le son par défaut est utilisé.";
+"The enabled effects, on a light and a dark background." = "Les effets activés, sur un fond clair et un fond sombre.";
 "The microphone could not start: %@" = "Le microphone n’a pas pu démarrer : %@";
 "The screen to capture could not be found." = "L’écran à capturer est introuvable.";
 "Thickness" = "Épaisseur";
@@ -443,6 +446,7 @@
 "Turn on %@" = "Activer %@";
 "Turn on Enable Mickey, then switch on the effects you want. Switching on an effect while Mickey is off turns it on for you." = "Activez Mickey, puis les effets de votre choix. Activer un effet alors que Mickey est désactivé réactive Mickey pour vous.";
 "Turn on Ring" = "Activer l’anneau";
+"Turn on Spotlight or Ring to see them here." = "Activez le projecteur ou l’anneau pour les voir ici.";
 "Turn on Spotlight" = "Activer le projecteur";
 "Tutorial Video" = "Vidéo tutoriel";
 "Type…" = "Saisir…";

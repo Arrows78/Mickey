@@ -8,6 +8,7 @@ struct EffectsPage: View {
         VStack(alignment: .leading, spacing: 16) {
             PageHeader(title: "Cursor Effects", subtitle: "Make the pointer easy to follow during demos and recordings.")
             masterCard
+            EffectPreview(settings: model.settings)
             spotlightCard
             ringCard
             clickCard

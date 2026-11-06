@@ -82,9 +82,10 @@ The app icon (`scripts/make_app_icon.swift`) and the click sound (`scripts/make_
 
 | Level | Examples |
 | --- | --- |
-| Domain | shake detection on synthetic sequences, tap/hold recognisers, trail buffer, interaction rules, annotation session, undo and redo, review policy, keystroke formatting and history, zoom geometry, focus selection, captions, presets, automatic mode, default hotkeys |
+| Domain | shake detection on synthetic sequences, tap/hold recognisers, trail buffer, interaction rules, annotation session, undo and redo, annotation bounds, color contrast, preview layout, review policy, keystroke formatting and history, zoom geometry, focus selection, captions, presets, automatic mode, default hotkeys |
 | Persistence | settings export and import (`SettingsTransfer`), exact defaults, round trip, invalid fields, clamping, migrations (v1 → v3), fields added later |
 | Effects | spotlight hole, shapes |
+| Annotations | image rendering of a drawing (cropped, transparent, nothing outside the canvas) |
 | UI logic | model-level settings export and import (stubbed file panels), hotkey conflicts and key-equivalent parsing |
 
 `./scripts/ci.sh` runs the tests, the localization check (`scripts/l10n.py`), regenerates the project and builds the app.
