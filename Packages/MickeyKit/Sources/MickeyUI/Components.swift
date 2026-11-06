@@ -44,7 +44,11 @@ struct SliderRow: View {
     var body: some View {
         HStack {
             Text(title).frame(width: 150, alignment: .leading)
-            if let step { Slider(value: $value, in: range, step: step) } else { Slider(value: $value, in: range) }
+            Group {
+                if let step { Slider(value: $value, in: range, step: step) } else { Slider(value: $value, in: range) }
+            }
+            .accessibilityLabel(title)
+            .accessibilityValue(format(value))
             Text(format(value)).monospacedDigit().foregroundStyle(.secondary).frame(width: 56, alignment: .trailing)
         }
     }
@@ -76,11 +80,13 @@ struct ColorRow: View {
                 .buttonStyle(.plain)
                 .help(preset.presetName ?? "Color")
                 .accessibilityLabel(preset.presetName ?? "Color preset")
+                .accessibilityAddTraits(color == preset ? .isSelected : [])
             }
             ColorPicker("", selection: Binding(get: { Color(nsColor: color.nsColor) },
                                                set: { color = RGBAColor(NSColor($0)) }), supportsOpacity: false)
                 .labelsHidden()
                 .help("Custom color")
+                .accessibilityLabel("Custom color")
         }
     }
 }
@@ -98,6 +104,7 @@ struct PickerRow<T: Hashable, Label: View>: View {
                 ForEach(options, id: \.self) { label($0).tag($0) }
             }
             .labelsHidden()
+            .accessibilityLabel(title)
             .frame(maxWidth: 260)
             Spacer()
         }

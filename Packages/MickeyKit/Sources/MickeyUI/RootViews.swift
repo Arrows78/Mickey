@@ -53,6 +53,7 @@ public struct SettingsRootView: View {
                 .buttonStyle(.plain)
                 .padding(.horizontal, 8)
                 .help(section.title)
+                .accessibilityAddTraits(model.selectedSection == section ? .isSelected : [])
             }
             Spacer()
         }
@@ -81,6 +82,7 @@ public struct SettingsRootView: View {
     private var statusBar: some View {
         HStack {
             Circle().fill(model.settings.general.masterEnabled ? Color.green : Color.secondary).frame(width: 8, height: 8)
+                .accessibilityHidden(true)
             Text(model.settings.general.masterEnabled ? "Mickey is on — cursor effects are active." : "Mickey is off.")
                 .font(.callout)
             Spacer()
@@ -185,6 +187,7 @@ public struct OnboardingView: View {
         VStack(spacing: 20) {
             let s = steps[step]
             Image(systemName: s.0).font(.system(size: 56)).foregroundStyle(.tint).frame(height: 70)
+                .accessibilityHidden(true)
                 .overlay(alignment: .bottomTrailing) {
                     if step == steps.count - 1 {
                         Image(systemName: "checkmark.circle.fill").font(.system(size: 24)).foregroundStyle(.green)
@@ -203,6 +206,8 @@ public struct OnboardingView: View {
                     Circle().fill(i == step ? Color.accentColor : Color.secondary.opacity(0.3)).frame(width: 7, height: 7)
                 }
             }
+            .accessibilityElement(children: .ignore)
+            .accessibilityLabel("Step \(step + 1) of \(steps.count)")
             HStack {
                 if step < steps.count - 1 { Button("Skip") { finish() } }
                 Spacer()

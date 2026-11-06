@@ -16,6 +16,8 @@ struct AnnotationToolbarView: View {
                 }
                 .buttonStyle(.plain)
                 .help("\(tool.title)\(tool.shortcutKey.map { " (\(String($0).uppercased()))" } ?? "")")
+                .accessibilityLabel(tool.title)
+                .accessibilityAddTraits(controller.session.selectedTool == tool ? .isSelected : [])
             }
             Divider().frame(height: 22)
             ForEach(RGBAColor.presets, id: \.self) { color in
@@ -27,21 +29,23 @@ struct AnnotationToolbarView: View {
                 .buttonStyle(.plain)
                 .help(color.presetName ?? "Color")
                 .accessibilityLabel(color.presetName ?? "Color")
+                .accessibilityAddTraits(controller.session.color == color ? .isSelected : [])
             }
             Divider().frame(height: 22)
-            Image(systemName: "lineweight").help("Stroke Width")
+            Image(systemName: "lineweight").help("Stroke Width").accessibilityHidden(true)
             Slider(value: Binding(get: { controller.settings.strokeWidth }, set: { controller.setStrokeWidth($0) }),
                    in: AnnotationSettings.strokeWidthRange)
                 .frame(width: 80)
                 .controlSize(.mini)
                 .help("Stroke Width")
+                .accessibilityLabel("Stroke Width")
             Divider().frame(height: 22)
             Button { controller.undo() } label: { Image(systemName: "arrow.uturn.backward") }
-                .buttonStyle(.plain).help("Undo (⌘Z)").disabled(!controller.session.canUndo)
+                .buttonStyle(.plain).help("Undo (⌘Z)").accessibilityLabel("Undo").disabled(!controller.session.canUndo)
             Button { controller.clearAll() } label: { Image(systemName: "trash") }
-                .buttonStyle(.plain).help("Clear All (⌘⌫)")
+                .buttonStyle(.plain).help("Clear All (⌘⌫)").accessibilityLabel("Clear All")
             Button { controller.exit() } label: { Image(systemName: "xmark.circle.fill") }
-                .buttonStyle(.plain).help("Stop Drawing (Esc)")
+                .buttonStyle(.plain).help("Stop Drawing (Esc)").accessibilityLabel("Stop Drawing")
         }
         .font(.system(size: 14, weight: .medium))
         .foregroundStyle(.white)
