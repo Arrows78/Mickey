@@ -171,6 +171,7 @@
 "Highlighter Size" = "Taille du surligneur";
 "Highlighter" = "Surligneur";
 "Hold Delay" = "Délai de maintien";
+"Hold Fn (🌐) to draw" = "Maintenir Fn (🌐) pour dessiner";
 "Hold Fn (🌐) to draw, or use the Toggle Annotation Mode hotkey, or Start Drawing in the menu bar." = "Maintenez Fn (🌐) pour dessiner, utilisez le raccourci du mode annotation, ou « Commencer à dessiner » dans la barre des menus.";
 "Hold a Key to Show" = "Maintenir une touche pour afficher";
 "Horizontal Bar" = "Bande horizontale";
@@ -452,6 +453,7 @@
 "Turn every effect on or off" = "Active ou désactive tous les effets";
 "Turn off %@" = "Désactiver %@";
 "Turn off Hide Cursor in the Spotlight settings or quit Mickey: the pointer is always restored on exit." = "Désactivez « Masquer le curseur » dans les réglages du projecteur ou quittez Mickey : le pointeur est toujours rétabli à la fermeture.";
+"Turn off if Fn opens the emoji picker or dictation on your keyboard." = "Désactivez si Fn ouvre le sélecteur d’émojis ou la dictée sur votre clavier.";
 "Turn off to show the effect only on demand (key tap or hotkey)." = "Désactivez pour n’afficher l’effet qu’à la demande (appui bref sur une touche ou raccourci).";
 "Turn on %@" = "Activer %@";
 "Turn on Enable Mickey, then switch on the effects you want. Switching on an effect while Mickey is off turns it on for you." = "Activez Mickey, puis les effets de votre choix. Activer un effet alors que Mickey est désactivé réactive Mickey pour vous.";

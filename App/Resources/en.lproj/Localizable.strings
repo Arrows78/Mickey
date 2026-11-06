@@ -171,6 +171,7 @@
 "Highlighter Color" = "Highlighter Color";
 "Highlighter Size" = "Highlighter Size";
 "Hold Delay" = "Hold Delay";
+"Hold Fn (🌐) to draw" = "Hold Fn (🌐) to draw";
 "Hold Fn (🌐) to draw, or use the Toggle Annotation Mode hotkey, or Start Drawing in the menu bar." = "Hold Fn (🌐) to draw, or use the Toggle Annotation Mode hotkey, or Start Drawing in the menu bar.";
 "Hold a Key to Show" = "Hold a Key to Show";
 "Horizontal Bar" = "Horizontal Bar";
@@ -452,6 +453,7 @@
 "Turn every effect on or off" = "Turn every effect on or off";
 "Turn off %@" = "Turn off %@";
 "Turn off Hide Cursor in the Spotlight settings or quit Mickey: the pointer is always restored on exit." = "Turn off Hide Cursor in the Spotlight settings or quit Mickey: the pointer is always restored on exit.";
+"Turn off if Fn opens the emoji picker or dictation on your keyboard." = "Turn off if Fn opens the emoji picker or dictation on your keyboard.";
 "Turn off to show the effect only on demand (key tap or hotkey)." = "Turn off to show the effect only on demand (key tap or hotkey).";
 "Turn on %@" = "Turn on %@";
 "Turn on Enable Mickey, then switch on the effects you want. Switching on an effect while Mickey is off turns it on for you." = "Turn on Enable Mickey, then switch on the effects you want. Switching on an effect while Mickey is off turns it on for you.";

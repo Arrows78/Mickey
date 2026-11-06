@@ -58,7 +58,7 @@ Contextual notes:
 
 #### Annotations
 
-Toggle (off); Start/Stop Drawing; also hold Right Option (off); default tool (freehand); color (red); stroke width 4; highlighter color (yellow) and size 32; text & callout size 26; auto-fade (off) after 5 s; clear on exit (off).
+Toggle (off); Start/Stop Drawing; hold Fn to draw (on); also hold Right Option (off); default tool (freehand); color (red); stroke width 4; highlighter color (yellow) and size 32; text & callout size 26; auto-fade (off) after 5 s; clear on exit (off).
 
 #### Presenter tools
 
@@ -136,7 +136,7 @@ The enlarged-pointer animation flashes a pointer five times larger that shrinks 
 
 ### 4.6 Annotations
 
-- Enter draw mode by holding Fn (≥ 0.25 s; releasing ends it), holding Right Option when enabled (same rule), the Toggle Annotation Mode hotkey, or Start Drawing.
+- Enter draw mode by holding Fn (≥ 0.25 s; releasing ends it; can be turned off in the settings), holding Right Option when enabled (same rule), the Toggle Annotation Mode hotkey, or Start Drawing.
 - The canvas covers the screen under the pointer; a toolbar at the top offers the eight tools, preset colors, stroke width, undo, clear all and stop.
 - Shortcuts while drawing, including while Fn is held: F freehand, A arrow, R rectangle, C circle, L line, H highlighter, T text, N callout, ⌘Z undo, ⇧⌘Z redo, ⌘C copy the drawing as an image, ⌘⌫ clear all, Esc stop.
 - Text: a click opens an inline editor; callouts are numbered automatically. Two-point shapes smaller than 2 pt are ignored.

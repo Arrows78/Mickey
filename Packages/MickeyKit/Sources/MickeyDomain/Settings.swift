@@ -225,6 +225,8 @@ public struct ShakeSettings: Codable, Equatable, Sendable {
 
 public struct AnnotationSettings: Codable, Equatable, Sendable {
     public var enabled = false
+    /// Hold Fn (🌐) to draw. Off when Fn is used for something else, such as the emoji picker or dictation.
+    public var fnTrigger = true
     public var rightOptionTrigger = false
     public var defaultTool = AnnotationTool.freehand
     public var color = RGBAColor.red

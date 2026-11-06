@@ -15,6 +15,9 @@ struct AnnotationsPage: View {
                         .help(model.tooltip(.toggleAnnotationMode, title: model.isDrawing ? "Stop drawing" : "Start drawing"))
                     Spacer()
                 }
+                ToggleRow(title: "Hold Fn (🌐) to draw",
+                          detail: "Turn off if Fn opens the emoji picker or dictation on your keyboard.",
+                          isOn: model.binding(\.annotations.fnTrigger))
                 ToggleRow(title: "Also hold Right Option (⌥) to draw",
                           detail: "Adds Right Option as a second hold-to-draw key. Off by default.",
                           isOn: model.binding(\.annotations.rightOptionTrigger))

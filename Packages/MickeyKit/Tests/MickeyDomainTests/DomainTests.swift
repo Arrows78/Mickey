@@ -491,6 +491,32 @@ struct InteractionTests {
         #expect(e.tick(snap(fn, at: 2), settings: s).isEmpty)
     }
 
+    @Test func fnDoesNotDrawWhenTurnedOff() {
+        var e = InteractionEngine()
+        var s = Settings.defaults
+        s.annotations.enabled = true
+        s.annotations.fnTrigger = false
+        let fn = InputSnapshot.secondaryFnMask
+        _ = e.tick(snap(fn, at: 0), settings: s)
+        #expect(e.tick(snap(fn, at: 0.5), settings: s).isEmpty)
+        #expect(e.tick(snap(fn, at: 2), settings: s).isEmpty)
+    }
+
+    @Test func turningFnOffMidHoldEndsTheDrawing() {
+        var e = InteractionEngine()
+        var s = Settings.defaults
+        s.annotations.enabled = true
+        let fn = InputSnapshot.secondaryFnMask
+        _ = e.tick(snap(fn, at: 0), settings: s)
+        #expect(e.tick(snap(fn, at: 0.3), settings: s) == [.beginMomentaryDrawing])
+        s.annotations.fnTrigger = false
+        #expect(e.tick(snap(fn, at: 0.5), settings: s) == [.endMomentaryDrawing])
+    }
+
+    @Test func fnDrawsByDefault() {
+        #expect(AnnotationSettings().fnTrigger)
+    }
+
     @Test func rightOptionDrawsOnlyWhenEnabled() {
         var e = InteractionEngine()
         var s = Settings.defaults

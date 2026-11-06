@@ -136,9 +136,9 @@ public struct InteractionEngine: Sendable {
             tapKeyWasDown = false
         }
 
-        // Hold Fn (or Right Option when enabled) to draw. Once drawing, tool shortcuts typed with the key held keep it going.
+        // Hold Fn (unless turned off) or Right Option (when enabled) to draw. Once drawing, tool shortcuts typed with the key held keep it going.
         if effectsOn && s.annotations.enabled {
-            if let e = fnHold.update(isDown: input.fnDown && (fnHold.isActive || !input.otherKeyDown), at: t) {
+            if let e = fnHold.update(isDown: s.annotations.fnTrigger && input.fnDown && (fnHold.isActive || !input.otherKeyDown), at: t) {
                 out.append(e == .began ? .beginMomentaryDrawing : .endMomentaryDrawing)
             }
             let optionDown = s.annotations.rightOptionTrigger && input.isAlone(.rightOption)
