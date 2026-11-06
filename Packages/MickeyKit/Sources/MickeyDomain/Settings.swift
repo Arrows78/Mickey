@@ -298,6 +298,7 @@ public struct Settings: Codable, Equatable, Sendable {
         s.captions.backgroundOpacity = s.captions.backgroundOpacity.clamped(to: 0...1)
         s.captions.maxLines = min(max(s.captions.maxLines, CaptionSettings.maxLinesRange.lowerBound), CaptionSettings.maxLinesRange.upperBound)
         s.recorder.countdown = min(max(s.recorder.countdown, RecorderSettings.countdownRange.lowerBound), RecorderSettings.countdownRange.upperBound)
+        if !RecorderSettings.frameRates.contains(s.recorder.frameRate) { s.recorder.frameRate = RecorderSettings().frameRate }
         return s
     }
 

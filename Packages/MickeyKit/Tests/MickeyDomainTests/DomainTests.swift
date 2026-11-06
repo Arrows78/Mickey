@@ -874,3 +874,32 @@ struct InteractionTests {
         #expect(s.annotations.count == 2)
     }
 }
+
+@Suite("Recorder options") struct RecorderOptionsTests {
+    @Test func wideScreensAreScaledDownToTheQualityWidth() {
+        let size = RecordingQuality.hd.outputSize(width: 3024, height: 1964)
+        #expect(size.width == 1920)
+        #expect(size.height == 1247 / 2 * 2)
+    }
+
+    @Test func smallScreensAreNeverScaledUp() {
+        let size = RecordingQuality.uhd.outputSize(width: 1440, height: 900)
+        #expect(size.width == 1440 && size.height == 900)
+    }
+
+    @Test func dimensionsStayEven() {
+        let size = RecordingQuality.qhd.outputSize(width: 3441, height: 1441)
+        #expect(size.width % 2 == 0 && size.height % 2 == 0)
+    }
+
+    @Test func defaultsKeepTheFormerBehavior() {
+        let r = RecorderSettings()
+        #expect(r.quality == .uhd && r.frameRate == 60)
+    }
+
+    @Test func unsupportedFrameRateIsRepaired() {
+        var s = Settings.defaults
+        s.recorder.frameRate = 24
+        #expect(s.clamped().recorder.frameRate == 60)
+    }
+}

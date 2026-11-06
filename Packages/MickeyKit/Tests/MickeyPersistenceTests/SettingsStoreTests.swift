@@ -201,3 +201,12 @@ struct PersistenceTests {
         #expect(result.general.launchAtLogin && result.general.hasCompletedOnboarding)
     }
 }
+
+@Suite("Settings saved before the recorder options") struct RecorderMigrationTests {
+    @Test func missingRecorderOptionsFallBackToTheirDefaults() {
+        let json = #"{"schemaVersion": 4, "recorder": {"countdown": 5, "showCursor": false}}"#
+        let s = SettingsCodec.decode(Data(json.utf8))
+        #expect(s.recorder.countdown == 5 && !s.recorder.showCursor)
+        #expect(s.recorder.quality == .uhd && s.recorder.frameRate == 60)
+    }
+}

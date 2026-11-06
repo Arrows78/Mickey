@@ -115,14 +115,47 @@ public struct CaptionSettings: Codable, Equatable, Sendable {
     public static let maxLinesRange = 1...4
 }
 
+/// Largest width of a recorded movie; wider screens are scaled down to keep files and encoding load reasonable.
+public enum RecordingQuality: String, CaseIterable, Codable, Sendable, Identifiable {
+    case hd, qhd, uhd
+
+    public var id: String { rawValue }
+
+    public var title: String {
+        switch self {
+        case .hd: "Full HD (1920 px)"
+        case .qhd: "QHD (2560 px)"
+        case .uhd: "4K (3840 px)"
+        }
+    }
+
+    public var maxWidth: Int {
+        switch self {
+        case .hd: 1920
+        case .qhd: 2560
+        case .uhd: 3840
+        }
+    }
+
+    /// Movie size for a capture of `width` × `height` pixels: scaled down to `maxWidth` if wider, never up,
+    /// and always even, as video encoders require.
+    public func outputSize(width: Int, height: Int) -> (width: Int, height: Int) {
+        let scale = min(1, Double(maxWidth) / Double(max(width, 1)))
+        return (max(2, Int(Double(width) * scale) / 2 * 2), max(2, Int(Double(height) * scale) / 2 * 2))
+    }
+}
+
 /// Screen recording to a movie file.
 public struct RecorderSettings: Codable, Equatable, Sendable {
     public var showCursor = true
     public var captureSystemAudio = true
     public var countdown = 3
+    public var quality = RecordingQuality.uhd
+    public var frameRate = 60
     public init() {}
 
     public static let countdownRange = 0...10
+    public static let frameRates = [30, 60]
 }
 
 /// Turns Mickey on with a preset while presentation or meeting apps run.

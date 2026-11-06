@@ -147,6 +147,9 @@ struct RecorderPage: View {
                 ToggleRow(title: "Record System Audio", detail: "Sound played by your Mac, including click sounds.",
                           isOn: model.binding(\.recorder.captureSystemAudio))
                 IntSliderRow(title: "Countdown", value: model.binding(\.recorder.countdown), range: RecorderSettings.countdownRange)
+            PickerRow(title: "Quality", selection: model.binding(\.recorder.quality), options: RecordingQuality.allCases) { Text($0.title) }
+            PickerRow(title: "Frame Rate", selection: model.binding(\.recorder.frameRate), options: RecorderSettings.frameRates) { Text("\($0) fps") }
+            NoteView(text: "Screens wider than the chosen quality are scaled down. 30 fps and lower quality make smaller files.")
             }
             FeatureCard(title: "Camera Bubble", symbol: "person.crop.circle", subtitle: "Drag the bubble anywhere on the screen.",
                         isOn: model.binding(\.camera.enabled), help: model.tooltip(.toggleCameraBubble)) {

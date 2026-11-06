@@ -1,5 +1,6 @@
 import AppKit
 import AVFoundation
+import CoreMedia
 import ScreenCaptureKit
 import MickeyDomain
 
@@ -101,9 +102,8 @@ final class ScreenRecorder: NSObject, SCStreamOutput, SCStreamDelegate {
                 let (display, _, _) = try await ScreenCapture.target(for: screen)
                 let config = ScreenCapture.configuration(for: screen, showsCursor: settings.showCursor)
                 // Keep files and encoding load reasonable on large Retina screens.
-                let scale = min(1, 3840 / Double(config.width))
-                config.width = Int(Double(config.width) * scale) / 2 * 2
-                config.height = Int(Double(config.height) * scale) / 2 * 2
+                (config.width, config.height) = settings.quality.outputSize(width: config.width, height: config.height)
+                config.minimumFrameInterval = CMTime(value: 1, timescale: CMTimeScale(settings.frameRate))
                 config.capturesAudio = settings.captureSystemAudio
                 config.sampleRate = 48_000
                 config.channelCount = 2
