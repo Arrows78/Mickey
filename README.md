@@ -40,7 +40,7 @@
 
 - Draw on top of everything: freehand, arrow, rectangle, circle, line, highlighter, text and numbered callouts.
 - Hold **Fn (🌐)** (or optionally **Right Option**) to draw while the key is held, or toggle a persistent drawing mode with a hotkey or the menu bar. Arrow keys and F-keys, which macOS reports with the Fn flag, never start drawing, and nothing draws while Mickey is off.
-- A floating toolbar offers tools, colors, stroke width, undo and clear; single-letter shortcuts (F, A, R, C, L, H, T, N), ⌘Z, ⌘⌫ and Esc work even while holding Fn.
+- A floating toolbar offers tools, colors, stroke width, undo, redo and clear; single-letter shortcuts (F, A, R, C, L, H, T, N), ⌘Z, ⇧⌘Z, ⌘⌫ and Esc work even while holding Fn.
 - Optional auto-fade and clear-on-exit.
 
 ### 🎬 Presenter tools
@@ -53,16 +53,19 @@
 | 🪟 **Focus** | Dims everything except the frontmost window, following you as you switch apps. | — |
 | 📷 **Camera bubble** | Your webcam in a draggable circle or rounded square, mirrored if you like. | Camera |
 | 💬 **Captions** | Live subtitles of what you say, recognised on your Mac when the language supports it. | Microphone, Speech Recognition |
-| ⏺️ **Recorder** | Records the screen under the pointer, effects and annotations included, to `~/Movies/Mickey` after a countdown. | Screen Recording |
+| ⏺️ **Recorder** | Records the screen under the pointer, effects and annotations included, to `~/Movies/Mickey` after a countdown; quality (up to 4K) and frame rate (30 or 60) are adjustable. | Screen Recording |
 
 ### 🧰 Everyday use
 
 - **Menu-bar popover** with the master switch, the toggles you choose, each toggle's shortcut, presets, recording and drawing.
 - **Presets**: *Presentation*, *Tutorial Video* and *Discreet* switch several effects at once while keeping your colors and sizes.
-- **Automatic mode** applies a preset while Zoom, Teams, FaceTime, Keynote, PowerPoint, QuickTime Player, OBS, Loom, Webex or Discord runs, then restores your settings; the preset is never saved as your own settings.
+- **Automatic mode** applies a preset while Zoom, Teams, FaceTime, Keynote, PowerPoint, QuickTime Player, OBS, Loom, Webex or Discord runs, then restores your settings; each app can have its own preset, and the preset is never saved as your own settings.
 - **Global hotkeys** for every action, with sensible defaults, a per-action restore button, *Reset to Defaults* and *Clear All*.
 - **Conflict checks**: shortcuts already used by macOS or by another action are refused; your own app shortcuts and widely used app shortcuts get a warning.
 - Launch at login, menu bar and/or Dock icon, adjustable update rate, searchable help, first-launch onboarding.
+- **Languages**: English and French, following macOS; more can be added ([`docs/LOCALIZATION.md`](docs/LOCALIZATION.md)).
+- **Accessibility**: honors *Reduce Motion*; controls are labelled for VoiceOver.
+- **Backup**: export your settings to a JSON file and import them on another Mac.
 
 ## ⌨️ Default shortcuts
 
@@ -188,7 +191,7 @@ open /Applications/Mickey.app
 
 | Command | Description |
 | --- | --- |
-| `./scripts/ci.sh` | Runs the package tests, regenerates the project and builds the app — the same checks to run before a commit. |
+| `./scripts/ci.sh` | Runs the package tests, the localization check, regenerates the project and builds the app — the same checks to run before a commit. |
 | `swift test --package-path Packages/MickeyKit` | Runs the unit tests only. |
 | `swift scripts/make_app_icon.swift` | Redraws the app icon set from code. |
 | `python3 scripts/make_click_sound.py` | Synthesises the default click sound (`App/Resources/click.wav`). |

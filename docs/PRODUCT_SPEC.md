@@ -68,7 +68,7 @@ Toggle (off); Start/Stop Drawing; also hold Right Option (off); default tool (fr
 | Live Zoom | toggle (off); permission row; magnification 2× (1.25–6×) |
 | Loupe | toggle (off); permission row; shape circle / rounded square; size 240 pt; magnification 2.5× (1.5–8×); border color white |
 | Focus | toggle (off); dim amount 0.55; corner radius 10; margin 6 pt |
-| Recorder & Camera | start/stop with elapsed time; show recordings; show pointer (on); record system audio (on); countdown 3 s · camera bubble toggle (off); shape; corner bottom right; size 200 pt; mirror (on); border color white |
+| Recorder & Camera | start/stop with elapsed time; show recordings; show pointer (on); record system audio (on); countdown 3 s; quality 4K (Full HD 1920 px, QHD 2560 px, 4K 3840 px); frame rate 60 (30 or 60) · camera bubble toggle (off); shape; corner bottom right; size 200 pt; mirror (on); border color white |
 | Captions | toggle (off); microphone and speech permission rows; language (system); position bottom / top; text size 30; lines 2; background 0.65 |
 
 #### Hotkeys
@@ -77,11 +77,11 @@ One row per action with a recorder, a conflict line when relevant and a restore-
 
 #### General
 
-Launch at login (with approval and failure states); show in menu bar; show in Dock; hidden-icon warning; presets; menu-bar contents (one checkbox per toggle, all on); version; reset all settings (confirmation, onboarding state kept).
+Launch at login (with approval and failure states); show in menu bar; show in Dock; hidden-icon warning; presets; menu-bar contents (one checkbox per toggle, all on); version; export and import settings (JSON file; the custom click sound, the login item state and the onboarding flag stay on the Mac); reset all settings (confirmation, onboarding state kept).
 
 #### Advanced
 
-Update rate 60 Hz (30–120); automatic mode (off) with its preset.
+Update rate 60 Hz (30–120); automatic mode (off) with its preset and an optional preset for each watched app.
 
 #### Help
 
@@ -136,9 +136,9 @@ The enlarged-pointer animation flashes a pointer five times larger that shrinks 
 
 - Enter draw mode by holding Fn (≥ 0.25 s; releasing ends it), holding Right Option when enabled (same rule), the Toggle Annotation Mode hotkey, or Start Drawing.
 - The canvas covers the screen under the pointer; a toolbar at the top offers the eight tools, preset colors, stroke width, undo, clear all and stop.
-- Shortcuts while drawing, including while Fn is held: F freehand, A arrow, R rectangle, C circle, L line, H highlighter, T text, N callout, ⌘Z undo, ⌘⌫ clear all, Esc stop.
+- Shortcuts while drawing, including while Fn is held: F freehand, A arrow, R rectangle, C circle, L line, H highlighter, T text, N callout, ⌘Z undo, ⇧⌘Z redo, ⌘⌫ clear all, Esc stop.
 - Text: a click opens an inline editor; callouts are numbered automatically. Two-point shapes smaller than 2 pt are ignored.
-- Auto-fade removes each annotation after the delay; clear on exit erases everything when leaving draw mode. Undo keeps up to 100 steps.
+- Auto-fade removes each annotation after the delay; clear on exit erases everything when leaving draw mode. Undo keeps up to 100 steps; drawing after an undo drops the redo history.
 
 ### 4.7 Hotkeys
 
@@ -166,7 +166,7 @@ Registered hotkeys pause while a shortcut is being recorded.
 | Focus | Ten times a second, finds the frontmost app's topmost normal window in the window list and dims every screen except a rounded hole around it. | — |
 | Camera bubble | Default camera in a draggable, always-on-top bubble; placed in the chosen corner, kept where dragged until size or corner change. | Camera |
 | Captions | Microphone → speech recogniser (on device when supported), partial results; a new task every 50 s or after silence; shows the end of the transcript at a word boundary within the line capacity. | Microphone, Speech Recognition |
-| Recorder | Countdown, then records the screen under the pointer, Mickey's effects included, as HEVC (at most 3840 px wide) with optional system audio to `~/Movies/Mickey/Mickey Recording <date> at <time>.mov`; the file is revealed in Finder. | Screen Recording |
+| Recorder | Countdown, then records the screen under the pointer, Mickey's effects included, as HEVC (at most 1920, 2560 or 3840 px wide as chosen, at 30 or 60 fps) with optional system audio to `~/Movies/Mickey/Mickey Recording <date> at <time>.mov`; the file is revealed in Finder. | Screen Recording |
 
 Each page shows its permission state with *Allow…* (system prompt) or *Open System Settings* (when previously refused). Tools waiting for a permission retry once it is granted.
 
@@ -180,6 +180,8 @@ Each page shows its permission state with *Allow…* (system prompt) or *Open Sy
 
 Presets turn Mickey on and keep colors, sizes and hotkeys. Automatic mode applies its preset while one of the watched apps runs (Zoom, Microsoft Teams, FaceTime, Keynote, PowerPoint, QuickTime Player, OBS, Loom, Webex, Discord) and restores the previous settings when they quit, unless the settings were changed meanwhile. Turning Automatic mode off or changing its preset counts as no change: the previous settings come back, or the new preset applies. Quitting while the preset applies saves the previous settings, not the preset.
 
+When several watched apps run, the first one in the watch list decides: it uses its own preset if the user set one, the default preset otherwise. Switching from one watched app to another switches presets; the user's own settings still come back when the last watched app quits.
+
 ### 4.10 Launch at login
 
 Uses the system login-item service. States: enabled, disabled, waiting for approval (message and button to System Settings), failed (message inviting the user to add or remove it manually).
@@ -187,6 +189,12 @@ Uses the system login-item service. States: enabled, disabled, waiting for appro
 ### 4.11 Review prompt
 
 Asked at most once per session, when Mickey has been launched at least 5 times with 30 active minutes (minutes with the master switch on), the session is at least 5 minutes old, onboarding is done, the settings window is frontmost, no spotlight is visible, nothing is being drawn, and no request happened in the last 120 days.
+
+### 4.12 Accessibility and languages
+
+- Reduce Motion: click effects, the locator, the ring pulse, particle drift, the focus glide, HUD transitions, the onboarding and the settings cards fade in place instead of scaling or moving.
+- VoiceOver: sliders, pickers, color wells and the annotation toolbar are named; selected tools, colors and sidebar pages are announced as selected.
+- Languages: English and French, following the macOS language; English is the fallback. Adding one is described in [`LOCALIZATION.md`](LOCALIZATION.md).
 
 ## 5. Edge cases
 

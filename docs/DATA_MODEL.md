@@ -66,8 +66,8 @@ Values are clamped to their range when decoded and whenever they change.
 | `focus` | `enabled` (false) · `dimOpacity` (0.55, 0.1…0.95) · `cornerRadius` (10, 0…30) · `padding` (6, 0…40) |
 | `camera` | `enabled` (false) · `size` (200, 100…480) · `shape` (circle) · `corner` (bottomRight) · `mirrored` (true) · `borderColor` (white) |
 | `captions` | `enabled` (false) · `fontSize` (30, 16…64) · `position` (bottomCenter) · `backgroundOpacity` (0.65, 0…1) · `maxLines` (2, 1…4) · `language` ("" = system) |
-| `recorder` | `showCursor` (true) · `captureSystemAudio` (true) · `countdown` (3 s, 0…10) |
-| `autoMode` | `enabled` (false) · `preset` (presentation) · `bundleIDs` (meeting, presentation and recording apps) |
+| `recorder` | `showCursor` (true) · `captureSystemAudio` (true) · `countdown` (3 s, 0…10) · `quality` (uhd: hd 1920 px, qhd 2560 px, uhd 3840 px) · `frameRate` (60, one of 30 or 60) |
+| `autoMode` | `enabled` (false) · `preset` (presentation) · `bundleIDs` (meeting, presentation and recording apps) · `appPresets` (bundle ID → preset used for that app instead of `preset`, empty) |
 
 ### Hotkeys
 
@@ -84,6 +84,8 @@ Values are clamped to their range when decoded and whenever they change.
 - **Recovery**: when the document does not decode as a whole, stored values are merged into the defaults one leaf at a time, keeping each only if the document still decodes. Unknown, missing or invalid fields fall back to their default; the hotkey dictionary is merged as a whole.
 - **Migrations** (`schemaVersion`, currently 4): each `HotkeyAction` records the schema that introduced it; loading an older document adds those actions' defaults when unset and not already used by another action. Version 3 also adds the presenter tools to `menuBarItems`. Version 4 moves hotkeys still on their US-layout default to the key printing the same letter in the current layout (⌃⌥⌘M was ⌃⌥⌘, on AZERTY), leaving custom shortcuts alone.
 
+- **Export file**: `SettingsTransfer` writes the same JSON, pretty-printed, without the custom click sound (its bookmark only means something on one Mac). Importing goes through the recovery path above, so out-of-range or invalid values are repaired; the custom sound, the launch-at-login state and the onboarding flag of the current Mac are kept. A file without `schemaVersion` is refused.
+
 ## 5. Runtime models
 
 | Type | Content |
@@ -92,7 +94,7 @@ Values are clamped to their range when decoded and whenever they change.
 | `PointerSample` | position, time |
 | `TrailBuffer.Point` | position, birth time |
 | `Annotation` | id, tool, points, color, width, text, callout number, creation time |
-| `AnnotationSession` | annotations, undo stack (≤ 100), current stroke, selected tool and color, text being edited |
+| `AnnotationSession` | annotations, undo and redo stacks (≤ 100), current stroke, selected tool and color, text being edited |
 | `KeystrokeHistory.Entry` | id, text, repeat count, time |
 | `WindowInfo` | owner PID, layer, bounds (top-left origin), alpha |
 

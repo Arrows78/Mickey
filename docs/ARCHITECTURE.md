@@ -72,7 +72,7 @@ Window levels, counted down from the cursor level: focus −5, live zoom −4, e
 
 ## 6. Sandbox
 
-Entitlements: app sandbox, user-selected read-only files and app-scoped bookmarks (custom click sound), Movies folder read-write (recordings), camera, audio input. No network entitlement. Screen Recording, Input Monitoring and Speech Recognition are runtime permissions without entitlements.
+Entitlements: app sandbox, user-selected read-write files (the settings export is written, the settings import and the custom click sound are read) and app-scoped bookmarks (custom click sound), Movies folder read-write (recordings), camera, audio input. No network entitlement. Screen Recording, Input Monitoring and Speech Recognition are runtime permissions without entitlements.
 
 ## 7. Assets
 
@@ -82,9 +82,16 @@ The app icon (`scripts/make_app_icon.swift`) and the click sound (`scripts/make_
 
 | Level | Examples |
 | --- | --- |
-| Domain | shake detection on synthetic sequences, tap/hold recognisers, trail buffer, interaction rules, annotation session and undo, review policy, keystroke formatting and history, zoom geometry, focus selection, captions, presets, automatic mode, default hotkeys |
-| Persistence | exact defaults, round trip, invalid fields, clamping, migrations (v1 → v3), fields added later |
+| Domain | shake detection on synthetic sequences, tap/hold recognisers, trail buffer, interaction rules, annotation session, undo and redo, review policy, keystroke formatting and history, zoom geometry, focus selection, captions, presets, automatic mode, default hotkeys |
+| Persistence | settings export and import (`SettingsTransfer`), exact defaults, round trip, invalid fields, clamping, migrations (v1 → v3), fields added later |
 | Effects | spotlight hole, shapes |
-| UI logic | hotkey conflicts and key-equivalent parsing |
+| UI logic | model-level settings export and import (stubbed file panels), hotkey conflicts and key-equivalent parsing |
 
-`./scripts/ci.sh` runs the tests, regenerates the project and builds the app.
+`./scripts/ci.sh` runs the tests, the localization check (`scripts/l10n.py`), regenerates the project and builds the app.
+
+## 9. Localization and accessibility
+
+- Texts are localized with the English text as key (`tr` / `trf` in `MickeyDomain`, SwiftUI literals directly); English is the reference and the fallback. See [`LOCALIZATION.md`](LOCALIZATION.md).
+- Reduce Motion (System Settings › Accessibility › Display) is honored by the effects engine (`ReducedMotion` in the domain decides the scale animation), the focus overlay, the HUDs, the onboarding and the settings cards.
+- Controls carry VoiceOver labels and values; selected tools, colors and sidebar pages are announced as selected.
+
