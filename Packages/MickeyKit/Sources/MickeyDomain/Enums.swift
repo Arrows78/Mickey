@@ -319,11 +319,33 @@ public enum HotkeyAction: String, CaseIterable, Codable, CodingKeyRepresentable,
 }
 
 /// Quick toggles that can appear in the menu-bar popover.
+/// The two sections the quick toggles are listed in, as in the sidebar of the settings.
+public enum MenuBarGroup: CaseIterable, Sendable {
+    case cursorEffects, presenterTools
+
+    public var title: String {
+        switch self {
+        case .cursorEffects: tr("Cursor Effects")
+        case .presenterTools: tr("Presenter Tools")
+        }
+    }
+
+    /// The toggles of the group, in display order.
+    public var items: [MenuBarItem] { MenuBarItem.allCases.filter { $0.group == self } }
+}
+
 public enum MenuBarItem: String, CaseIterable, Codable, Sendable, Identifiable {
     case spotlight, ring, clickFeedback, clickSound, trail, shake, annotations,
          keystrokes, liveZoom, loupe, focus, cameraBubble, captions
 
     public var id: String { rawValue }
+
+    public var group: MenuBarGroup {
+        switch self {
+        case .spotlight, .ring, .clickFeedback, .clickSound, .trail, .shake, .annotations: .cursorEffects
+        case .keystrokes, .liveZoom, .loupe, .focus, .cameraBubble, .captions: .presenterTools
+        }
+    }
 
     public var title: String {
         switch self {

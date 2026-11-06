@@ -1062,3 +1062,22 @@ struct InteractionTests {
         #expect(EffectPreviewLayout.largestRadius(in: s) == 84)
     }
 }
+
+@Suite("Menu bar groups") struct MenuBarGroupTests {
+    @Test func everyToggleIsInExactlyOneGroup() {
+        let listed = MenuBarGroup.allCases.flatMap(\.items)
+        #expect(listed.count == MenuBarItem.allCases.count)
+        #expect(Set(listed) == Set(MenuBarItem.allCases))
+    }
+
+    @Test func groupsKeepTheDisplayOrder() {
+        #expect(MenuBarGroup.cursorEffects.items.first == .spotlight)
+        #expect(MenuBarGroup.presenterTools.items.first == .keystrokes)
+        #expect(MenuBarGroup.presenterTools.items.last == .captions)
+    }
+
+    @Test func titlesComeFromExistingTexts() {
+        #expect(MenuBarGroup.cursorEffects.title == "Cursor Effects")
+        #expect(MenuBarGroup.presenterTools.title == "Presenter Tools")
+    }
+}

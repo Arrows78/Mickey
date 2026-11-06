@@ -86,7 +86,7 @@ The app icon (`scripts/make_app_icon.swift`) and the click sound (`scripts/make_
 | Persistence | settings export and import (`SettingsTransfer`), exact defaults, round trip, invalid fields, clamping, migrations (v1 → v3), fields added later |
 | Effects | spotlight hole, shapes |
 | Annotations | image rendering of a drawing (cropped, transparent, nothing outside the canvas) |
-| UI logic | model-level settings export and import (stubbed file panels), hotkey conflicts and key-equivalent parsing |
+| UI logic | popover rendered to an image (`ImageRenderer`; set `MICKEY_SNAPSHOT_DIR` to save the pictures), menu bar groups, model-level settings export and import (stubbed file panels), hotkey conflicts and key-equivalent parsing |
 
 `./scripts/ci.sh` runs the tests, the localization check (`scripts/l10n.py`), regenerates the project and builds the app.
 

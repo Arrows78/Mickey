@@ -110,17 +110,23 @@ public struct StatusPopoverView: View {
             }
             Divider()
             let items = MenuBarItem.allCases.filter { model.settings.general.menuBarItems.contains($0) }
-            ForEach(items) { item in
-                Toggle(isOn: model.binding(item)) {
-                    HStack {
-                        Text(item.title)
-                        Spacer()
-                        if let combo = item.hotkeyAction.flatMap({ model.settings.hotkeys[$0] }) {
-                            Text(KeyboardLayout.displayString(combo)).font(.caption.monospaced()).foregroundStyle(.secondary)
+            ForEach(MenuBarGroup.allCases, id: \.self) { group in
+                let groupItems = items.filter { $0.group == group }
+                if !groupItems.isEmpty {
+                    Text(group.title).font(.caption.weight(.semibold)).foregroundStyle(.secondary).textCase(.uppercase)
+                    ForEach(groupItems) { item in
+                        Toggle(isOn: model.binding(item)) {
+                            HStack {
+                                Text(item.title)
+                                Spacer()
+                                if let combo = item.hotkeyAction.flatMap({ model.settings.hotkeys[$0] }) {
+                                    Text(KeyboardLayout.displayString(combo)).font(.caption.monospaced()).foregroundStyle(.secondary)
+                                }
+                            }
                         }
+                        .help(item.hotkeyAction.map { model.tooltip($0) } ?? trf("Turn %@ on or off", item.title))
                     }
                 }
-                .help(item.hotkeyAction.map { model.tooltip($0) } ?? trf("Turn %@ on or off", item.title))
             }
             if items.isEmpty {
                 Text("No quick toggles selected. Choose them in Settings › General.").font(.caption).foregroundStyle(.secondary)
@@ -138,27 +144,7 @@ public struct StatusPopoverView: View {
                 Text("or hold Fn (🌐) to draw").font(.caption).foregroundStyle(.secondary)
             }
             Divider()
-            HStack {
-                Button { model.actions?.toggleRecording() } label: {
-                    Label(tr(model.isRecording ? "Stop Recording" : "Record Screen"),
-                          systemImage: model.isRecording ? "stop.circle.fill" : "record.circle")
-                }
-                .foregroundStyle(model.isRecording ? .red : .primary)
-                .help(model.tooltip(.toggleRecording, title: model.isRecording ? "Stop recording" : "Record the screen under the pointer"))
-                if model.isRecording {
-                    Button { model.actions?.togglePauseRecording() } label: {
-                        Label(tr(model.isRecordingPaused ? "Resume" : "Pause"),
-                              systemImage: model.isRecordingPaused ? "play.circle.fill" : "pause.circle.fill")
-                    }
-                    .help(model.tooltip(.togglePauseRecording, title: model.isRecordingPaused ? "Resume recording" : "Pause recording"))
-                }
-                Spacer()
-                Menu("Presets") {
-                    ForEach(Preset.allCases) { preset in Button(preset.title) { model.apply(preset) }.help(preset.detail) }
-                }
-                .fixedSize()
-                .help("Switch several effects at once")
-            }
+            recordingRow
             if let message = model.studioMessage {
                 Text(tr(message)).font(.caption).foregroundStyle(.orange).fixedSize(horizontal: false, vertical: true)
             }
@@ -233,5 +219,39 @@ public struct OnboardingView: View {
         model.update { $0.general.hasCompletedOnboarding = true }
         model.flush()
         onFinish()
+    }
+}
+
+
+extension StatusPopoverView {
+    /// Record, pause and presets on one line when they fit, on two when a recording adds its Pause button.
+    @ViewBuilder fileprivate var recordingRow: some View {
+        let record = Button { model.actions?.toggleRecording() } label: {
+            Label(tr(model.isRecording ? "Stop Recording" : "Record Screen"),
+                  systemImage: model.isRecording ? "stop.circle.fill" : "record.circle")
+        }
+        .foregroundStyle(model.isRecording ? .red : .primary)
+        .help(model.tooltip(.toggleRecording, title: model.isRecording ? "Stop recording" : "Record the screen under the pointer"))
+        let pause = Button { model.actions?.togglePauseRecording() } label: {
+            Label(tr(model.isRecordingPaused ? "Resume" : "Pause"),
+                  systemImage: model.isRecordingPaused ? "play.circle.fill" : "pause.circle.fill")
+        }
+        .help(model.tooltip(.togglePauseRecording, title: model.isRecordingPaused ? "Resume recording" : "Pause recording"))
+        let presets = Menu(tr("Presets")) {
+            ForEach(Preset.allCases) { preset in Button(preset.title) { model.apply(preset) }.help(preset.detail) }
+        }
+        .help(tr("Switch several effects at once"))
+        ViewThatFits(in: .horizontal) {
+            HStack {
+                record.fixedSize()
+                if model.isRecording { pause.fixedSize() }
+                Spacer()
+                presets.fixedSize()
+            }
+            VStack(alignment: .leading, spacing: 8) {
+                HStack { record.fixedSize(); if model.isRecording { pause.fixedSize() }; Spacer() }
+                HStack { Spacer(); presets.fixedSize() }
+            }
+        }
     }
 }

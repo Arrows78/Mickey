@@ -142,10 +142,16 @@ struct GeneralPage: View {
             PresetsCard(model: model)
             FeatureCard(title: "Menu Bar Contents", symbol: "menubar.rectangle",
                         subtitle: "Choose which quick toggles appear when you click the menu-bar icon.") {
-                ForEach(MenuBarItem.allCases) { item in
-                    Toggle(item.title, isOn: Binding(
-                        get: { model.settings.general.menuBarItems.contains(item) },
-                        set: { on in model.update { if on { $0.general.menuBarItems.insert(item) } else { $0.general.menuBarItems.remove(item) } } }))
+                ForEach(MenuBarGroup.allCases, id: \.self) { group in
+                    Text(group.title).font(.subheadline.weight(.medium)).foregroundStyle(.secondary)
+                    LazyVGrid(columns: [GridItem(.flexible(), alignment: .leading), GridItem(.flexible(), alignment: .leading)],
+                              alignment: .leading, spacing: 8) {
+                        ForEach(group.items) { item in
+                            Toggle(item.title, isOn: Binding(
+                                get: { model.settings.general.menuBarItems.contains(item) },
+                                set: { on in model.update { if on { $0.general.menuBarItems.insert(item) } else { $0.general.menuBarItems.remove(item) } } }))
+                        }
+                    }
                 }
             }
             FeatureCard(title: "About", symbol: "info.circle") {
