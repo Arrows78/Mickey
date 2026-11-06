@@ -65,6 +65,8 @@ struct EffectsPage: View {
             SliderRow(title: "Thickness", value: model.binding(\.ring.thickness), range: RingSettings.thicknessRange, step: 0.5, format: decimal)
             ColorRow(title: "Ring Color", color: model.binding(\.ring.color))
             ToggleRow(title: "Neon Glow", isOn: model.binding(\.ring.neon))
+            ToggleRow(title: "Contrast Outline", detail: "Adds a thin black or white edge so the ring stays visible on any background.",
+                      isOn: model.binding(\.ring.contrastOutline))
             ToggleRow(title: "Animate Ring", isOn: model.binding(\.ring.animated))
             if model.settings.ring.animated {
                 SliderRow(title: "Animation Speed", value: model.binding(\.ring.animationSpeed), range: RingSettings.speedRange, format: decimal)

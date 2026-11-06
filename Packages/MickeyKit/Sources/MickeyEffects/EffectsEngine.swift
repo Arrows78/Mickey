@@ -54,6 +54,8 @@ final class ScreenLayers {
     let hole = CAShapeLayer()
     let trail = CALayer()
     let ring = CAShapeLayer()
+    /// Colored stroke drawn over `ring` when the ring has a contrast outline (`ring` then draws the outline).
+    let ringCore = CAShapeLayer()
     let effects = CALayer()
 
     init(screen: NSScreen) {
@@ -67,6 +69,9 @@ final class ScreenLayers {
             root.addSublayer(l)
         }
         ring.fillColor = nil
+        ringCore.fillColor = nil
+        ringCore.isHidden = true
+        ring.addSublayer(ringCore)
         ring.bounds = CGRect(x: 0, y: 0, width: 1, height: 1)
         ring.isHidden = true
     }
@@ -160,12 +165,24 @@ public final class EffectsEngine {
         l.ring.isHidden = !(on && isCurrent)
         guard on && isCurrent else { return }
         l.ring.position = l.local(pointer)
-        let key = "\(s.radius)-\(s.thickness)-\(s.color)-\(s.animated)-\(s.animationSpeed)-\(s.neon)-\(l.panel.screenID)-\(reduceMotion)"
+        let key = "\(s.radius)-\(s.thickness)-\(s.color)-\(s.animated)-\(s.animationSpeed)-\(s.neon)-\(s.contrastOutline)-\(l.panel.screenID)-\(reduceMotion)"
         guard key != lastRingKey || l.ring.path == nil else { return }
         lastRingKey = key
-        l.ring.path = Shapes.circle(radius: s.radius)
-        l.ring.lineWidth = s.thickness
-        l.ring.strokeColor = s.color.cgColor
+        let path = Shapes.circle(radius: s.radius)
+        l.ring.path = path
+        if s.contrastOutline {
+            let edge: CGFloat = 2
+            l.ring.lineWidth = s.thickness + edge * 2
+            l.ring.strokeColor = s.color.contrastingColor.cgColor
+            l.ringCore.path = path
+            l.ringCore.lineWidth = s.thickness
+            l.ringCore.strokeColor = s.color.cgColor
+            l.ringCore.isHidden = false
+        } else {
+            l.ring.lineWidth = s.thickness
+            l.ring.strokeColor = s.color.cgColor
+            l.ringCore.isHidden = true
+        }
         l.ring.shadowColor = s.color.cgColor
         l.ring.shadowRadius = s.neon ? 8 : 0
         l.ring.shadowOpacity = s.neon ? 1 : 0

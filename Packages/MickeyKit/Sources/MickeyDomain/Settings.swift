@@ -34,6 +34,23 @@ public struct RGBAColor: Codable, Equatable, Hashable, Sendable {
         }
     }
 
+    /// Relative luminance as defined by WCAG: 0 for black, 1 for white.
+    public var luminance: Double {
+        func linear(_ c: Double) -> Double { c <= 0.03928 ? c / 12.92 : pow((c + 0.055) / 1.055, 2.4) }
+        return 0.2126 * linear(red) + 0.7152 * linear(green) + 0.0722 * linear(blue)
+    }
+
+    /// Contrast ratio between two colors, 1 (identical) to 21 (black on white).
+    public func contrastRatio(with other: RGBAColor) -> Double {
+        let a = luminance, b = other.luminance
+        return (max(a, b) + 0.05) / (min(a, b) + 0.05)
+    }
+
+    /// Black or white, whichever stands out more against this color.
+    public var contrastingColor: RGBAColor {
+        contrastRatio(with: .black) >= contrastRatio(with: .white) ? .black : .white
+    }
+
     public func withAlpha(_ a: Double) -> RGBAColor { RGBAColor(red: red, green: green, blue: blue, alpha: a) }
 
     func clamped() -> RGBAColor {
@@ -141,6 +158,8 @@ public struct RingSettings: Codable, Equatable, Sendable {
     public var animated = false
     public var animationSpeed = 1.0
     public var neon = false
+    /// Edge in the opposite shade (black or white) so the ring stays visible on any background.
+    public var contrastOutline = false
     public init() {}
 
     public static let radiusRange = 10.0...150.0

@@ -15,6 +15,7 @@
 "About this build." = "About this build.";
 "Add Control, Option or Command." = "Add Control, Option or Command.";
 "Adds Right Option as a second hold-to-draw key. Off by default." = "Adds Right Option as a second hold-to-draw key. Off by default.";
+"Adds a thin black or white edge so the ring stays visible on any background." = "Adds a thin black or white edge so the ring stays visible on any background.";
 "Advanced" = "Advanced";
 "All settings, including shortcuts, return to their defaults." = "All settings, including shortcuts, return to their defaults.";
 "Allow…" = "Allow…";
@@ -79,6 +80,7 @@
 "Color preset" = "Color preset";
 "Combinations appear in a bar on the screen under the pointer, then fade." = "Combinations appear in a bar on the screen under the pointer, then fade.";
 "Continue" = "Continue";
+"Contrast Outline" = "Contrast Outline";
 "Copied" = "Copied";
 "Copy" = "Copy";
 "Copy Diagnostics" = "Copy Diagnostics";

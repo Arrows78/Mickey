@@ -15,6 +15,7 @@
 "About" = "À propos";
 "Add Control, Option or Command." = "Ajoutez Contrôle, Option ou Commande.";
 "Adds Right Option as a second hold-to-draw key. Off by default." = "Ajoute Option droite comme seconde touche à maintenir pour dessiner. Désactivé par défaut.";
+"Adds a thin black or white edge so the ring stays visible on any background." = "Ajoute un fin liseré noir ou blanc pour que l’anneau reste visible sur n’importe quel fond.";
 "Advanced" = "Avancé";
 "All settings, including shortcuts, return to their defaults." = "Tous les réglages, raccourcis compris, retrouvent leurs valeurs par défaut.";
 "Allow…" = "Autoriser…";
@@ -79,6 +80,7 @@
 "Color" = "Couleur";
 "Combinations appear in a bar on the screen under the pointer, then fade." = "Les combinaisons apparaissent dans une barre sur l’écran où se trouve le pointeur, puis s’estompent.";
 "Continue" = "Continuer";
+"Contrast Outline" = "Contour contrasté";
 "Copied" = "Copié";
 "Copy Diagnostics" = "Copier le diagnostic";
 "Copy a summary of your setup (version, macOS, permissions, settings) to paste into a bug report. It contains no personal data." = "Copiez un résumé de votre configuration (version, macOS, autorisations, réglages) à coller dans un rapport de bug. Il ne contient aucune donnée personnelle.";

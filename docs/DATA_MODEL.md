@@ -45,7 +45,7 @@ Values are clamped to their range when decoded and whenever they change.
 | Group | Field (default, range) |
 | --- | --- |
 | `spotlight` | `enabled` (false) · `radius` (150, 40…500) · `spotOpacity` (1, 0…1) · `backgroundOpacity` (0.6, 0…1) · `shape` (circle) · `barThickness` (60, 20…400) · `hideCursor` (false) · `dismissOnMove` (false) · `dismissDistance` (40, 10…400) · `holdKey` (nil) · `holdDelay` (0.5 s, 0…2) |
-| `ring` | `enabled` (false) · `radius` (50, 10…150) · `thickness` (3, 1…20) · `color` (blue) · `animated` (false) · `animationSpeed` (1, 0.25…3) · `neon` (false) |
+| `ring` | `enabled` (false) · `radius` (50, 10…150) · `thickness` (3, 1…20) · `color` (blue) · `animated` (false) · `animationSpeed` (1, 0.25…3) · `neon` (false) · `contrastOutline` (false: black or white edge, whichever contrasts more with `color`) |
 | `click` | `feedbackEnabled` (false) · `showOnClicks` (true) · `tapKey` (nil) · `effectType` (singleRing) · `color` (white) · `size` (100, 20…300) · `speed` (1, 0.25…3) · `lineWidth` (3, 1…10) · `soundEnabled` (false) · `soundVolume` (0.5, 0…1) · `customSound` (nil) |
 | `trail` | `enabled` (false) · `style` (solid) · `length` (30, 5…100) · `width` (5, 1…30) · `opacity` (0.8, 0…1) · `color` (white) · `fadeSpeed` (1, 0.25…3) · `spawnRate` (4, 1…10) |
 | `shake` | `enabled` (true) · `sensitivity` (0.95, 0.1…1) · `style` (enlargedPointer) |

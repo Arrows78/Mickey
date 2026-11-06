@@ -998,3 +998,32 @@ struct InteractionTests {
         #expect(c.drawnBounds == CGRect(x: 80, y: 80, width: 40, height: 40))
     }
 }
+
+@Suite("Color contrast") struct ColorContrastTests {
+    @Test func luminanceBoundsAreBlackAndWhite() {
+        #expect(RGBAColor.black.luminance == 0)
+        #expect(abs(RGBAColor.white.luminance - 1) < 0.0001)
+    }
+
+    @Test func blackOnWhiteIsTheMaximumRatio() {
+        #expect(abs(RGBAColor.black.contrastRatio(with: .white) - 21) < 0.001)
+        #expect(RGBAColor.white.contrastRatio(with: .white) == 1)
+    }
+
+    @Test func lightColorsGetADarkEdgeAndDarkColorsALightOne() {
+        #expect(RGBAColor.white.contrastingColor == .black)
+        #expect(RGBAColor.yellow.contrastingColor == .black)
+        #expect(RGBAColor.black.contrastingColor == .white)
+        #expect(RGBAColor(red: 0, green: 0, blue: 0.5).contrastingColor == .white)
+    }
+
+    @Test func theEdgeAlwaysReachesAReadableRatio() {
+        for color in RGBAColor.presets {
+            #expect(color.contrastRatio(with: color.contrastingColor) >= 4.5)
+        }
+    }
+
+    @Test func outlineIsOffByDefault() {
+        #expect(RingSettings().contrastOutline == false)
+    }
+}

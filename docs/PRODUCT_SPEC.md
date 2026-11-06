@@ -42,7 +42,7 @@ A bottom bar shows the master switch state. Problems reported by presenter tools
 | --- | --- |
 | Enable Mickey | master switch (on) |
 | Spotlight | toggle (off); shape circle / horizontal bar / vertical bar (circle); size 150; bar thickness 60; background darkness 0.6; spotlight clarity 1.0; hide cursor (off); **Hold a Key to Show**: none, Left Control, Right Command, Right Option, Right Shift, Right Control (none) with hold delay 0.5 s; **Turn Off When Moving** (off) with distance 40 pt |
-| Ring | toggle (off); size 50; thickness 3; color blue; neon glow (off); animate (off) with speed 1.0 |
+| Ring | toggle (off); size 50; thickness 3; color blue; neon glow (off); contrast outline (off); animate (off) with speed 1.0 |
 | Click Feedback | toggle (off); effect single ring / ripple / ring burst / color flash / particle burst / glow pulse / scale bounce (single ring) with Preview; color white; size 100; speed 1.0; line width 3; **Show on Mouse Clicks** (on); **Show With a Key Tap** (none) |
 | Click Sounds | toggle (off); volume 0.5; default click or a chosen audio file |
 | Trail | toggle (off); style solid / dots / dashed / particles / glow / stars / hearts (solid); length 30; width 5; opacity 0.8; color white; fade speed 1.0; spacing 4 for discrete styles |
@@ -107,7 +107,7 @@ Master switch; the toggles selected in General, each with its shortcut; Start/St
 
 ### 4.2 Ring
 
-A ring of the chosen size, thickness and color follows the pointer; neon adds a glow, animation a pulse whose period shrinks as speed grows.
+A ring of the chosen size, thickness and color follows the pointer; neon adds a glow, animation a pulse whose period shrinks as speed grows. The contrast outline adds a 2 pt black or white edge, whichever contrasts more with the ring color (WCAG luminance), so the ring stays visible on light and dark backgrounds. With Reduce Motion on, the pulse is not played.
 
 ### 4.3 Click feedback and sounds
 
