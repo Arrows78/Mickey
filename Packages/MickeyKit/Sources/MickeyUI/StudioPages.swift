@@ -56,6 +56,10 @@ struct KeystrokesPage: View {
                 if !model.settings.keystrokes.shortcutsOnly {
                     NoteView(text: "Every key is shown, including passwords you type. Turn Shortcuts Only back on when you're done.", warning: true)
                 }
+                PickerRow(title: "Style", selection: model.binding(\.keystrokes.style), options: KeystrokeStyle.allCases) { Text($0.title) }
+                if model.settings.keystrokes.style.usesAccent {
+                    ColorRow(title: "Accent Color", color: model.binding(\.keystrokes.accentColor))
+                }
                 PickerRow(title: "Position", selection: model.binding(\.keystrokes.position), options: HUDPosition.allCases) { Text($0.title) }
                 SliderRow(title: "Text Size", value: model.binding(\.keystrokes.fontSize), range: KeystrokeSettings.fontSizeRange)
                 SliderRow(title: "Display Time", value: model.binding(\.keystrokes.duration), range: KeystrokeSettings.durationRange,

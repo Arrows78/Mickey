@@ -38,9 +38,32 @@ public enum BubbleShape: String, CaseIterable, Codable, Sendable {
     }
 }
 
+/// Look of the on-screen shortcuts.
+public enum KeystrokeStyle: String, CaseIterable, Codable, Sendable, Identifiable {
+    case classic, glass, keycaps, neon, minimal
+
+    public var id: String { rawValue }
+
+    public var title: String {
+        switch self {
+        case .classic: tr("Classic")
+        case .glass: tr("Glass")
+        case .keycaps: tr("Keycaps")
+        case .neon: tr("Neon")
+        case .minimal: tr("Minimal")
+        }
+    }
+
+    /// True when the accent color shows in this style.
+    public var usesAccent: Bool { self == .glass || self == .neon }
+}
+
 /// On-screen display of typed shortcuts.
 public struct KeystrokeSettings: Codable, Equatable, Sendable {
     public var enabled = false
+    public var style = KeystrokeStyle.classic
+    /// Color of the border and text of the Neon style, and of the border of the Glass style.
+    public var accentColor = RGBAColor.blue
     /// Only combinations with ⌘, ⌃ or ⌥ and special keys are shown, never plain typing.
     public var shortcutsOnly = true
     public var position = HUDPosition.bottomCenter

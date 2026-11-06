@@ -306,6 +306,7 @@ public struct Settings: Codable, Equatable, Sendable {
         s.annotations.color = s.annotations.color.clamped()
         s.annotations.highlighterColor = s.annotations.highlighterColor.clamped()
         s.keystrokes.fontSize = s.keystrokes.fontSize.clamped(to: KeystrokeSettings.fontSizeRange)
+        s.keystrokes.accentColor = s.keystrokes.accentColor.clamped()
         s.keystrokes.duration = s.keystrokes.duration.clamped(to: KeystrokeSettings.durationRange)
         s.zoom.factor = s.zoom.factor.clamped(to: ZoomSettings.factorRange)
         s.zoom.animationDuration = s.zoom.animationDuration.clamped(to: ZoomSettings.animationDurationRange)

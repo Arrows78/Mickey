@@ -1276,3 +1276,36 @@ struct InteractionTests {
         #expect(c.zoom.holdDuration == ZoomSettings.holdDurationRange.lowerBound)
     }
 }
+
+@Suite("Keystroke styles") struct KeystrokeStyleTests {
+    @Test func modifiersAreKeysOfTheirOwn() {
+        #expect(KeystrokeLabel.keys(of: "⌘⇧T").keys == ["⌘", "⇧", "T"])
+        #expect(KeystrokeLabel.keys(of: "⌃⌥⌘M").keys == ["⌃", "⌥", "⌘", "M"])
+    }
+
+    @Test func namedKeysStayWhole() {
+        #expect(KeystrokeLabel.keys(of: "⌘Space").keys == ["⌘", "Space"])
+        #expect(KeystrokeLabel.keys(of: "F5").keys == ["F5"])
+        #expect(KeystrokeLabel.keys(of: "⌥↩").keys == ["⌥", "↩"])
+    }
+
+    @Test func aRepeatCountIsSeparated() {
+        let r = KeystrokeLabel.keys(of: "⌘K ×3")
+        #expect(r.keys == ["⌘", "K"] && r.repeats == "×3")
+        #expect(KeystrokeLabel.keys(of: "⌘K").repeats == nil)
+    }
+
+    @Test func aKeyThatLooksLikeARepeatIsNotOne() {
+        #expect(KeystrokeLabel.keys(of: "⌘×").keys == ["⌘", "×"])
+        #expect(KeystrokeLabel.keys(of: "⌘ ×").repeats == nil)
+    }
+
+    @Test func anEmptyLabelHasNoKeys() {
+        #expect(KeystrokeLabel.keys(of: "").keys.isEmpty)
+    }
+
+    @Test func classicIsTheDefaultAndOnlyGlassAndNeonUseTheAccent() {
+        #expect(KeystrokeSettings().style == .classic)
+        #expect(KeystrokeStyle.allCases.filter(\.usesAccent) == [.glass, .neon])
+    }
+}

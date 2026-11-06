@@ -13,6 +13,7 @@
 "About" = "About";
 "About Mickey" = "About Mickey";
 "About this build." = "About this build.";
+"Accent Color" = "Accent Color";
 "Add Control, Option or Command." = "Add Control, Option or Command.";
 "Adds Right Option as a second hold-to-draw key. Off by default." = "Adds Right Option as a second hold-to-draw key. Off by default.";
 "Adds a thin black or white edge so the ring stays visible on any background." = "Adds a thin black or white edge so the ring stays visible on any background.";
@@ -62,6 +63,7 @@
 "Choose a Click Sound" = "Choose a Click Sound";
 "Choose which quick toggles appear when you click the menu-bar icon." = "Choose which quick toggles appear when you click the menu-bar icon.";
 "Circle" = "Circle";
+"Classic" = "Classic";
 "Clear All" = "Clear All";
 "Clear All (⌘⌫)" = "Clear All (⌘⌫)";
 "Clear All Shortcuts" = "Clear All Shortcuts";
@@ -159,6 +161,7 @@
 "Get Started" = "Get Started";
 "Getting started" = "Getting started";
 "Give every action its ⌃⌥⌘ default back" = "Give every action its ⌃⌥⌘ default back";
+"Glass" = "Glass";
 "Global shortcuts that work from any app. Each defaults to ⌃⌥⌘ plus a letter." = "Global shortcuts that work from any app. Each defaults to ⌃⌥⌘ plus a letter.";
 "Glow" = "Glow";
 "Glow Pulse" = "Glow Pulse";
@@ -187,6 +190,7 @@
 "JavaScript console" = "JavaScript console";
 "Jump to a feature" = "Jump to a feature";
 "Keyboard Shortcuts" = "Keyboard Shortcuts";
+"Keycaps" = "Keycaps";
 "Keystrokes" = "Keystrokes";
 "Keystrokes need Input Monitoring: allow Mickey in System Settings › Privacy & Security." = "Keystrokes need Input Monitoring: allow Mickey in System Settings › Privacy & Security.";
 "Language" = "Language";
@@ -231,6 +235,7 @@
 "Mickey — recording paused" = "Mickey — recording paused";
 "Microphone" = "Microphone";
 "Microsoft Teams (classic)" = "Microsoft Teams (classic)";
+"Minimal" = "Minimal";
 "Minimize" = "Minimize";
 "Mirror" = "Mirror";
 "Most Apple keyboards have no Right Control key." = "Most Apple keyboards have no Right Control key.";
@@ -240,6 +245,7 @@
 "Needed to read which shortcuts you type. Mickey never records text." = "Needed to read which shortcuts you type. Mickey never records text.";
 "Needed to show your webcam in the bubble." = "Needed to show your webcam in the bubble.";
 "Needed to turn your voice into captions, on your Mac when supported." = "Needed to turn your voice into captions, on your Mac when supported.";
+"Neon" = "Neon";
 "Neon Glow" = "Neon Glow";
 "No action will have a shortcut. Reset to Defaults brings them back." = "No action will have a shortcut. Reset to Defaults brings them back.";
 "No camera was found." = "No camera was found.";
@@ -406,6 +412,7 @@
 "Stop drawing" = "Stop drawing";
 "Stop recording" = "Stop recording";
 "Stroke Width" = "Stroke Width";
+"Style" = "Style";
 "Subtitles what you say, on your Mac when the language supports it. Needs Microphone and Speech Recognition." = "Subtitles what you say, on your Mac when the language supports it. Needs Microphone and Speech Recognition.";
 "Support" = "Support";
 "Switch several effects at once" = "Switch several effects at once";

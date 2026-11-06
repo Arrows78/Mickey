@@ -238,6 +238,27 @@ public enum CaptionText {
     public static func capacity(lines: Int, charactersPerLine: Int = 46) -> Int { max(1, lines) * charactersPerLine }
 }
 
+/// A shortcut label such as "⌘⇧T" or "⌘K ×2", split into the keys to draw one by one.
+public enum KeystrokeLabel {
+    /// The keys, modifiers first, and the repeat count ("×2") when the label has one.
+    public static func keys(of label: String) -> (keys: [String], repeats: String?) {
+        var text = label
+        var repeats: String?
+        if let range = text.range(of: " ×", options: .backwards), text[range.upperBound...].allSatisfy(\.isNumber), !text[range.upperBound...].isEmpty {
+            repeats = "×" + text[range.upperBound...]
+            text = String(text[..<range.lowerBound])
+        }
+        var keys: [String] = []
+        var rest = Substring(text)
+        while let first = rest.first, "⌃⌥⇧⌘".contains(first) {
+            keys.append(String(first))
+            rest = rest.dropFirst()
+        }
+        if !rest.isEmpty { keys.append(String(rest)) }
+        return (keys, repeats)
+    }
+}
+
 /// Geometry of a recorded region. Selections are in Cocoa screen coordinates (origin at the bottom left, points);
 /// ScreenCaptureKit wants points from the top left of the display.
 public enum RecordingRegion {

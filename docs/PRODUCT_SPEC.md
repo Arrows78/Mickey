@@ -64,7 +64,7 @@ Toggle (off); Start/Stop Drawing; hold Fn to draw (on); also hold Right Option (
 
 | Page | Controls (default) |
 | --- | --- |
-| Keystrokes | toggle (off); permission row; Shortcuts Only (on); position bottom center / bottom left / bottom right / top center; text size 28; display time 1.5 s |
+| Keystrokes | toggle (off); permission row; Shortcuts Only (on); style classic / glass / keycaps / neon / minimal (classic) with an accent color for glass and neon; position bottom center / bottom left / bottom right / top center; text size 28; display time 1.5 s |
 | Live Zoom | toggle (off); permission row; zoom always or on click (always); magnification 2× (1.25–6×); animation duration 0.35 s (0.1–1.5); stay zoomed for 1.5 s (0.5–5, on click only) |
 | Loupe | toggle (off); permission row; shape circle / rounded square; size 240 pt; magnification 2.5× (1.5–8×); border color white |
 | Focus | toggle (off); dim amount 0.55; corner radius 10; margin 6 pt |
@@ -162,7 +162,7 @@ Registered hotkeys pause while a shortcut is being recorded.
 
 | Tool | Behaviour | Permission |
 | --- | --- | --- |
-| Keystrokes | Listen-only event tap. Shows ⌃⌥⇧⌘ + key; repeats within 1 s collapse into `×n`; at most 4 items; each fades after the display time. Shortcuts Only hides plain typing (no ⌃/⌥/⌘, including Space and ⇧ + letter) but shows ↩, ⇥, ⌫, ⎋, arrows and F-keys. | Input Monitoring |
+| Keystrokes | Listen-only event tap. Shows ⌃⌥⇧⌘ + key; repeats within 1 s collapse into `×n`; five looks: classic (dark pill), glass (translucent with a tinted border), keycaps (one cap per key, the repeat count beside them), neon (accent border and glow), minimal (text with a shadow); at most 4 items; each fades after the display time. Shortcuts Only hides plain typing (no ⌃/⌥/⌘, including Space and ⇧ + letter) but shows ↩, ⇥, ⌫, ⎋, arrows and F-keys. | Input Monitoring |
 | Live Zoom | Captures the screen under the pointer (without Mickey's windows) and shows the area `[s.min + (p − s.min)(1 − 1/f), size s/f]`, so the point under the pointer stays in place. The magnification glides between 1 and the factor (ease in and out; it jumps with Reduce Motion), and glides back out when the zoom is turned off. In *On Click* mode each click zooms in around the pointer, the zoom stays for the hold time (another click starts it again), then glides out; the screen is captured while the zoom waits. | Screen Recording |
 | Loupe | Shows an area of `size / magnification` around the pointer in a bubble; combined with live zoom it magnifies the zoomed area. | Screen Recording |
 | Focus | Ten times a second, finds the frontmost app's topmost normal window in the window list and dims every screen except a rounded hole around it. | — |

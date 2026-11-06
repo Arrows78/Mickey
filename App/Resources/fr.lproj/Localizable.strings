@@ -13,6 +13,7 @@
 "About Mickey" = "À propos de Mickey";
 "About this build." = "À propos de cette version.";
 "About" = "À propos";
+"Accent Color" = "Couleur d’accentuation";
 "Add Control, Option or Command." = "Ajoutez Contrôle, Option ou Commande.";
 "Adds Right Option as a second hold-to-draw key. Off by default." = "Ajoute Option droite comme seconde touche à maintenir pour dessiner. Désactivé par défaut.";
 "Adds a thin black or white edge so the ring stays visible on any background." = "Ajoute un fin liseré noir ou blanc pour que l’anneau reste visible sur n’importe quel fond.";
@@ -62,6 +63,7 @@
 "Choose a Click Sound" = "Choisir un son de clic";
 "Choose which quick toggles appear when you click the menu-bar icon." = "Choisissez les interrupteurs rapides affichés quand vous cliquez sur l’icône de la barre des menus.";
 "Circle" = "Cercle";
+"Classic" = "Classique";
 "Clear All (⌘⌫)" = "Tout effacer (⌘⌫)";
 "Clear All Shortcuts" = "Effacer tous les raccourcis";
 "Clear All" = "Tout effacer";
@@ -159,6 +161,7 @@
 "Get Started" = "Commencer";
 "Getting started" = "Premiers pas";
 "Give every action its ⌃⌥⌘ default back" = "Redonne à chaque action son raccourci ⌃⌥⌘ par défaut";
+"Glass" = "Verre";
 "Global shortcuts that work from any app. Each defaults to ⌃⌥⌘ plus a letter." = "Des raccourcis globaux qui fonctionnent depuis n’importe quelle app. Chacun est par défaut ⌃⌥⌘ plus une lettre.";
 "Glow Pulse" = "Pulsation lumineuse";
 "Glow" = "Lueur";
@@ -187,6 +190,7 @@
 "JavaScript console" = "console JavaScript";
 "Jump to a feature" = "Aller à une fonction";
 "Keyboard Shortcuts" = "Raccourcis clavier";
+"Keycaps" = "Touches de clavier";
 "Keystrokes need Input Monitoring: allow Mickey in System Settings › Privacy & Security." = "L’affichage des frappes nécessite la surveillance de l’entrée : autorisez Mickey dans Réglages Système › Confidentialité et sécurité.";
 "Keystrokes" = "Frappes clavier";
 "Language" = "Langue";
@@ -231,6 +235,7 @@
 "Mickey" = "Mickey";
 "Microphone" = "Microphone";
 "Microsoft Teams (classic)" = "Microsoft Teams (classique)";
+"Minimal" = "Minimal";
 "Minimize" = "Réduire";
 "Mirror" = "Miroir";
 "Most Apple keyboards have no Right Control key." = "La plupart des claviers Apple n’ont pas de touche Contrôle droite.";
@@ -241,6 +246,7 @@
 "Needed to show your webcam in the bubble." = "Nécessaire pour afficher votre webcam dans la bulle.";
 "Needed to turn your voice into captions, on your Mac when supported." = "Nécessaire pour transformer votre voix en sous-titres, sur votre Mac lorsque c’est pris en charge.";
 "Neon Glow" = "Lueur néon";
+"Neon" = "Néon";
 "No action will have a shortcut. Reset to Defaults brings them back." = "Aucune action n’aura de raccourci. « Rétablir les valeurs par défaut » les restaure.";
 "No camera was found." = "Aucune caméra n’a été trouvée.";
 "No frame was captured." = "Aucune image n’a été capturée.";
@@ -406,6 +412,7 @@
 "Stop drawing" = "Arrêter le dessin";
 "Stop recording" = "Arrêter l’enregistrement";
 "Stroke Width" = "Épaisseur du trait";
+"Style" = "Style";
 "Subtitles what you say, on your Mac when the language supports it. Needs Microphone and Speech Recognition." = "Sous-titre ce que vous dites, sur votre Mac lorsque la langue le permet. Nécessite le microphone et la reconnaissance vocale.";
 "Support" = "Assistance";
 "Switch several effects at once" = "Change plusieurs effets d’un coup";

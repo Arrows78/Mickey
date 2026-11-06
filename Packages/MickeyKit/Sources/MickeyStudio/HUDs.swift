@@ -37,12 +37,8 @@ struct KeystrokeHUDView: View {
     var body: some View {
         let stack = HStack(spacing: 10) {
             ForEach(model.history.entries) { entry in
-                Text(entry.label)
-                    .font(.system(size: model.settings.fontSize, weight: .semibold, design: .rounded))
-                    .foregroundStyle(.white)
-                    .padding(.horizontal, model.settings.fontSize * 0.55)
-                    .padding(.vertical, model.settings.fontSize * 0.3)
-                    .background(.black.opacity(0.72), in: RoundedRectangle(cornerRadius: model.settings.fontSize * 0.4))
+                KeystrokeBadge(label: entry.label, style: model.settings.style, accent: model.settings.accentColor,
+                               fontSize: model.settings.fontSize)
                     .transition(reduceMotion ? .opacity : .opacity.combined(with: .scale(scale: 0.9)))
             }
         }
@@ -50,6 +46,69 @@ struct KeystrokeHUDView: View {
         return stack.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: hudAlignment(model.settings.position))
     }
 }
+
+/// One shortcut on screen, in the chosen style.
+struct KeystrokeBadge: View {
+    let label: String
+    let style: KeystrokeStyle
+    let accent: RGBAColor
+    let fontSize: Double
+
+    private var font: Font { .system(size: fontSize, weight: .semibold, design: .rounded) }
+    private var accentColor: Color { Color(nsColor: accent.nsColor) }
+    private var corner: Double { fontSize * 0.4 }
+
+    var body: some View {
+        switch style {
+        case .classic:
+            pad(text(label).foregroundStyle(.white))
+                .background(.black.opacity(0.72), in: RoundedRectangle(cornerRadius: corner))
+        case .glass:
+            pad(text(label).foregroundStyle(.primary))
+                .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: corner))
+                .overlay(RoundedRectangle(cornerRadius: corner).strokeBorder(accentColor.opacity(0.7), lineWidth: 1.5))
+        case .keycaps:
+            keycaps
+        case .neon:
+            pad(text(label).foregroundStyle(accentColor))
+                .background(.black.opacity(0.85), in: RoundedRectangle(cornerRadius: corner))
+                .overlay(RoundedRectangle(cornerRadius: corner).strokeBorder(accentColor, lineWidth: 2))
+                .shadow(color: accentColor.opacity(0.9), radius: 10)
+        case .minimal:
+            text(label).foregroundStyle(.white)
+                .shadow(color: .black.opacity(0.9), radius: 4).shadow(color: .black.opacity(0.6), radius: 1)
+        }
+    }
+
+    private func text(_ string: String) -> Text { Text(string).font(font) }
+
+    /// The padding shared by the badges that sit on a background, in proportion to the text.
+    private func pad<V: View>(_ view: V) -> some View { view.padding(.horizontal, fontSize * 0.55).padding(.vertical, fontSize * 0.3) }
+
+    /// Each key on its own cap, with a lighter face and a darker edge below.
+    private var keycaps: some View {
+        let parts = KeystrokeLabel.keys(of: label)
+        return HStack(spacing: fontSize * 0.25) {
+            ForEach(Array(parts.keys.enumerated()), id: \.offset) { _, key in
+                Text(key).font(font).foregroundStyle(Color(white: 0.12))
+                    .frame(minWidth: fontSize * 1.1)
+                    .padding(.horizontal, fontSize * 0.3).padding(.vertical, fontSize * 0.22)
+                    .background(
+                        RoundedRectangle(cornerRadius: fontSize * 0.28)
+                            .fill(LinearGradient(colors: [Color(white: 0.98), Color(white: 0.82)], startPoint: .top, endPoint: .bottom))
+                            // The edge below the key belongs to the cap, not to the letter on it.
+                            .shadow(color: .black.opacity(0.5), radius: 0, y: fontSize * 0.1)
+                    )
+                    .overlay(RoundedRectangle(cornerRadius: fontSize * 0.28).strokeBorder(Color(white: 0.55), lineWidth: 1))
+            }
+            if let repeats = parts.repeats {
+                Text(repeats).font(.system(size: fontSize * 0.7, weight: .bold, design: .rounded)).foregroundStyle(.white)
+                    .shadow(color: .black.opacity(0.8), radius: 3)
+            }
+        }
+    }
+}
+
 
 /// Shows typed shortcuts at the bottom (or top) of the screen under the pointer.
 final class KeystrokeHUD {
