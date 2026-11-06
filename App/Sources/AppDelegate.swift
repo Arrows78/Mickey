@@ -131,8 +131,13 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     private func wireStudio() {
         studio.onMessage = { [weak self] message in self?.model.studioMessage = message }
         studio.onRecordingChanged = { [weak self] recording, start in
-            self?.model.recordingStartedAt = recording ? start : nil
+            self?.model.recordingClock = recording ? start.map { RecordingClock(startedAt: $0) } : nil
             self?.statusItem?.isRecording = recording
+        }
+        studio.onRecordingPauseChanged = { [weak self] paused in
+            guard let self else { return }
+            if paused { model.recordingClock?.pause(at: Date()) } else { model.recordingClock?.resume(at: Date()) }
+            statusItem?.isPaused = paused
         }
         studio.onRecordingSaved = { [weak self] url in
             self?.model.lastRecordingURL = url
@@ -218,6 +223,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             annotations.toggle()
         case .toggleRecording:
             toggleRecording()
+        case .togglePauseRecording:
+            togglePauseRecording()
         default:
             model.perform(action)
         }
@@ -282,6 +289,10 @@ extension AppDelegate: AppActions {
         // Like every other tool, starting a recording turns Mickey on.
         if !studio.isRecording && !model.settings.general.masterEnabled { model.update { $0.general.masterEnabled = true } }
         studio.toggleRecording(settings: model.settings.recorder)
+    }
+
+    func togglePauseRecording() {
+        studio.togglePause()
     }
 
     func revealRecordings() {

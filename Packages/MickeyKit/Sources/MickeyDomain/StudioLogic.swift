@@ -187,6 +187,33 @@ public enum CaptionText {
     public static func capacity(lines: Int, charactersPerLine: Int = 46) -> Int { max(1, lines) * charactersPerLine }
 }
 
+/// Elapsed time of a recording that can be paused: the time spent paused does not count.
+public struct RecordingClock: Equatable, Sendable {
+    public let startedAt: Date
+    private var pausedTotal: TimeInterval = 0
+    private var pausedSince: Date?
+
+    public init(startedAt: Date) { self.startedAt = startedAt }
+
+    public var isPaused: Bool { pausedSince != nil }
+
+    public mutating func pause(at date: Date) {
+        guard pausedSince == nil else { return }
+        pausedSince = date
+    }
+
+    public mutating func resume(at date: Date) {
+        guard let since = pausedSince else { return }
+        pausedTotal += max(0, date.timeIntervalSince(since))
+        pausedSince = nil
+    }
+
+    public func elapsed(at date: Date) -> TimeInterval {
+        let end = pausedSince ?? date
+        return max(0, end.timeIntervalSince(startedAt) - pausedTotal)
+    }
+}
+
 public enum RecordingNaming {
     public static func fileName(for date: Date, calendar: Calendar = .current) -> String {
         let c = calendar.dateComponents([.year, .month, .day, .hour, .minute, .second], from: date)

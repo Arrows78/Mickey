@@ -52,10 +52,21 @@ final class StatusItemController: NSObject {
     /// Red record icon while a recording runs.
     var isRecording = false {
         didSet {
-            item.button?.image = NSImage(systemSymbolName: isRecording ? "record.circle.fill" : "cursorarrow.rays",
-                                         accessibilityDescription: isRecording ? tr("Mickey — recording") : "Mickey")
-            item.button?.contentTintColor = isRecording ? .systemRed : nil
+            if !isRecording { isPaused = false }
+            updateRecordingIcon()
         }
+    }
+
+    /// Orange pause icon while a recording is paused.
+    var isPaused = false {
+        didSet { updateRecordingIcon() }
+    }
+
+    private func updateRecordingIcon() {
+        let symbol = isRecording ? (isPaused ? "pause.circle.fill" : "record.circle.fill") : "cursorarrow.rays"
+        let label = isRecording ? tr(isPaused ? "Mickey — recording paused" : "Mickey — recording") : "Mickey"
+        item.button?.image = NSImage(systemSymbolName: symbol, accessibilityDescription: label)
+        item.button?.contentTintColor = isRecording ? (isPaused ? .systemOrange : .systemRed) : nil
     }
 
     func closePopover() { if popover.isShown { popover.performClose(nil) } }

@@ -53,7 +53,7 @@
 | 🪟 **Focus** | Dims everything except the frontmost window, following you as you switch apps. | — |
 | 📷 **Camera bubble** | Your webcam in a draggable circle or rounded square, mirrored if you like. | Camera |
 | 💬 **Captions** | Live subtitles of what you say, recognised on your Mac when the language supports it. | Microphone, Speech Recognition |
-| ⏺️ **Recorder** | Records the screen under the pointer, effects and annotations included, to `~/Movies/Mickey` after a countdown; quality (up to 4K) and frame rate (30 or 60) are adjustable. | Screen Recording |
+| ⏺️ **Recorder** | Records the screen under the pointer, effects and annotations included, to `~/Movies/Mickey` after a countdown; quality (up to 4K) and frame rate (30 or 60) are adjustable, and it can be paused and resumed. | Screen Recording |
 
 ### 🧰 Everyday use
 
@@ -81,6 +81,7 @@ Every action defaults to **⌃⌥⌘** plus a letter, a combination macOS and mo
 | `⌃⌥⌘K` | Toggle click sounds | `⌃⌥⌘E` | Toggle camera bubble |
 | `⌃⌥⌘F` | Flash the click effect | `⌃⌥⌘A` | Toggle captions |
 | `⌃⌥⌘L` | Toggle shake to locate | `⌃⌥⌘V` | Start / stop recording |
+| `⌃⌥⌘P` | Pause / resume recording | | |
 
 Letters follow your keyboard layout: on AZERTY, `⌃⌥⌘A` is the key marked A. All of them can be changed or cleared in **Settings › Hotkeys**.
 

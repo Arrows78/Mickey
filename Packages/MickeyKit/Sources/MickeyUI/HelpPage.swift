@@ -69,7 +69,7 @@ public enum HelpContent {
                   body: "Click Allow… next to the permission, or open System Settings › Privacy & Security and switch Mickey on. Support lists every permission and its state.",
                   section: .support),
         HelpEntry(id: "hotkeys", group: "Hotkeys", title: "Setting hotkeys",
-                  body: "Every action has a default shortcut: ⌃⌥⌘ plus a letter (M Mickey, S spotlight, R ring, T trail, C click feedback, K click sounds, F flash click, L locate, D draw, Y keystrokes, Z live zoom, O loupe, W focus, E camera, A captions, V record). Letters follow your keyboard layout. Change one by clicking its field; ↺ or Reset to Defaults restores them, Clear All removes them.",
+                  body: "Every action has a default shortcut: ⌃⌥⌘ plus a letter (M Mickey, S spotlight, R ring, T trail, C click feedback, K click sounds, F flash click, L locate, D draw, Y keystrokes, Z live zoom, O loupe, W focus, E camera, A captions, V record, P pause). Letters follow your keyboard layout. Change one by clicking its field; ↺ or Reset to Defaults restores them, Clear All removes them.",
                   section: .hotkeys),
         HelpEntry(id: "nothing", group: "Troubleshooting", title: "Nothing appears on screen",
                   body: "Make sure Enable Mickey is on, in the settings window or the menu bar.", section: .effects),

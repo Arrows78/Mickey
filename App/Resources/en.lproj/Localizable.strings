@@ -131,7 +131,7 @@
 "Enter or leave drawing mode" = "Enter or leave drawing mode";
 "Erase everything when leaving draw mode." = "Erase everything when leaving draw mode.";
 "Every action gets its ⌃⌥⌘ default back; your custom shortcuts are replaced." = "Every action gets its ⌃⌥⌘ default back; your custom shortcuts are replaced.";
-"Every action has a default shortcut: ⌃⌥⌘ plus a letter (M Mickey, S spotlight, R ring, T trail, C click feedback, K click sounds, F flash click, L locate, D draw, Y keystrokes, Z live zoom, O loupe, W focus, E camera, A captions, V record). Letters follow your keyboard layout. Change one by clicking its field; ↺ or Reset to Defaults restores them, Clear All removes them." = "Every action has a default shortcut: ⌃⌥⌘ plus a letter (M Mickey, S spotlight, R ring, T trail, C click feedback, K click sounds, F flash click, L locate, D draw, Y keystrokes, Z live zoom, O loupe, W focus, E camera, A captions, V record). Letters follow your keyboard layout. Change one by clicking its field; ↺ or Reset to Defaults restores them, Clear All removes them.";
+"Every action has a default shortcut: ⌃⌥⌘ plus a letter (M Mickey, S spotlight, R ring, T trail, C click feedback, K click sounds, F flash click, L locate, D draw, Y keystrokes, Z live zoom, O loupe, W focus, E camera, A captions, V record, P pause). Letters follow your keyboard layout. Change one by clicking its field; ↺ or Reset to Defaults restores them, Clear All removes them." = "Every action has a default shortcut: ⌃⌥⌘ plus a letter (M Mickey, S spotlight, R ring, T trail, C click feedback, K click sounds, F flash click, L locate, D draw, Y keystrokes, Z live zoom, O loupe, W focus, E camera, A captions, V record, P pause). Letters follow your keyboard layout. Change one by clicking its field; ↺ or Reset to Defaults restores them, Clear All removes them.";
 "Every key is shown, including passwords you type. Turn Shortcuts Only back on when you're done." = "Every key is shown, including passwords you type. Turn Shortcuts Only back on when you're done.";
 "Export Mickey Settings" = "Export Mickey Settings";
 "Export Settings…" = "Export Settings…";
@@ -223,6 +223,7 @@
 "Mickey is on — cursor effects are active." = "Mickey is on — cursor effects are active.";
 "Mickey — cursor highlighter & presentation toolkit." = "Mickey — cursor highlighter & presentation toolkit.";
 "Mickey — recording" = "Mickey — recording";
+"Mickey — recording paused" = "Mickey — recording paused";
 "Microphone" = "Microphone";
 "Microsoft Teams (classic)" = "Microsoft Teams (classic)";
 "Minimize" = "Minimize";
@@ -253,6 +254,9 @@
 "Particle Burst" = "Particle Burst";
 "Particles" = "Particles";
 "Paste" = "Paste";
+"Pause" = "Pause";
+"Pause / Resume Recording" = "Pause / Resume Recording";
+"Pause recording" = "Pause recording";
 "Performance" = "Performance";
 "Performance tuning." = "Performance tuning.";
 "Permissions" = "Permissions";
@@ -308,6 +312,8 @@
 "Restore every setting to its default value." = "Restore every setting to its default value.";
 "Restore the default (%@)" = "Restore the default (%@)";
 "Restore the default shortcuts?" = "Restore the default shortcuts?";
+"Resume" = "Resume";
+"Resume recording" = "Resume recording";
 "Right Command (⌘)" = "Right Command (⌘)";
 "Right Control (⌃)" = "Right Control (⌃)";
 "Right Option (⌥)" = "Right Option (⌥)";
@@ -388,6 +394,7 @@
 "Stop Drawing" = "Stop Drawing";
 "Stop Drawing (Esc)" = "Stop Drawing (Esc)";
 "Stop Recording" = "Stop Recording";
+"Stop adding to the movie, then carry on" = "Stop adding to the movie, then carry on";
 "Stop drawing" = "Stop drawing";
 "Stop recording" = "Stop recording";
 "Stroke Width" = "Stroke Width";

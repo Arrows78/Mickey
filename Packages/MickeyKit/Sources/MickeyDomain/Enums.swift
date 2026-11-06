@@ -211,7 +211,8 @@ public enum SettingsSection: String, CaseIterable, Codable, Sendable, Identifiab
 public enum HotkeyAction: String, CaseIterable, Codable, CodingKeyRepresentable, Sendable, Identifiable {
     case toggleMaster, toggleSpotlight, toggleRing, toggleTrail, toggleClickFeedback,
          toggleClickSound, showClickEffect, toggleShakeToLocate, toggleAnnotationMode,
-         toggleKeystrokes, toggleLiveZoom, toggleLoupe, toggleFocus, toggleCameraBubble, toggleCaptions, toggleRecording
+         toggleKeystrokes, toggleLiveZoom, toggleLoupe, toggleFocus, toggleCameraBubble, toggleCaptions, toggleRecording,
+         togglePauseRecording
 
     public var id: String { rawValue }
 
@@ -233,6 +234,7 @@ public enum HotkeyAction: String, CaseIterable, Codable, CodingKeyRepresentable,
         case .toggleCameraBubble: tr("Toggle Camera Bubble")
         case .toggleCaptions: tr("Toggle Captions")
         case .toggleRecording: tr("Start / Stop Recording")
+        case .togglePauseRecording: tr("Pause / Resume Recording")
         }
     }
 
@@ -268,19 +270,21 @@ public enum HotkeyAction: String, CaseIterable, Codable, CodingKeyRepresentable,
         case .toggleCameraBubble: "E"
         case .toggleCaptions: "A"
         case .toggleRecording: "V"
+        case .togglePauseRecording: "P"
         }
     }
 
     /// Virtual key codes of the default letters on a US (ANSI) keyboard.
     static let usKeyCodes: [Character: UInt32] = [
         "M": 46, "S": 1, "R": 15, "T": 17, "C": 8, "K": 40, "F": 3, "L": 37,
-        "D": 2, "Y": 16, "Z": 6, "O": 31, "W": 13, "E": 14, "A": 0, "V": 9,
+        "D": 2, "Y": 16, "Z": 6, "O": 31, "W": 13, "E": 14, "A": 0, "V": 9, "P": 35,
     ]
 
     /// Settings schema version that introduced the action, so migrations add only new defaults.
     public var introducedInSchema: Int {
         switch self {
         case .toggleKeystrokes, .toggleLiveZoom, .toggleLoupe, .toggleFocus, .toggleCameraBubble, .toggleCaptions, .toggleRecording: 3
+        case .togglePauseRecording: 5
         default: 2
         }
     }
@@ -309,6 +313,7 @@ public enum HotkeyAction: String, CaseIterable, Codable, CodingKeyRepresentable,
         case .toggleCameraBubble: tr("Floating webcam bubble")
         case .toggleCaptions: tr("Live subtitles from the microphone")
         case .toggleRecording: tr("Record the screen to a movie")
+        case .togglePauseRecording: tr("Stop adding to the movie, then carry on")
         }
     }
 }

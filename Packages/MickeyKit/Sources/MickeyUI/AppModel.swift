@@ -17,6 +17,7 @@ public protocol AppActions: AnyObject {
     func setHotkeyRecording(_ recording: Bool)
     func request(_ permission: Permission)
     func toggleRecording()
+    func togglePauseRecording()
     func revealRecordings()
     /// Asks where to save the exported settings; nil when cancelled.
     func chooseSettingsExportURL() -> URL?
@@ -38,14 +39,16 @@ public final class AppModel {
     /// The menu-bar icon is enabled but macOS is not showing it.
     public var menuBarIconHidden = false
     public var permissions: [Permission: PermissionStatus] = [:]
-    public var recordingStartedAt: Date?
+    /// Running or paused recording, nil when nothing is recorded.
+    public var recordingClock: RecordingClock?
     public var lastRecordingURL: URL?
     /// Problem reported by a presenter tool.
     public var studioMessage: String?
     /// Outcome of the last settings export or import.
     public var transferMessage: String?
 
-    public var isRecording: Bool { recordingStartedAt != nil }
+    public var isRecording: Bool { recordingClock != nil }
+    public var isRecordingPaused: Bool { recordingClock?.isPaused ?? false }
 
     @ObservationIgnored public weak var actions: AppActions?
     /// Called after every change with (old, new).

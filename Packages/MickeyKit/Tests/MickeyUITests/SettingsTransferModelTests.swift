@@ -20,6 +20,7 @@ final class StubActions: AppActions {
     func setHotkeyRecording(_ recording: Bool) {}
     func request(_ permission: Permission) {}
     func toggleRecording() {}
+    func togglePauseRecording() {}
     func revealRecordings() {}
     func chooseSettingsExportURL() -> URL? { exportURL }
     func chooseSettingsImportURL() -> URL? { importURL }

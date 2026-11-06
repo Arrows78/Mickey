@@ -68,7 +68,7 @@ Toggle (off); Start/Stop Drawing; also hold Right Option (off); default tool (fr
 | Live Zoom | toggle (off); permission row; magnification 2× (1.25–6×) |
 | Loupe | toggle (off); permission row; shape circle / rounded square; size 240 pt; magnification 2.5× (1.5–8×); border color white |
 | Focus | toggle (off); dim amount 0.55; corner radius 10; margin 6 pt |
-| Recorder & Camera | start/stop with elapsed time; show recordings; show pointer (on); record system audio (on); countdown 3 s; quality 4K (Full HD 1920 px, QHD 2560 px, 4K 3840 px); frame rate 60 (30 or 60) · camera bubble toggle (off); shape; corner bottom right; size 200 pt; mirror (on); border color white |
+| Recorder & Camera | start/stop and pause/resume with elapsed time (the time paused does not count); show recordings; show pointer (on); record system audio (on); countdown 3 s; quality 4K (Full HD 1920 px, QHD 2560 px, 4K 3840 px); frame rate 60 (30 or 60) · camera bubble toggle (off); shape; corner bottom right; size 200 pt; mirror (on); border color white |
 | Captions | toggle (off); microphone and speech permission rows; language (system); position bottom / top; text size 30; lines 2; background 0.65 |
 
 #### Hotkeys
@@ -144,7 +144,7 @@ The enlarged-pointer animation flashes a pointer five times larger that shrinks 
 
 ### 4.7 Hotkeys
 
-Toggles invert the matching setting (cursor effects and presenter tools also turn the master switch on). Defaults are ⌃⌥⌘ plus a letter: M Mickey, S spotlight, R ring, T trail, C click feedback, K click sounds, F flash click effect, L shake to locate, D drawing, Y keystrokes, Z live zoom, O loupe, W focus, E camera bubble, A captions, V recording. The letters follow the keyboard layout (on AZERTY, A is the key marked A).
+Toggles invert the matching setting (cursor effects and presenter tools also turn the master switch on). Defaults are ⌃⌥⌘ plus a letter: M Mickey, S spotlight, R ring, T trail, C click feedback, K click sounds, F flash click effect, L shake to locate, D drawing, Y keystrokes, Z live zoom, O loupe, W focus, E camera bubble, A captions, V recording, P pause or resume the recording. The letters follow the keyboard layout (on AZERTY, A is the key marked A).
 
 Recording rules: at least one of ⌃, ⌥, ⌘ (F-keys may be used alone); ⌘ alone and ⇧ alone are refused. Conflicts:
 
@@ -168,7 +168,7 @@ Registered hotkeys pause while a shortcut is being recorded.
 | Focus | Ten times a second, finds the frontmost app's topmost normal window in the window list and dims every screen except a rounded hole around it. | — |
 | Camera bubble | Default camera in a draggable, always-on-top bubble; placed in the chosen corner, kept where dragged until size or corner change. | Camera |
 | Captions | Microphone → speech recogniser (on device when supported), partial results; a new task every 50 s or after silence; shows the end of the transcript at a word boundary within the line capacity. | Microphone, Speech Recognition |
-| Recorder | Countdown, then records the screen under the pointer, Mickey's effects included, as HEVC (at most 1920, 2560 or 3840 px wide as chosen, at 30 or 60 fps) with optional system audio to `~/Movies/Mickey/Mickey Recording <date> at <time>.mov`; the file is revealed in Finder. | Screen Recording |
+| Recorder | Countdown, then records the screen under the pointer, Mickey's effects included, as HEVC (at most 1920, 2560 or 3840 px wide as chosen, at 30 or 60 fps) with optional system audio to `~/Movies/Mickey/Mickey Recording <date> at <time>.mov`; the file is revealed in Finder. Pausing (⌃⌥⌘P, the popover or the settings page) stops adding to the movie while the capture keeps running; resuming continues right after the last frame, so the time paused is cut from the file. The menu-bar icon turns orange while paused. | Screen Recording |
 
 Each page shows its permission state with *Allow…* (system prompt) or *Open System Settings* (when previously refused). Tools waiting for a permission retry once it is granted.
 

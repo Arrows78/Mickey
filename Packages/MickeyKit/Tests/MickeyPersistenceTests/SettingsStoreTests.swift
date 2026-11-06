@@ -107,7 +107,7 @@ struct PersistenceTests {
         #expect(s.general.menuBarItems.contains(.loupe))
         #expect(s.hotkeys[.toggleRing] == nil)
         #expect(s.hotkeys[.toggleLoupe] == HotkeyAction.toggleLoupe.defaultHotkey)
-        #expect(s.hotkeys.count == HotkeyAction.allCases.filter { $0.introducedInSchema == 3 }.count)
+        #expect(s.hotkeys.count == HotkeyAction.allCases.filter { $0.introducedInSchema > 2 }.count)
     }
 
     @Test func clearedHotkeysStayClearedInVersion2() {
@@ -208,5 +208,34 @@ struct PersistenceTests {
         let s = SettingsCodec.decode(Data(json.utf8))
         #expect(s.recorder.countdown == 5 && !s.recorder.showCursor)
         #expect(s.recorder.quality == .uhd && s.recorder.frameRate == 60)
+    }
+}
+
+@Suite("Pause hotkey migration") struct PauseHotkeyMigrationTests {
+    private func version4(_ transform: (inout Settings) -> Void) throws -> Settings {
+        var old = Settings()
+        old.schemaVersion = 4
+        old.hotkeys[.togglePauseRecording] = nil // version 4 did not know this action
+        transform(&old)
+        return SettingsCodec.decode(SettingsCodec.encode(old))
+    }
+
+    @Test func aVersion4DocumentGainsThePauseHotkey() throws {
+        let s = try version4 { _ in }
+        #expect(s.hotkeys[.togglePauseRecording] == HotkeyAction.togglePauseRecording.defaultHotkey)
+        #expect(s.schemaVersion == Settings.currentSchemaVersion)
+    }
+
+    @Test func hotkeysClearedOnPurposeStayCleared() throws {
+        let s = try version4 { $0.hotkeys[.toggleRing] = nil }
+        #expect(s.hotkeys[.toggleRing] == nil)
+        #expect(s.hotkeys[.togglePauseRecording] != nil)
+    }
+
+    @Test func theCombinationIsNotTakenWhenAnotherActionUsesIt() throws {
+        let mine = HotkeyAction.togglePauseRecording.defaultHotkey
+        let s = try version4 { $0.hotkeys[.toggleRing] = mine }
+        #expect(s.hotkeys[.toggleRing] == mine)
+        #expect(s.hotkeys[.togglePauseRecording] == nil)
     }
 }

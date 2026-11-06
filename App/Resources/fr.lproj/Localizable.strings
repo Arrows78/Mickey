@@ -131,7 +131,7 @@
 "Enter or leave drawing mode" = "Entre dans le mode dessin ou en sort";
 "Erase everything when leaving draw mode." = "Efface tout en quittant le mode dessin.";
 "Every action gets its ⌃⌥⌘ default back; your custom shortcuts are replaced." = "Chaque action retrouve son raccourci ⌃⌥⌘ par défaut ; vos raccourcis personnalisés sont remplacés.";
-"Every action has a default shortcut: ⌃⌥⌘ plus a letter (M Mickey, S spotlight, R ring, T trail, C click feedback, K click sounds, F flash click, L locate, D draw, Y keystrokes, Z live zoom, O loupe, W focus, E camera, A captions, V record). Letters follow your keyboard layout. Change one by clicking its field; ↺ or Reset to Defaults restores them, Clear All removes them." = "Chaque action a un raccourci par défaut : ⌃⌥⌘ plus une lettre (M Mickey, S projecteur, R anneau, T traînée, C retour de clic, K sons de clic, F flash de clic, L localiser, D dessiner, Y frappes, Z zoom en direct, O loupe, W focus, E caméra, A sous-titres, V enregistrer). Les lettres suivent la disposition de votre clavier. Pour en changer un, cliquez sur son champ ; ↺ ou « Rétablir les valeurs par défaut » les restaure, « Tout effacer » les supprime.";
+"Every action has a default shortcut: ⌃⌥⌘ plus a letter (M Mickey, S spotlight, R ring, T trail, C click feedback, K click sounds, F flash click, L locate, D draw, Y keystrokes, Z live zoom, O loupe, W focus, E camera, A captions, V record, P pause). Letters follow your keyboard layout. Change one by clicking its field; ↺ or Reset to Defaults restores them, Clear All removes them." = "Chaque action a un raccourci par défaut : ⌃⌥⌘ plus une lettre (M Mickey, S projecteur, R anneau, T traînée, C retour de clic, K sons de clic, F flash de clic, L localiser, D dessiner, Y frappes, Z zoom en direct, O loupe, W focus, E caméra, A sous-titres, V enregistrer, P pause). Les lettres suivent la disposition de votre clavier. Pour en changer un, cliquez sur son champ ; ↺ ou « Rétablir les valeurs par défaut » les restaure, « Tout effacer » les supprime.";
 "Every key is shown, including passwords you type. Turn Shortcuts Only back on when you're done." = "Toutes les touches sont affichées, y compris les mots de passe que vous tapez. Réactivez « Raccourcis uniquement » quand vous avez terminé.";
 "Export Mickey Settings" = "Exporter les réglages de Mickey";
 "Export Settings…" = "Exporter les réglages…";
@@ -221,6 +221,7 @@
 "Mickey is on — cursor effects are active." = "Mickey est activé : les effets du curseur sont actifs.";
 "Mickey is on" = "Mickey est activé";
 "Mickey — cursor highlighter & presentation toolkit." = "Mickey — mise en valeur du curseur et outils de présentation.";
+"Mickey — recording paused" = "Mickey — enregistrement en pause";
 "Mickey — recording" = "Mickey — enregistrement en cours";
 "Mickey" = "Mickey";
 "Microphone" = "Microphone";
@@ -253,6 +254,9 @@
 "Particle Burst" = "Éclat de particules";
 "Particles" = "Particules";
 "Paste" = "Coller";
+"Pause / Resume Recording" = "Mettre en pause / reprendre l’enregistrement";
+"Pause recording" = "Mettre l’enregistrement en pause";
+"Pause" = "Pause";
 "Performance tuning." = "Ajustement des performances.";
 "Performance" = "Performances";
 "Permissions" = "Autorisations";
@@ -308,6 +312,8 @@
 "Restore every setting to its default value." = "Rétablit chaque réglage à sa valeur par défaut.";
 "Restore the default (%@)" = "Rétablir la valeur par défaut (%@)";
 "Restore the default shortcuts?" = "Rétablir les raccourcis par défaut ?";
+"Resume recording" = "Reprendre l’enregistrement";
+"Resume" = "Reprendre";
 "Right Command (⌘)" = "Commande droite (⌘)";
 "Right Control (⌃)" = "Contrôle droite (⌃)";
 "Right Option (⌥)" = "Option droite (⌥)";
@@ -388,6 +394,7 @@
 "Stop Drawing (Esc)" = "Arrêter le dessin (Échap)";
 "Stop Drawing" = "Arrêter le dessin";
 "Stop Recording" = "Arrêter l’enregistrement";
+"Stop adding to the movie, then carry on" = "Arrête d’ajouter au film, puis reprend.";
 "Stop drawing" = "Arrêter le dessin";
 "Stop recording" = "Arrêter l’enregistrement";
 "Stroke Width" = "Épaisseur du trait";

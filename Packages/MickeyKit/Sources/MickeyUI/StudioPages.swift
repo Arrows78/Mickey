@@ -134,10 +134,15 @@ struct RecorderPage: View {
                     Button(tr(model.isRecording ? "Stop Recording" : "Start Recording")) { model.actions?.toggleRecording() }
                         .keyboardShortcut(.defaultAction)
                         .help(model.tooltip(.toggleRecording, title: model.isRecording ? "Stop recording" : "Start recording after the countdown"))
-                    if let start = model.recordingStartedAt {
-                        TimelineView(.periodic(from: start, by: 1)) { context in
-                            Label(RecordingNaming.elapsed(context.date.timeIntervalSince(start)), systemImage: "record.circle.fill")
-                                .foregroundStyle(.red).monospacedDigit()
+                    if model.isRecording {
+                        Button(tr(model.isRecordingPaused ? "Resume" : "Pause")) { model.actions?.togglePauseRecording() }
+                            .help(model.tooltip(.togglePauseRecording, title: model.isRecordingPaused ? "Resume recording" : "Pause recording"))
+                    }
+                    if let clock = model.recordingClock {
+                        TimelineView(.periodic(from: clock.startedAt, by: 1)) { context in
+                            Label(RecordingNaming.elapsed(clock.elapsed(at: context.date)),
+                                  systemImage: clock.isPaused ? "pause.circle.fill" : "record.circle.fill")
+                                .foregroundStyle(clock.isPaused ? .orange : .red).monospacedDigit()
                         }
                     }
                     Spacer()

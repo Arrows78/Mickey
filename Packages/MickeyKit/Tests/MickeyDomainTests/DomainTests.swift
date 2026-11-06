@@ -627,6 +627,8 @@ struct InteractionTests {
         let combos = HotkeyAction.allCases.map(\.defaultHotkey)
         #expect(Set(combos).count == combos.count)
         #expect(HotkeyAction.toggleRecording.introducedInSchema == 3)
+        #expect(HotkeyAction.togglePauseRecording.introducedInSchema == 5)
+        #expect(HotkeyAction.togglePauseRecording.defaultLetter == "P")
     }
 
     @Test func presenterToolTurnsMasterOn() {

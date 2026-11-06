@@ -145,6 +145,13 @@ public struct StatusPopoverView: View {
                 }
                 .foregroundStyle(model.isRecording ? .red : .primary)
                 .help(model.tooltip(.toggleRecording, title: model.isRecording ? "Stop recording" : "Record the screen under the pointer"))
+                if model.isRecording {
+                    Button { model.actions?.togglePauseRecording() } label: {
+                        Label(tr(model.isRecordingPaused ? "Resume" : "Pause"),
+                              systemImage: model.isRecordingPaused ? "play.circle.fill" : "pause.circle.fill")
+                    }
+                    .help(model.tooltip(.togglePauseRecording, title: model.isRecordingPaused ? "Resume recording" : "Pause recording"))
+                }
                 Spacer()
                 Menu("Presets") {
                     ForEach(Preset.allCases) { preset in Button(preset.title) { model.apply(preset) }.help(preset.detail) }

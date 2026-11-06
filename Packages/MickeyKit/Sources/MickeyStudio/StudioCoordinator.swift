@@ -6,6 +6,8 @@ import MickeySystem
 public final class StudioCoordinator {
     /// (recording, start date)
     public var onRecordingChanged: ((Bool, Date?) -> Void)?
+    /// True when the recording was paused, false when it carries on.
+    public var onRecordingPauseChanged: ((Bool) -> Void)?
     public var onRecordingSaved: ((URL) -> Void)?
     /// A problem worth showing to the user, or nil to clear it.
     public var onMessage: ((String?) -> Void)?
@@ -37,6 +39,7 @@ public final class StudioCoordinator {
     public static var recordingsFolder: URL { ScreenRecorder.folder }
 
     public var isRecording: Bool { recorder.isRecording || countdown.isRunning }
+    public var isPaused: Bool { recorder.isPaused }
 
     /// Turning Mickey off hides every overlay.
     public func apply(_ settings: Settings, old previous: Settings?) {
@@ -70,6 +73,13 @@ public final class StudioCoordinator {
     public func stopRecording(completion: @escaping () -> Void) {
         if countdown.isRunning { countdown.cancel() }
         recorder.stop(completion: completion)
+    }
+
+    /// Pauses a running recording, or resumes a paused one. Does nothing when nothing is being recorded.
+    public func togglePause() {
+        guard recorder.isRecording else { return }
+        if recorder.isPaused { recorder.resume() } else { recorder.pause() }
+        onRecordingPauseChanged?(recorder.isPaused)
     }
 
     public func toggleRecording(settings: RecorderSettings) {

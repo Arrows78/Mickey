@@ -46,7 +46,7 @@ public enum SettingsRules {
         return pairs.contains { !$0.0 && $0.1 }
     }
 
-    /// Settings change implied by a hotkey. `showClickEffect`, `toggleRecording` and `toggleAnnotationMode` are
+    /// Settings change implied by a hotkey. `showClickEffect`, `toggleRecording`, `togglePauseRecording` and `toggleAnnotationMode` are
     /// runtime commands and leave settings untouched, except that drawing needs annotations and Mickey on
     /// (recording turns Mickey on where it starts).
     public static func applying(_ action: HotkeyAction, to settings: Settings) -> Settings {
@@ -66,7 +66,7 @@ public enum SettingsRules {
         case .toggleFocus: s.focus.enabled.toggle()
         case .toggleCameraBubble: s.camera.enabled.toggle()
         case .toggleCaptions: s.captions.enabled.toggle()
-        case .showClickEffect, .toggleRecording: break
+        case .showClickEffect, .toggleRecording, .togglePauseRecording: break
         }
         return normalize(old: settings, new: s)
     }

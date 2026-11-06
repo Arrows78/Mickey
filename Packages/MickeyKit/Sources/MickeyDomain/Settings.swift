@@ -246,7 +246,8 @@ public struct AnnotationSettings: Codable, Equatable, Sendable {
 public struct Settings: Codable, Equatable, Sendable {
     /// 2: default hotkeys introduced. 3: presenter tools (keystrokes, zoom, loupe, focus, camera, captions, recorder).
     /// 4: default hotkeys follow the keyboard layout (⌃⌥⌘M is the key printing M, not the US M position).
-    public static let currentSchemaVersion = 4
+    /// 5: pause/resume recording hotkey.
+    public static let currentSchemaVersion = 5
 
     public var schemaVersion = Settings.currentSchemaVersion
     public var general = GeneralSettings()
