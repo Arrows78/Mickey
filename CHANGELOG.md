@@ -4,6 +4,24 @@ All notable changes to Mickey are listed here, newest first. The file is generat
 from the commit messages (Conventional Commits) and the `v*` tags: do not edit it by hand. See
 `docs/RELEASING.md`. Versions follow [Semantic Versioning](https://semver.org).
 
+## [0.3.0] - 2026-11-06
+
+### Added
+
+- **recorder**: Pause and resume a recording
+- **ui**: Group the quick toggles and keep the recording row readable
+- **recorder**: Record a region of the screen
+- **annotations**: Setting to turn off drawing with Fn
+- **zoom**: Glide in and out, and zoom in around each click
+- **keystrokes**: Five display styles
+
+### Fixed
+
+- **settings**: An unknown hotkey action no longer resets every shortcut
+- **ui**: Tooltips appear after 0.35 s instead of two seconds
+- **i18n**: Translate the welcome window title; check AppKit texts
+- **zoom**: Say what to do when Screen Recording is missing
+
 ## [0.2.0] - 2026-11-06
 
 ### Added
@@ -44,5 +62,6 @@ from the commit messages (Conventional Commits) and the `v*` tags: do not edit i
 
 - Initial release.
 
+[0.3.0]: https://github.com/Arrows78/Mickey/compare/v0.2.0...v0.3.0
 [0.2.0]: https://github.com/Arrows78/Mickey/compare/v0.1.0...v0.2.0
 [0.1.0]: https://github.com/Arrows78/Mickey/releases/tag/v0.1.0
