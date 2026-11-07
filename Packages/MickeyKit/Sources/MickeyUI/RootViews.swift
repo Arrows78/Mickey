@@ -60,9 +60,27 @@ public struct SettingsRootView: View {
                 .accessibilityAddTraits(model.selectedSection == section ? .isSelected : [])
             }
             Spacer()
+            sidebarFooter
         }
         .frame(width: 210)
         .background(.background.secondary)
+    }
+
+    /// The app's icon, name and version at the foot of the sidebar.
+    private var sidebarFooter: some View {
+        VStack(spacing: 0) {
+            Divider().padding(.horizontal, 12).padding(.bottom, 10)
+            HStack(spacing: 9) {
+                Image(nsImage: NSApp.applicationIconImage).resizable().frame(width: 30, height: 30)
+                VStack(alignment: .leading, spacing: 1) {
+                    Text("Mickey").font(.system(size: 12, weight: .semibold))
+                    Text("Version \(appVersion)").font(.system(size: 11)).foregroundStyle(.secondary)
+                }
+                Spacer(minLength: 0)
+            }
+            .padding(.horizontal, 14).padding(.bottom, 12)
+        }
+        .accessibilityElement(children: .combine)
     }
 
     @ViewBuilder private var page: some View {
