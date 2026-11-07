@@ -190,6 +190,12 @@ ditto build/DerivedData/Build/Products/Release/Mickey.app /Applications/Mickey.a
 open /Applications/Mickey.app
 ```
 
+Or build and install into `/Applications` in one go (quits the running copy and relaunches; `--no-launch` to skip the relaunch, `--no-build` to reuse the last build):
+
+```bash
+./install.sh
+```
+
 > [!TIP]
 > Launch at login and the permission prompts behave best when Mickey runs from `/Applications`.
 
@@ -205,6 +211,7 @@ open /Applications/Mickey.app
 | `swift scripts/make_app_icon.swift` | Redraws the app icon set from code. |
 | `python3 scripts/make_click_sound.py` | Synthesises the default click sound (`App/Resources/click.wav`). |
 | `python3 scripts/l10n.py sync` / `check` | Regenerates the English reference table / verifies every language ([`docs/LOCALIZATION.md`](docs/LOCALIZATION.md)). |
+| `./install.sh` | Builds, installs into `/Applications` and relaunches. Re-signs the copy with `scripts/sign_local.sh` when that script and its identity are there. |
 | `scripts/run_dev.sh` | Builds and launches an isolated copy (own bundle identifier, settings and permissions), so testing never touches the installed app's data. |
 | `python3 scripts/release.py prepare` | Next version, version bump and changelog from the commit messages ([`docs/RELEASING.md`](docs/RELEASING.md)). |
 | `scripts/render_cask.sh VERSION SHA256` | Prints the Homebrew cask of a release (used by the Release workflow). |
@@ -237,6 +244,7 @@ Mickey/
 │   │   ├── MickeyStudio/        # Presenter tools and their coordinator
 │   │   └── MickeyUI/            # Settings pages, popover, onboarding, help, hotkey recorder
 │   └── Tests/                   # Swift Testing suites per module
+├── install.sh                   # Builds, installs into /Applications, relaunches
 ├── packaging/homebrew/          # Cask template of the Homebrew tap
 ├── scripts/                     # CI, localization, release and asset tools
 └── docs/                        # Product spec, architecture, data model, system API map, localization, release notes
