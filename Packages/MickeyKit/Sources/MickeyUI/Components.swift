@@ -25,7 +25,8 @@ extension SettingsSection {
         case .general: Color(rgb: 0x8E8E93)
         case .advanced: Color(rgb: 0x6B7280)
         case .help: Color(rgb: 0x5B8CFF)
-        case .support: Color(rgb: 0x0EA5E9)
+        case .permissions: Color(rgb: 0xE5484D)
+        case .about: Color(rgb: 0x0EA5E9)
         }
     }
 }

@@ -173,7 +173,7 @@ public enum AnnotationTool: String, CaseIterable, Codable, Sendable {
 }
 
 public enum SettingsSection: String, CaseIterable, Codable, Sendable, Identifiable {
-    case effects, annotations, keystrokes, zoom, loupe, focus, recorder, captions, hotkeys, general, advanced, help, support
+    case effects, annotations, keystrokes, zoom, loupe, focus, recorder, captions, hotkeys, general, advanced, help, permissions, about
 
     public var id: String { rawValue }
 
@@ -191,7 +191,8 @@ public enum SettingsSection: String, CaseIterable, Codable, Sendable, Identifiab
         case .general: tr("General")
         case .advanced: tr("Advanced")
         case .help: tr("Help")
-        case .support: tr("Support")
+        case .permissions: tr("Permissions")
+        case .about: tr("About")
         }
     }
 
@@ -209,7 +210,8 @@ public enum SettingsSection: String, CaseIterable, Codable, Sendable, Identifiab
         case .general: "gearshape"
         case .advanced: "slider.horizontal.3"
         case .help: "questionmark.circle"
-        case .support: "bubble.left.and.bubble.right"
+        case .permissions: "lock.shield"
+        case .about: "info.circle"
         }
     }
 }

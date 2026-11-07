@@ -32,7 +32,7 @@ A 940 × 720 pt panel that does not hide when the app deactivates and closes wit
 
 - **Cursor Effects**, **Annotations**;
 - *Presenter tools*: **Keystrokes**, **Live Zoom**, **Loupe**, **Focus**, **Recorder & Camera**, **Captions**;
-- *Settings*: **Hotkeys**, **General**, **Advanced**, **Help**, **Support**.
+- *Settings*: **Hotkeys**, **General**, **Advanced**, **Help**, **Permissions**, **About**.
 
 A bottom bar shows the master switch state. Problems reported by presenter tools appear in a dismissible banner above the page.
 
@@ -87,9 +87,13 @@ Update rate 60 Hz (30–120); automatic mode (off) with its preset and an option
 
 Search (⌘F, clear button, "No matches for …"), a *Jump to a feature* row, groups Overview, Cursor Effects, Annotations, Presenter Tools, Hotkeys, Menu bar, Troubleshooting, with links to the related settings page.
 
-#### Support
+#### Permissions
 
-About, *Copy Diagnostics* (version, macOS, permissions, settings without the custom sound bookmark), *Show Recordings*, permission states.
+Every permission Mickey can use, with its state and an *Allow…* or *Open System Settings* button.
+
+#### About
+
+Version and privacy statement, *Copy Diagnostics* (version, macOS, permissions, settings without the custom sound bookmark), *Show Recordings*.
 
 ### 3.3 Menu-bar popover
 

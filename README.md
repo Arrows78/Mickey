@@ -265,9 +265,9 @@ Unknown or invalid values fall back to their default one field at a time, so a d
 ## 🩺 Troubleshooting
 
 - **The menu-bar icon is missing.** A crowded menu bar, the camera notch or a menu-bar manager can hide it. Open Mickey again from `/Applications` to show Settings, then turn on **Show in Dock** in General; Mickey also warns there when macOS hides the icon.
-- **A tool does nothing.** Check its permission on its settings page or in **Support › Permissions**. Some permissions take effect only after Mickey is relaunched.
+- **A tool does nothing.** Check its permission on its settings page or in **Permissions**. Some permissions take effect only after Mickey is relaunched.
 - **A shortcut never fires.** Another app may have registered it; macOS does not report such duplicates. Pick another combination.
-- **Reporting a bug.** **Support › Copy Diagnostics** copies the version, macOS version, permission states and settings, with no personal data. Modifier and menu-bar diagnostics can be read with:
+- **Reporting a bug.** **About › Copy Diagnostics** copies the version, macOS version, permission states and settings, with no personal data. Modifier and menu-bar diagnostics can be read with:
 
 ```bash
 /usr/bin/log show --last 5m --predicate 'subsystem == "dev.local.mickey"'

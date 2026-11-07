@@ -11,7 +11,6 @@
 "A tool asks for a permission" = "Un outil demande une autorisation";
 "A visual effect at each click." = "Un effet visuel à chaque clic.";
 "About Mickey" = "À propos de Mickey";
-"About this build." = "À propos de cette version.";
 "About" = "À propos";
 "Accent Color" = "Couleur d’accentuation";
 "Add Control, Option or Command." = "Ajoutez Contrôle, Option ou Commande.";
@@ -71,7 +70,6 @@
 "Clear on Exit" = "Effacer en quittant";
 "Clear search" = "Effacer la recherche";
 "Clear shortcut" = "Effacer le raccourci";
-"Click Allow… next to the permission, or open System Settings › Privacy & Security and switch Mickey on. Support lists every permission and its state." = "Cliquez sur « Autoriser… » à côté de l’autorisation, ou ouvrez Réglages Système › Confidentialité et sécurité et activez Mickey. La page Assistance liste chaque autorisation et son état.";
 "Click Feedback" = "Retour de clic";
 "Click Sounds" = "Sons de clic";
 "Click feedback and sounds" = "Retour de clic et sons";
@@ -413,7 +411,6 @@
 "Stroke Width" = "Épaisseur du trait";
 "Style" = "Style";
 "Subtitles what you say, on your Mac when the language supports it. Needs Microphone and Speech Recognition." = "Sous-titre ce que vous dites, sur votre Mac lorsque la langue le permet. Nécessite le microphone et la reconnaissance vocale.";
-"Support" = "Assistance";
 "Switch several effects at once" = "Change plusieurs effets d’un coup";
 "Switch several effects at once. Colors and sizes are kept." = "Change plusieurs effets d’un coup. Les couleurs et les tailles sont conservées.";
 "System Language" = "Langue du système";
@@ -540,3 +537,7 @@
 "• Use Control, or Command or Option with another modifier. F-keys work alone." = "• Utilisez Contrôle, ou Commande ou Option avec une autre touche de modification. Les touches F fonctionnent seules.";
 "⌘ + key alone is reserved by macOS; add another modifier." = "⌘ + une touche seule est réservé par macOS ; ajoutez une autre touche de modification.";
 "⌥ alone types characters such as { [ | ~; add ⌃ or ⌘." = "⌥ seule saisit des caractères comme { [ | ~ ; ajoutez ⌃ ou ⌘.";
+"Click Allow… next to the permission, or open System Settings › Privacy & Security and switch Mickey on. Permissions lists every permission and its state." = "Cliquez sur « Autoriser… » à côté de l’autorisation, ou ouvrez Réglages Système › Confidentialité et sécurité et activez Mickey. La page Autorisations liste chaque autorisation et son état.";
+"Each permission is only asked for when a tool that needs it is switched on." = "Chaque autorisation n’est demandée que lorsqu’un outil qui en a besoin est activé.";
+"This build, and how to report a problem." = "Cette version, et comment signaler un problème.";
+"What macOS lets Mickey do, and what each tool needs." = "Ce que macOS autorise Mickey à faire, et ce dont chaque outil a besoin.";

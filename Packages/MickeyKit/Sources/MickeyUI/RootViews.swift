@@ -83,7 +83,8 @@ public struct SettingsRootView: View {
         case .general: GeneralPage(model: model)
         case .advanced: AdvancedPage(model: model)
         case .help: HelpPage(model: model)
-        case .support: SupportPage(model: model)
+        case .permissions: PermissionsPage(model: model)
+        case .about: AboutPage(model: model)
         }
     }
 

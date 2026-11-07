@@ -12,7 +12,6 @@
 "A visual effect at each click." = "A visual effect at each click.";
 "About" = "About";
 "About Mickey" = "About Mickey";
-"About this build." = "About this build.";
 "Accent Color" = "Accent Color";
 "Add Control, Option or Command." = "Add Control, Option or Command.";
 "Adds Right Option as a second hold-to-draw key. Off by default." = "Adds Right Option as a second hold-to-draw key. Off by default.";
@@ -71,7 +70,7 @@
 "Clear on Exit" = "Clear on Exit";
 "Clear search" = "Clear search";
 "Clear shortcut" = "Clear shortcut";
-"Click Allow… next to the permission, or open System Settings › Privacy & Security and switch Mickey on. Support lists every permission and its state." = "Click Allow… next to the permission, or open System Settings › Privacy & Security and switch Mickey on. Support lists every permission and its state.";
+"Click Allow… next to the permission, or open System Settings › Privacy & Security and switch Mickey on. Permissions lists every permission and its state." = "Click Allow… next to the permission, or open System Settings › Privacy & Security and switch Mickey on. Permissions lists every permission and its state.";
 "Click Feedback" = "Click Feedback";
 "Click Sounds" = "Click Sounds";
 "Click feedback and sounds" = "Click feedback and sounds";
@@ -124,6 +123,7 @@
 "Drawing on screen" = "Drawing on screen";
 "Draws a ring around the pointer. Choose size, thickness, color, glow and pulse animation." = "Draws a ring around the pointer. Choose size, thickness, color, glow and pulse animation.";
 "Each annotation disappears after a delay." = "Each annotation disappears after a delay.";
+"Each permission is only asked for when a tool that needs it is switched on." = "Each permission is only asked for when a tool that needs it is switched on.";
 "Edit" = "Edit";
 "Effect Color" = "Effect Color";
 "Effect Size" = "Effect Size";
@@ -413,7 +413,6 @@
 "Stroke Width" = "Stroke Width";
 "Style" = "Style";
 "Subtitles what you say, on your Mac when the language supports it. Needs Microphone and Speech Recognition." = "Subtitles what you say, on your Mac when the language supports it. Needs Microphone and Speech Recognition.";
-"Support" = "Support";
 "Switch several effects at once" = "Switch several effects at once";
 "Switch several effects at once. Colors and sizes are kept." = "Switch several effects at once. Colors and sizes are kept.";
 "System Language" = "System Language";
@@ -428,6 +427,7 @@
 "The screen to capture could not be found." = "The screen to capture could not be found.";
 "The zoom and the loupe need Screen Recording: allow Mickey in System Settings › Privacy & Security." = "The zoom and the loupe need Screen Recording: allow Mickey in System Settings › Privacy & Security.";
 "Thickness" = "Thickness";
+"This build, and how to report a problem." = "This build, and how to report a problem.";
 "This file is not a Mickey settings export." = "This file is not a Mickey settings export.";
 "This key also reveals the spotlight when held: a quick tap flashes the effect, holding it shows the spotlight." = "This key also reveals the spotlight when held: a quick tap flashes the effect, holding it shows the spotlight.";
 "This key is also the click-effect tap key: a quick tap flashes the effect, holding it shows the spotlight." = "This key is also the click-effect tap key: a quick tap flashes the effect, holding it shows the spotlight.";
@@ -484,6 +484,7 @@
 "Volume" = "Volume";
 "Waiting for your approval in System Settings › General › Login Items." = "Waiting for your approval in System Settings › General › Login Items.";
 "Welcome to Mickey" = "Welcome to Mickey";
+"What macOS lets Mickey do, and what each tool needs." = "What macOS lets Mickey do, and what each tool needs.";
 "When several watched apps run, the first one in this list decides." = "When several watched apps run, the first one in this list decides.";
 "While drawing: F freehand · A arrow · R rectangle · C circle · L line · H highlighter · T text · N callout · ⌘Z undo · ⇧⌘Z redo · ⌘C copy image · ⌘⌫ clear · Esc stop." = "While drawing: F freehand · A arrow · R rectangle · C circle · L line · H highlighter · T text · N callout · ⌘Z undo · ⇧⌘Z redo · ⌘C copy image · ⌘⌫ clear · Esc stop.";
 "White" = "White";

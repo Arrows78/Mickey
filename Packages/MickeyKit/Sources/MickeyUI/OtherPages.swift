@@ -205,7 +205,7 @@ struct AdvancedPage: View {
     }
 }
 
-struct SupportPage: View {
+struct AboutPage: View {
     @Bindable var model: AppModel
     @State private var copied = false
 
@@ -224,7 +224,7 @@ struct SupportPage: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
-            PageHeader(title: "Support", subtitle: "About this build.")
+            PageHeader(title: "About", subtitle: "This build, and how to report a problem.")
             FeatureCard(title: "About", symbol: "info.circle") {
                 Text("Mickey — cursor highlighter & presentation toolkit.")
                 Text("Version \(appVersion)")
@@ -240,9 +240,21 @@ struct SupportPage: View {
                     Button("Show Recordings") { model.actions?.revealRecordings() }
                 }
             }
+        }
+    }
+}
+
+/// Every permission Mickey can use, with its state and a button to grant it.
+struct PermissionsPage: View {
+    @Bindable var model: AppModel
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 16) {
+            PageHeader(title: "Permissions", subtitle: "What macOS lets Mickey do, and what each tool needs.")
             FeatureCard(title: "Permissions", symbol: "lock.shield") {
                 ForEach(Permission.allCases) { PermissionRow(model: model, permission: $0) }
             }
+            NoteView(text: "Each permission is only asked for when a tool that needs it is switched on.")
         }
     }
 }
