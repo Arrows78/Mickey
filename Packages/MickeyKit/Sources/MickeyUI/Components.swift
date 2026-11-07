@@ -2,9 +2,77 @@ import SwiftUI
 import MickeyDomain
 import MickeyEffects
 
+extension Color {
+    /// 0xRRGGBB.
+    init(rgb: UInt32) {
+        self.init(red: Double((rgb >> 16) & 0xFF) / 255, green: Double((rgb >> 8) & 0xFF) / 255, blue: Double(rgb & 0xFF) / 255)
+    }
+}
+
+extension SettingsSection {
+    /// Colour of the section's tile in the sidebar, its page header and its cards.
+    var tint: Color {
+        switch self {
+        case .effects: Color(rgb: 0xFF9F0A)
+        case .annotations: Color(rgb: 0x9B6BFF)
+        case .keystrokes: Color(rgb: 0x30B06A)
+        case .zoom: Color(rgb: 0x5B8CFF)
+        case .loupe: Color(rgb: 0x2CB1BC)
+        case .focus: Color(rgb: 0x64748B)
+        case .recorder: Color(rgb: 0xFF5A52)
+        case .captions: Color(rgb: 0xFF6B9D)
+        case .hotkeys: Color(rgb: 0xFFB020)
+        case .general: Color(rgb: 0x8E8E93)
+        case .advanced: Color(rgb: 0x6B7280)
+        case .help: Color(rgb: 0x5B8CFF)
+        case .support: Color(rgb: 0x0EA5E9)
+        }
+    }
+}
+
+private struct CurrentSectionKey: EnvironmentKey { static let defaultValue: SettingsSection? = nil }
+
+extension EnvironmentValues {
+    /// The settings page being drawn, so its header and cards can pick up its colour.
+    var currentSection: SettingsSection? {
+        get { self[CurrentSectionKey.self] }
+        set { self[CurrentSectionKey.self] = newValue }
+    }
+}
+
+/// A symbol on a rounded, tinted tile: the mark of a section, a card or the app.
+struct IconTile: View {
+    let symbol: String
+    var tint: Color
+    var size: CGFloat = 24
+
+    var body: some View {
+        Image(systemName: symbol)
+            .font(.system(size: size * 0.5, weight: .semibold))
+            .foregroundStyle(.white)
+            .frame(width: size, height: size)
+            .background(RoundedRectangle(cornerRadius: size * 0.28, style: .continuous).fill(tint.gradient))
+            .accessibilityHidden(true)
+    }
+}
+
+/// A shortcut drawn as a small keycap.
+struct KeyCap: View {
+    let text: String
+
+    var body: some View {
+        Text(text)
+            .font(.system(size: 11, weight: .medium, design: .rounded))
+            .foregroundStyle(.secondary)
+            .padding(.horizontal, 6).padding(.vertical, 2)
+            .background(.quaternary, in: RoundedRectangle(cornerRadius: 5, style: .continuous))
+    }
+}
+
 /// Rounded card grouping one feature's controls, with an optional enable toggle in its header.
 struct FeatureCard<Content: View>: View {
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @Environment(\.currentSection) private var section
     let title: String
     let symbol: String
     var subtitle: String?
@@ -16,7 +84,10 @@ struct FeatureCard<Content: View>: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
             HStack(alignment: .firstTextBaseline) {
-                Label(tr(title), systemImage: symbol).font(.headline)
+                HStack(spacing: 8) {
+                    IconTile(symbol: symbol, tint: section?.tint ?? .accentColor, size: 22)
+                    Text(tr(title)).font(.headline)
+                }
                 Spacer()
                 if let isOn {
                     Toggle("", isOn: isOn).toggleStyle(.switch).labelsHidden().accessibilityLabel(tr(title))
@@ -31,6 +102,7 @@ struct FeatureCard<Content: View>: View {
         .padding(16)
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(.background.secondary, in: RoundedRectangle(cornerRadius: 12))
+        .overlay(RoundedRectangle(cornerRadius: 12).strokeBorder(Color(nsColor: .separatorColor).opacity(0.6), lineWidth: 0.5))
         .animation(reduceMotion ? nil : .easeInOut(duration: 0.15), value: isOn?.wrappedValue)
     }
 }
@@ -143,13 +215,17 @@ struct NoteView: View {
 }
 
 struct PageHeader: View {
+    @Environment(\.currentSection) private var section
     let title: String
     let subtitle: String
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 4) {
-            Text(tr(title)).font(.largeTitle.bold())
-            Text(tr(subtitle)).foregroundStyle(.secondary)
+        HStack(alignment: .center, spacing: 12) {
+            if let section { IconTile(symbol: section.symbolName, tint: section.tint, size: 38) }
+            VStack(alignment: .leading, spacing: 3) {
+                Text(tr(title)).font(.largeTitle.bold())
+                Text(tr(subtitle)).foregroundStyle(.secondary)
+            }
         }
         .padding(.bottom, 4)
     }

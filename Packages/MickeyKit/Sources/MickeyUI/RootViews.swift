@@ -28,8 +28,8 @@ public struct SettingsRootView: View {
 
     private var sidebar: some View {
         VStack(alignment: .leading, spacing: 2) {
-            HStack(spacing: 8) {
-                Image(systemName: "cursorarrow.rays").font(.title2).foregroundStyle(.tint)
+            HStack(spacing: 10) {
+                IconTile(symbol: "cursorarrow.rays", tint: Color(rgb: 0xFF6022), size: 34)
                 VStack(alignment: .leading) {
                     Text("Mickey").font(.title3.bold())
                     Text("Cursor toolkit").font(.caption).foregroundStyle(.secondary)
@@ -43,10 +43,13 @@ public struct SettingsRootView: View {
                         .padding(.horizontal, 20).padding(.top, 10)
                 }
                 Button { model.selectedSection = section } label: {
-                    Label(section.title, systemImage: section.symbolName)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .padding(.horizontal, 10).padding(.vertical, 5)
-                        .background(model.selectedSection == section ? Color.accentColor.opacity(0.18) : .clear,
+                    HStack(spacing: 9) {
+                        IconTile(symbol: section.symbolName, tint: section.tint, size: 22)
+                        Text(section.title)
+                        Spacer(minLength: 0)
+                    }
+                        .padding(.horizontal, 8).padding(.vertical, 4)
+                        .background(model.selectedSection == section ? Color.primary.opacity(0.1) : .clear,
                                     in: RoundedRectangle(cornerRadius: 8))
                         .contentShape(Rectangle())
                 }
@@ -62,6 +65,10 @@ public struct SettingsRootView: View {
     }
 
     @ViewBuilder private var page: some View {
+        pageContent.environment(\.currentSection, model.selectedSection)
+    }
+
+    @ViewBuilder private var pageContent: some View {
         switch model.selectedSection {
         case .effects: EffectsPage(model: model)
         case .annotations: AnnotationsPage(model: model)
@@ -102,7 +109,10 @@ public struct StatusPopoverView: View {
     public var body: some View {
         VStack(alignment: .leading, spacing: 10) {
             HStack {
-                Label("Mickey", systemImage: "cursorarrow.rays").font(.headline)
+                HStack(spacing: 8) {
+                    IconTile(symbol: "cursorarrow.rays", tint: Color(rgb: 0xFF6022), size: 24)
+                    Text("Mickey").font(.headline)
+                }
                 Spacer()
                 Toggle("", isOn: model.binding(\.general.masterEnabled)).toggleStyle(.switch).labelsHidden()
                     .accessibilityLabel("Enable Mickey")
@@ -120,7 +130,7 @@ public struct StatusPopoverView: View {
                                 Text(item.title)
                                 Spacer()
                                 if let combo = item.hotkeyAction.flatMap({ model.settings.hotkeys[$0] }) {
-                                    Text(KeyboardLayout.displayString(combo)).font(.caption.monospaced()).foregroundStyle(.secondary)
+                                    KeyCap(text: KeyboardLayout.displayString(combo))
                                 }
                             }
                         }
@@ -138,7 +148,7 @@ public struct StatusPopoverView: View {
                         .help(model.tooltip(.toggleAnnotationMode, title: model.isDrawing ? "Stop drawing" : "Start drawing"))
                     Spacer()
                     if let combo = model.settings.hotkeys[.toggleAnnotationMode] {
-                        Text(KeyboardLayout.displayString(combo)).font(.caption.monospaced()).foregroundStyle(.secondary)
+                        KeyCap(text: KeyboardLayout.displayString(combo))
                     }
                 }
                 Text("or hold Fn (🌐) to draw").font(.caption).foregroundStyle(.secondary)
