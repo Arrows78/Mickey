@@ -42,6 +42,7 @@ public struct SettingsRootView: View {
                         .font(.caption2.weight(.semibold)).foregroundStyle(.secondary)
                         .padding(.horizontal, 20).padding(.top, 10)
                 }
+                if section == .help { Divider().padding(.horizontal, 12).padding(.vertical, 6) }
                 Button { model.selectedSection = section } label: {
                     HStack(spacing: 9) {
                         IconTile(symbol: section.symbolName, tint: section.tint, size: 22)
