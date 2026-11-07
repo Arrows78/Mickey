@@ -215,7 +215,7 @@ To publish a release (details in [`docs/RELEASING.md`](docs/RELEASING.md)):
 2. Commit it (`chore(release): X.Y.Z`) and push the matching tag: `git tag vX.Y.Z && git push origin main vX.Y.Z`. The [Release workflow](.github/workflows/release.yml) checks the version and the changelog, runs the tests and the localization check, builds a universal app, attaches the zip to a new GitHub release (`0.x` versions are marked as pre-releases) and updates the Homebrew tap.
 3. The release notes are the changelog section of the version, or `docs/releases/<version>.md` if you wrote one.
 
-The tap is the `Arrows78/homebrew-mickey` repository. The workflow updates it when the `HOMEBREW_TAP_TOKEN` secret holds a fine-grained token with *Contents: read and write* on that repository; without it the release is still published and the tap is left alone. The cask template is `packaging/homebrew/mickey.rb.in`.
+The tap is the `Arrows78/homebrew-mickey` repository. The workflow updates it when the `HOMEBREW_TAP_MICKEY_TOKEN` secret holds a fine-grained token with *Contents: read and write* on that repository; without it the release is still published and the tap is left alone. The cask template is `packaging/homebrew/mickey.rb.in`.
 
 ## 📂 Project structure
 
