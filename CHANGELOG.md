@@ -4,6 +4,18 @@ All notable changes to Mickey are listed here, newest first. The file is generat
 from the commit messages (Conventional Commits) and the `v*` tags: do not edit it by hand. See
 `docs/RELEASING.md`. Versions follow [Semantic Versioning](https://semver.org).
 
+## [0.5.0] - 2026-11-08
+
+### Added
+
+- **ui**: Show the icon and version at the foot of the settings sidebar
+- **ui**: Sentence case, Shortcuts and Backup panes, theme setting, one About page
+
+### Fixed
+
+- **build**: Keep macOS privacy permissions across updates
+- No crash in captions without a microphone, camera bubble after access, steady focus panels, remembered settings position
+
 ## [0.4.1] - 2026-11-08
 
 ### Added
@@ -81,6 +93,7 @@ from the commit messages (Conventional Commits) and the `v*` tags: do not edit i
 
 - Initial release.
 
+[0.5.0]: https://github.com/Arrows78/Mickey/compare/v0.4.1...v0.5.0
 [0.4.1]: https://github.com/Arrows78/Mickey/compare/v0.4.0...v0.4.1
 [0.4.0]: https://github.com/Arrows78/Mickey/compare/v0.3.1...v0.4.0
 [0.3.1]: https://github.com/Arrows78/Mickey/compare/v0.3.0...v0.3.1

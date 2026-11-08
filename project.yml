@@ -26,8 +26,8 @@ targets:
       path: App/Info.plist
       properties:
         CFBundleDisplayName: Mickey
-        CFBundleShortVersionString: "0.4.1"
-        CFBundleVersion: "7"
+        CFBundleShortVersionString: "0.5.0"
+        CFBundleVersion: "8"
         LSUIElement: true
         CFBundleLocalizations: [en, fr]
         LSMinimumSystemVersion: "14.0"
