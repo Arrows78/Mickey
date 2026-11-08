@@ -37,7 +37,7 @@ public struct SettingsRootView: View {
             }
             .padding(.horizontal, 12).padding(.vertical, 16)
             ForEach(SettingsSection.allCases) { section in
-                if section == .keystrokes || section == .hotkeys {
+                if section == .keystrokes || section == .general {
                     Text(tr(section == .keystrokes ? "PRESENTER TOOLS" : "SETTINGS"))
                         .font(.caption2.weight(.semibold)).foregroundStyle(.secondary)
                         .padding(.horizontal, 20).padding(.top, 10)
@@ -97,9 +97,9 @@ public struct SettingsRootView: View {
         case .focus: FocusPage(model: model)
         case .recorder: RecorderPage(model: model)
         case .captions: CaptionsPage(model: model)
-        case .hotkeys: HotkeysPage(model: model)
         case .general: GeneralPage(model: model)
-        case .advanced: AdvancedPage(model: model)
+        case .hotkeys: HotkeysPage(model: model)
+        case .backup: BackupPage(model: model)
         case .help: HelpPage(model: model)
         case .permissions: PermissionsPage(model: model)
         case .about: AboutPage(model: model)
@@ -164,7 +164,7 @@ public struct StatusPopoverView: View {
             if model.settings.annotations.enabled {
                 Divider()
                 HStack {
-                    Button(tr(model.isDrawing ? "Stop Drawing" : "Start Drawing")) { model.actions?.toggleDrawing() }
+                    Button(tr(model.isDrawing ? "Stop drawing" : "Start drawing")) { model.actions?.toggleDrawing() }
                         .help(model.tooltip(.toggleAnnotationMode, title: model.isDrawing ? "Stop drawing" : "Start drawing"))
                     Spacer()
                     if let combo = model.settings.hotkeys[.toggleAnnotationMode] {
@@ -180,7 +180,7 @@ public struct StatusPopoverView: View {
             }
             Divider()
             HStack {
-                Button("Settings…") { model.actions?.showSettings(nil) }.help("Open Mickey Settings")
+                Button("Settings…") { model.actions?.showSettings(nil) }.help("Open Mickey settings")
                 Spacer()
                 Button("Quit Mickey") { model.actions?.quit() }.help("Quit Mickey and restore the pointer")
             }
@@ -221,8 +221,8 @@ public struct OnboardingView: View {
             Text(tr(s.1)).font(.title.bold())
             Text(tr(s.2)).multilineTextAlignment(.center).foregroundStyle(.secondary).frame(maxWidth: 380)
             switch step {
-            case 1: Toggle("Turn on Spotlight", isOn: model.binding(\.spotlight.enabled)).toggleStyle(.switch)
-            case 2: Toggle("Turn on Ring", isOn: model.binding(\.ring.enabled)).toggleStyle(.switch)
+            case 1: Toggle("Turn on spotlight", isOn: model.binding(\.spotlight.enabled)).toggleStyle(.switch)
+            case 2: Toggle("Turn on ring", isOn: model.binding(\.ring.enabled)).toggleStyle(.switch)
             default: EmptyView()
             }
             HStack(spacing: 6) {
@@ -235,7 +235,7 @@ public struct OnboardingView: View {
             HStack {
                 if step < steps.count - 1 { Button("Skip") { finish() } }
                 Spacer()
-                Button(tr(step == steps.count - 1 ? "Get Started" : "Continue")) {
+                Button(tr(step == steps.count - 1 ? "Get started" : "Continue")) {
                     if step == steps.count - 1 { finish() } else if reduceMotion { step += 1 } else { withAnimation { step += 1 } }
                 }
                 .keyboardShortcut(.defaultAction)
@@ -257,7 +257,7 @@ extension StatusPopoverView {
     /// Record, pause and presets on one line when they fit, on two when a recording adds its Pause button.
     @ViewBuilder fileprivate var recordingRow: some View {
         let record = Button { model.actions?.toggleRecording() } label: {
-            Label(tr(model.isRecording ? "Stop Recording" : "Record Screen"),
+            Label(tr(model.isRecording ? "Stop recording" : "Record screen"),
                   systemImage: model.isRecording ? "stop.circle.fill" : "record.circle")
         }
         .foregroundStyle(model.isRecording ? .red : .primary)

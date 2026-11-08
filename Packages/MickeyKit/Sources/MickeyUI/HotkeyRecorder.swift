@@ -19,7 +19,7 @@ struct HotkeyRecorder: View {
         VStack(alignment: .trailing, spacing: 2) {
             HStack(spacing: 4) {
                 Button { recording ? stop() : start() } label: {
-                    Text(recording ? tr("Press shortcut…") : (combo.map(KeyboardLayout.displayString) ?? tr("Record Shortcut")))
+                    Text(recording ? tr("Press shortcut…") : (combo.map(KeyboardLayout.displayString) ?? tr("Record shortcut")))
                         .frame(minWidth: 130)
                         .foregroundStyle(combo == nil && !recording ? .secondary : .primary)
                 }

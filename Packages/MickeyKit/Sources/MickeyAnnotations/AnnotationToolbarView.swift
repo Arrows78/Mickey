@@ -32,25 +32,25 @@ struct AnnotationToolbarView: View {
                 .accessibilityAddTraits(controller.session.color == color ? .isSelected : [])
             }
             Divider().frame(height: 22)
-            Image(systemName: "lineweight").help("Stroke Width").accessibilityHidden(true)
+            Image(systemName: "lineweight").help("Stroke width").accessibilityHidden(true)
             Slider(value: Binding(get: { controller.settings.strokeWidth }, set: { controller.setStrokeWidth($0) }),
                    in: AnnotationSettings.strokeWidthRange)
                 .frame(width: 80)
                 .controlSize(.mini)
-                .help("Stroke Width")
-                .accessibilityLabel("Stroke Width")
+                .help("Stroke width")
+                .accessibilityLabel("Stroke width")
             Divider().frame(height: 22)
             Button { controller.undo() } label: { Image(systemName: "arrow.uturn.backward") }
                 .buttonStyle(.plain).help("Undo (⌘Z)").accessibilityLabel("Undo").disabled(!controller.session.canUndo)
             Button { controller.redo() } label: { Image(systemName: "arrow.uturn.forward") }
                 .buttonStyle(.plain).help("Redo (⇧⌘Z)").accessibilityLabel("Redo").disabled(!controller.session.canRedo)
             Button { controller.copyImage() } label: { Image(systemName: "doc.on.clipboard") }
-                .buttonStyle(.plain).help("Copy as Image (⌘C)").accessibilityLabel("Copy as Image")
+                .buttonStyle(.plain).help("Copy as image (⌘C)").accessibilityLabel("Copy as image")
                 .disabled(controller.session.annotations.isEmpty)
             Button { controller.clearAll() } label: { Image(systemName: "trash") }
-                .buttonStyle(.plain).help("Clear All (⌘⌫)").accessibilityLabel("Clear All")
+                .buttonStyle(.plain).help("Clear all (⌘⌫)").accessibilityLabel("Clear all")
             Button { controller.exit() } label: { Image(systemName: "xmark.circle.fill") }
-                .buttonStyle(.plain).help("Stop Drawing (Esc)").accessibilityLabel("Stop Drawing")
+                .buttonStyle(.plain).help("Stop drawing (Esc)").accessibilityLabel("Stop drawing")
         }
         .font(.system(size: 14, weight: .medium))
         .foregroundStyle(.white)

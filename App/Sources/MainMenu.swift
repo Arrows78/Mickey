@@ -20,7 +20,7 @@ enum MainMenu {
         edit.addItem(withTitle: tr("Cut"), action: #selector(NSText.cut(_:)), keyEquivalent: "x")
         edit.addItem(withTitle: tr("Copy"), action: #selector(NSText.copy(_:)), keyEquivalent: "c")
         edit.addItem(withTitle: tr("Paste"), action: #selector(NSText.paste(_:)), keyEquivalent: "v")
-        edit.addItem(withTitle: tr("Select All"), action: #selector(NSText.selectAll(_:)), keyEquivalent: "a")
+        edit.addItem(withTitle: tr("Select all"), action: #selector(NSText.selectAll(_:)), keyEquivalent: "a")
         add(edit, title: tr("Edit"), to: main)
 
         let window = NSMenu(title: tr("Window"))

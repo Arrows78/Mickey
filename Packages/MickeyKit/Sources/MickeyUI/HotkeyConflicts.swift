@@ -26,7 +26,7 @@ enum HotkeyConflict: Equatable {
 
     var message: String {
         switch self {
-        case .system: tr("Already used by macOS (System Settings › Keyboard › Keyboard Shortcuts).")
+        case .system: tr("Already used by macOS (System Settings › Keyboard › Keyboard shortcuts).")
         case .action(let name): trf("Already used by %@.", name)
         case .userAppShortcut(let item): trf("Also your app shortcut for “%@”; Mickey will take it from every app.", item)
         case .commonAppShortcut(let use): trf("Often used by apps (%@); Mickey will take it from every app.", tr(use))
@@ -117,10 +117,10 @@ enum HotkeyConflict: Equatable {
             common([.command, .shift], "z", "redo"),
             common([.command, .shift], "s", "save as"),
             common([.command, .shift], "g", "go to folder"),
-            common([.command, .shift], "a", "Finder Applications"),
-            common([.command, .shift], "d", "Finder Desktop"),
-            common([.command, .shift], "o", "Finder Documents"),
-            common([.command, .shift], "h", "Finder Home"),
+            common([.command, .shift], "a", "Finder applications"),
+            common([.command, .shift], "d", "Finder desktop"),
+            common([.command, .shift], "o", "Finder documents"),
+            common([.command, .shift], "h", "Finder home"),
             common([.command, .shift], "f", "find in files"),
             common([.command, .shift], "p", "command palette"),
             common([.command, .shift], "k", "delete line"),

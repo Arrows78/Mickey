@@ -21,9 +21,9 @@ extension SettingsSection {
         case .focus: Color(rgb: 0x64748B)
         case .recorder: Color(rgb: 0xFF5A52)
         case .captions: Color(rgb: 0xFF6B9D)
-        case .hotkeys: Color(rgb: 0xFFB020)
         case .general: Color(rgb: 0x8E8E93)
-        case .advanced: Color(rgb: 0x6B7280)
+        case .hotkeys: Color(rgb: 0xFFB020)
+        case .backup: Color(rgb: 0x6B7280)
         case .help: Color(rgb: 0x5B8CFF)
         case .permissions: Color(rgb: 0xE5484D)
         case .about: Color(rgb: 0x0EA5E9)
@@ -233,7 +233,7 @@ struct PageHeader: View {
 }
 
 extension AppModel {
-    /// "Toggle Ring (⌃⌥⌘R)", or just the title when the action has no shortcut.
+    /// "Toggle ring (⌃⌥⌘R)", or just the title when the action has no shortcut.
     func tooltip(_ action: HotkeyAction, title: String? = nil) -> String {
         let text = tr(title ?? action.title)
         guard let combo = settings.hotkeys[action] else { return text }

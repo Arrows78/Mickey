@@ -6,10 +6,10 @@ public enum HUDPosition: String, CaseIterable, Codable, Sendable {
 
     public var title: String {
         switch self {
-        case .bottomCenter: tr("Bottom Center")
-        case .bottomLeft: tr("Bottom Left")
-        case .bottomRight: tr("Bottom Right")
-        case .topCenter: tr("Top Center")
+        case .bottomCenter: tr("Bottom center")
+        case .bottomLeft: tr("Bottom left")
+        case .bottomRight: tr("Bottom right")
+        case .topCenter: tr("Top center")
         }
     }
 }
@@ -19,10 +19,10 @@ public enum ScreenCorner: String, CaseIterable, Codable, Sendable {
 
     public var title: String {
         switch self {
-        case .bottomRight: tr("Bottom Right")
-        case .bottomLeft: tr("Bottom Left")
-        case .topRight: tr("Top Right")
-        case .topLeft: tr("Top Left")
+        case .bottomRight: tr("Bottom right")
+        case .bottomLeft: tr("Bottom left")
+        case .topRight: tr("Top right")
+        case .topLeft: tr("Top left")
         }
     }
 }
@@ -33,7 +33,7 @@ public enum BubbleShape: String, CaseIterable, Codable, Sendable {
     public var title: String {
         switch self {
         case .circle: tr("Circle")
-        case .roundedSquare: tr("Rounded Square")
+        case .roundedSquare: tr("Rounded square")
         }
     }
 }
@@ -84,7 +84,7 @@ public enum ZoomTrigger: String, CaseIterable, Codable, Sendable, Identifiable {
     public var title: String {
         switch self {
         case .always: tr("Always")
-        case .onClick: tr("On Click")
+        case .onClick: tr("On click")
         }
     }
 }
@@ -198,8 +198,8 @@ public enum RecordingArea: String, CaseIterable, Codable, Sendable, Identifiable
 
     public var title: String {
         switch self {
-        case .screen: tr("Whole Screen")
-        case .region: tr("Selected Region")
+        case .screen: tr("Whole screen")
+        case .region: tr("Selected region")
         }
     }
 }
@@ -250,11 +250,11 @@ public enum Permission: String, CaseIterable, Sendable, Identifiable {
 
     public var title: String {
         switch self {
-        case .inputMonitoring: tr("Input Monitoring")
-        case .screenRecording: tr("Screen Recording")
+        case .inputMonitoring: tr("Input monitoring")
+        case .screenRecording: tr("Screen recording")
         case .camera: tr("Camera")
         case .microphone: tr("Microphone")
-        case .speechRecognition: tr("Speech Recognition")
+        case .speechRecognition: tr("Speech recognition")
         }
     }
 

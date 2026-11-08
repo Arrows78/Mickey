@@ -6,8 +6,8 @@ public enum SpotlightShape: String, CaseIterable, Codable, Sendable {
     public var title: String {
         switch self {
         case .circle: tr("Circle")
-        case .horizontalBar: tr("Horizontal Bar")
-        case .verticalBar: tr("Vertical Bar")
+        case .horizontalBar: tr("Horizontal bar")
+        case .verticalBar: tr("Vertical bar")
         }
     }
 }
@@ -64,8 +64,8 @@ public enum LocatorStyle: String, CaseIterable, Codable, Sendable {
 
     public var title: String {
         switch self {
-        case .enlargedPointer: tr("Enlarged Pointer")
-        case .ring: tr("Shrinking Ring")
+        case .enlargedPointer: tr("Enlarged pointer")
+        case .ring: tr("Shrinking ring")
         }
     }
 }
@@ -75,13 +75,13 @@ public enum ClickEffectType: String, CaseIterable, Codable, Sendable {
 
     public var title: String {
         switch self {
-        case .singleRing: tr("Single Ring")
+        case .singleRing: tr("Single ring")
         case .ripple: tr("Ripple")
-        case .ringBurst: tr("Ring Burst")
-        case .colorFlash: tr("Color Flash")
-        case .particleBurst: tr("Particle Burst")
-        case .glowPulse: tr("Glow Pulse")
-        case .scaleBounce: tr("Scale Bounce")
+        case .ringBurst: tr("Ring burst")
+        case .colorFlash: tr("Color flash")
+        case .particleBurst: tr("Particle burst")
+        case .glowPulse: tr("Glow pulse")
+        case .scaleBounce: tr("Scale bounce")
         }
     }
 }
@@ -172,24 +172,39 @@ public enum AnnotationTool: String, CaseIterable, Codable, Sendable {
     }
 }
 
-public enum SettingsSection: String, CaseIterable, Codable, Sendable, Identifiable {
-    case effects, annotations, keystrokes, zoom, loupe, focus, recorder, captions, hotkeys, general, advanced, help, permissions, about
+/// How Mickey's own windows look: the system's light or dark setting, or one of them whatever the system says.
+public enum AppearanceMode: String, CaseIterable, Codable, Sendable, Identifiable {
+    case system, light, dark
 
     public var id: String { rawValue }
 
     public var title: String {
         switch self {
-        case .effects: tr("Cursor Effects")
+        case .system: tr("System")
+        case .light: tr("Light")
+        case .dark: tr("Dark")
+        }
+    }
+}
+
+public enum SettingsSection: String, CaseIterable, Codable, Sendable, Identifiable {
+    case effects, annotations, keystrokes, zoom, loupe, focus, recorder, captions, general, hotkeys, backup, help, permissions, about
+
+    public var id: String { rawValue }
+
+    public var title: String {
+        switch self {
+        case .effects: tr("Cursor effects")
         case .annotations: tr("Annotations")
         case .keystrokes: tr("Keystrokes")
-        case .zoom: tr("Live Zoom")
+        case .zoom: tr("Live zoom")
         case .loupe: tr("Loupe")
         case .focus: tr("Focus")
-        case .recorder: tr("Recorder & Camera")
+        case .recorder: tr("Recorder & camera")
         case .captions: tr("Captions")
-        case .hotkeys: tr("Hotkeys")
         case .general: tr("General")
-        case .advanced: tr("Advanced")
+        case .hotkeys: tr("Shortcuts")
+        case .backup: tr("Backup")
         case .help: tr("Help")
         case .permissions: tr("Permissions")
         case .about: tr("About")
@@ -206,9 +221,9 @@ public enum SettingsSection: String, CaseIterable, Codable, Sendable, Identifiab
         case .focus: "macwindow.on.rectangle"
         case .recorder: "record.circle"
         case .captions: "captions.bubble"
-        case .hotkeys: "keyboard.badge.ellipsis"
         case .general: "gearshape"
-        case .advanced: "slider.horizontal.3"
+        case .hotkeys: "keyboard"
+        case .backup: "externaldrive"
         case .help: "questionmark.circle"
         case .permissions: "lock.shield"
         case .about: "info.circle"
@@ -227,22 +242,22 @@ public enum HotkeyAction: String, CaseIterable, Codable, CodingKeyRepresentable,
     public var title: String {
         switch self {
         case .toggleMaster: tr("Toggle Mickey")
-        case .toggleSpotlight: tr("Toggle Spotlight")
-        case .toggleRing: tr("Toggle Ring")
-        case .toggleTrail: tr("Toggle Trail")
-        case .toggleClickFeedback: tr("Toggle Click Feedback")
-        case .toggleClickSound: tr("Toggle Click Sounds")
-        case .showClickEffect: tr("Show Click Effect")
-        case .toggleShakeToLocate: tr("Toggle Shake to Locate")
-        case .toggleAnnotationMode: tr("Toggle Annotation Mode")
-        case .toggleKeystrokes: tr("Toggle Keystrokes")
-        case .toggleLiveZoom: tr("Toggle Live Zoom")
-        case .toggleLoupe: tr("Toggle Loupe")
-        case .toggleFocus: tr("Toggle Focus")
-        case .toggleCameraBubble: tr("Toggle Camera Bubble")
-        case .toggleCaptions: tr("Toggle Captions")
-        case .toggleRecording: tr("Start / Stop Recording")
-        case .togglePauseRecording: tr("Pause / Resume Recording")
+        case .toggleSpotlight: tr("Toggle spotlight")
+        case .toggleRing: tr("Toggle ring")
+        case .toggleTrail: tr("Toggle trail")
+        case .toggleClickFeedback: tr("Toggle click feedback")
+        case .toggleClickSound: tr("Toggle click sounds")
+        case .showClickEffect: tr("Show click effect")
+        case .toggleShakeToLocate: tr("Toggle shake to locate")
+        case .toggleAnnotationMode: tr("Toggle annotation mode")
+        case .toggleKeystrokes: tr("Toggle keystrokes")
+        case .toggleLiveZoom: tr("Toggle live zoom")
+        case .toggleLoupe: tr("Toggle loupe")
+        case .toggleFocus: tr("Toggle focus")
+        case .toggleCameraBubble: tr("Toggle camera bubble")
+        case .toggleCaptions: tr("Toggle captions")
+        case .toggleRecording: tr("Start / stop recording")
+        case .togglePauseRecording: tr("Pause / resume recording")
         }
     }
 
@@ -333,8 +348,8 @@ public enum MenuBarGroup: CaseIterable, Sendable {
 
     public var title: String {
         switch self {
-        case .cursorEffects: tr("Cursor Effects")
-        case .presenterTools: tr("Presenter Tools")
+        case .cursorEffects: tr("Cursor effects")
+        case .presenterTools: tr("Presenter tools")
         }
     }
 
@@ -359,16 +374,16 @@ public enum MenuBarItem: String, CaseIterable, Codable, Sendable, Identifiable {
         switch self {
         case .spotlight: tr("Spotlight")
         case .ring: tr("Ring")
-        case .clickFeedback: tr("Click Feedback")
-        case .clickSound: tr("Click Sounds")
+        case .clickFeedback: tr("Click feedback")
+        case .clickSound: tr("Click sounds")
         case .trail: tr("Trail")
-        case .shake: tr("Shake to Locate")
+        case .shake: tr("Shake to locate")
         case .annotations: tr("Annotations")
         case .keystrokes: tr("Keystrokes")
-        case .liveZoom: tr("Live Zoom")
+        case .liveZoom: tr("Live zoom")
         case .loupe: tr("Loupe")
         case .focus: tr("Focus")
-        case .cameraBubble: tr("Camera Bubble")
+        case .cameraBubble: tr("Camera bubble")
         case .captions: tr("Captions")
         }
     }

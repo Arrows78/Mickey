@@ -284,3 +284,25 @@ struct PersistenceTests {
         #expect(SettingsCodec.decode(SettingsCodec.encode(s)).recorder.area == .region)
     }
 }
+
+@Suite("Appearance setting")
+struct AppearanceSettingTests {
+    @Test func settingsSavedBeforeThemesFollowTheSystem() {
+        let json = #"{"schemaVersion": 5, "general": {"masterEnabled": false, "showInDock": true}}"#
+        let s = SettingsCodec.decode(Data(json.utf8))
+        #expect(s.general.appearance == .system)
+        #expect(!s.general.masterEnabled && s.general.showInDock)
+    }
+
+    @Test func aChosenThemeSurvivesASaveAndLoad() {
+        var s = Settings()
+        s.general.appearance = .dark
+        #expect(SettingsCodec.decode(SettingsCodec.encode(s)).general.appearance == .dark)
+    }
+
+    @Test func anUnknownThemeFallsBackToSystem() {
+        let json = #"{"schemaVersion": 5, "general": {"appearance": "sepia", "showInDock": true}}"#
+        let s = SettingsCodec.decode(Data(json.utf8))
+        #expect(s.general.appearance == .system && s.general.showInDock)
+    }
+}

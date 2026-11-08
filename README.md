@@ -83,7 +83,7 @@ Every action defaults to **⌃⌥⌘** plus a letter, a combination macOS and mo
 | `⌃⌥⌘L` | Toggle shake to locate | `⌃⌥⌘V` | Start / stop recording |
 | `⌃⌥⌘P` | Pause / resume recording | | |
 
-Letters follow your keyboard layout: on AZERTY, `⌃⌥⌘A` is the key marked A. On layouts without Latin letters (Russian, Greek, Arabic…) the defaults sit on the US key positions, and the drawing shortcuts (F, A, R…, ⌘Z, ⌘C) answer to those positions too. All of them can be changed or cleared in **Settings › Hotkeys**.
+Letters follow your keyboard layout: on AZERTY, `⌃⌥⌘A` is the key marked A. On layouts without Latin letters (Russian, Greek, Arabic…) the defaults sit on the US key positions, and the drawing shortcuts (F, A, R…, ⌘Z, ⌘C) answer to those positions too. All of them can be changed or cleared in **Settings › Shortcuts**.
 
 ## 🔐 Permissions
 
@@ -257,7 +257,7 @@ Mickey/
 | Settings | `UserDefaults` key `mickey.settings.v1`: one JSON document, schema version 5 |
 | Review prompt counters | `UserDefaults` key `mickey.review.v1` |
 | Recordings | `~/Movies/Mickey/Mickey Recording <date> at <time>.mov` |
-| Exported settings | A JSON file you choose, from Settings › General › Backup |
+| Exported settings | A JSON file you choose, from Settings › Backup |
 | Diagnostics | Unified log, subsystem `dev.local.mickey` |
 
 Unknown or invalid values fall back to their default one field at a time, so a damaged entry never resets everything. Migrations add new hotkeys and menu-bar toggles without overriding your choices.

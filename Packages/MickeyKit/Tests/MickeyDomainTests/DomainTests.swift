@@ -790,7 +790,7 @@ struct InteractionTests {
     }
 }
 
-@Suite("Automatic Mode") struct AutoModeSessionTests {
+@Suite("Automatic mode") struct AutoModeSessionTests {
     let zoom: Set<String> = ["us.zoom.xos"]
     var base: Settings {
         var s = Settings.defaults
@@ -932,7 +932,7 @@ struct InteractionTests {
     }
 }
 
-@Suite("Automatic Mode per app") struct AutoModePerAppTests {
+@Suite("Automatic mode per app") struct AutoModePerAppTests {
     let zoom = "us.zoom.xos", keynote = "com.apple.Keynote"
     var base: Settings {
         var s = Settings.defaults
@@ -989,7 +989,7 @@ struct InteractionTests {
 
     @Test func displayNamesComeFromTheKeys() {
         #expect(SpotlightShape.circle.title == "Circle")
-        #expect(HotkeyAction.toggleRing.title == "Toggle Ring")
+        #expect(HotkeyAction.toggleRing.title == "Toggle ring")
         #expect(Permission.camera.title == "Camera")
     }
 }
@@ -1103,8 +1103,8 @@ struct InteractionTests {
     }
 
     @Test func titlesComeFromExistingTexts() {
-        #expect(MenuBarGroup.cursorEffects.title == "Cursor Effects")
-        #expect(MenuBarGroup.presenterTools.title == "Presenter Tools")
+        #expect(MenuBarGroup.cursorEffects.title == "Cursor effects")
+        #expect(MenuBarGroup.presenterTools.title == "Presenter tools")
     }
 }
 

@@ -14,7 +14,7 @@ struct HotkeyConflictTests {
     @Test func duplicatesOfAnotherActionAreRefused() {
         let combo = HotkeyAction.toggleRing.defaultHotkey
         let conflict = HotkeyConflict.check(combo, otherActions: [.toggleRing: combo])
-        #expect(conflict == .action("Toggle Ring"))
+        #expect(conflict == .action("Toggle ring"))
         #expect(conflict?.blocks == true)
     }
 

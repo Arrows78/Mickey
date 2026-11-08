@@ -32,7 +32,7 @@ A 940 × 720 pt panel that does not hide when the app deactivates and closes wit
 
 - **Cursor Effects**, **Annotations**;
 - *Presenter tools*: **Keystrokes**, **Live Zoom**, **Loupe**, **Focus**, **Recorder & Camera**, **Captions**;
-- *Settings*: **Hotkeys**, **General**, **Advanced**, **Help**, **Permissions**, **About**.
+- *Settings*: **General**, **Shortcuts**, **Backup**, **Help**, **Permissions**, **About**.
 
 A bottom bar shows the master switch state. Problems reported by presenter tools appear in a dismissible banner above the page.
 
@@ -71,17 +71,17 @@ Toggle (off); Start/Stop Drawing; hold Fn to draw (on); also hold Right Option (
 | Recorder & Camera | start/stop and pause/resume with elapsed time (the time paused does not count); show recordings; show pointer (on); record system audio (on); countdown 3 s; quality 4K (Full HD 1920 px, QHD 2560 px, 4K 3840 px); frame rate 60 (30 or 60); area whole screen or selected region · camera bubble toggle (off); shape; corner bottom right; size 200 pt; mirror (on); border color white |
 | Captions | toggle (off); microphone and speech permission rows; language (system); position bottom / top; text size 30; lines 2; background 0.65 |
 
-#### Hotkeys
+#### Shortcuts
 
-One row per action with a recorder, a conflict line when relevant and a restore-default button. *Reset to Defaults* restores every default; *Clear All* removes every shortcut; both ask for confirmation. A *How Hotkeys Work* card explains the rules.
+One row per action with a recorder, a conflict line when relevant and a restore-default button. *Reset to Defaults* restores every default; *Clear All* removes every shortcut; both ask for confirmation. A *How shortcuts work* card explains the rules.
 
 #### General
 
-Launch at login (with approval and failure states); show in menu bar; show in Dock; hidden-icon warning; presets; menu-bar contents (one checkbox per toggle, all on); version; export and import settings (JSON file; the custom click sound, the login item state and the onboarding flag stay on the Mac); reset all settings (confirmation, onboarding state kept).
+Launch at login (with approval and failure states); show in menu bar; show in Dock; hidden-icon warning; theme (System, Light or Dark, System by default); menu-bar contents (one checkbox per toggle, all on); presets; automatic mode (off) with its preset and an optional preset for each watched app; update rate 60 Hz (30–120).
 
-#### Advanced
+#### Backup
 
-Update rate 60 Hz (30–120); automatic mode (off) with its preset and an optional preset for each watched app.
+Export and import settings (JSON file; the custom click sound, the login item state and the onboarding flag stay on the Mac); restore defaults (confirmation, onboarding state and login item kept).
 
 #### Help
 

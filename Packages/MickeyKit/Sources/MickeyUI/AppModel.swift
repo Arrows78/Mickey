@@ -97,6 +97,8 @@ public final class AppModel {
         var fresh = MickeyDomain.Settings.defaults
         fresh.hotkeys = HotkeyAction.defaultHotkeys(keyCode: KeyboardLayout.keyCode(for:))
         fresh.general.hasCompletedOnboarding = keepOnboarding
+        // The login item is registered with macOS, not reset with the settings.
+        fresh.general.launchAtLogin = settings.general.launchAtLogin
         set(fresh)
         flush()
     }

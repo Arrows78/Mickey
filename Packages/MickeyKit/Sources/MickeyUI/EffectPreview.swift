@@ -8,7 +8,7 @@ struct EffectPreview: View {
     private let height: CGFloat = 140
 
     var body: some View {
-        FeatureCard(title: "Live Preview", symbol: "eye", subtitle: "The enabled effects, on a light and a dark background.") {
+        FeatureCard(title: "Live preview", symbol: "eye", subtitle: "The enabled effects, on a light and a dark background.") {
             Canvas { context, size in draw(in: &context, size: size) }
                 .frame(height: height)
                 .clipShape(RoundedRectangle(cornerRadius: 8))
@@ -16,7 +16,7 @@ struct EffectPreview: View {
                 .accessibilityElement()
                 .accessibilityLabel(tr("Preview of the enabled effects"))
             if !settings.spotlight.enabled && !settings.ring.enabled {
-                NoteView(text: "Turn on Spotlight or Ring to see them here.")
+                NoteView(text: "Turn on spotlight or Ring to see them here.")
             }
         }
     }

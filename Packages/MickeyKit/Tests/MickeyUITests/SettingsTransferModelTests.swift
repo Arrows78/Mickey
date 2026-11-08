@@ -92,3 +92,18 @@ final class SettingsTransferModelTests {
         #expect(m.settings.click.customSound?.displayName == "mine.aiff")
     }
 }
+
+@Suite("Restore defaults") @MainActor
+struct RestoreDefaultsTests {
+    @Test func theLoginItemAndFirstRunFlagSurviveARestore() {
+        var s = MickeyDomain.Settings.defaults
+        s.general.launchAtLogin = true
+        s.general.hasCompletedOnboarding = true
+        s.general.appearance = .dark
+        s.ring.enabled = true
+        let model = AppModel(store: InMemorySettingsStore(settings: s))
+        model.resetAllSettings()
+        #expect(model.settings.general.launchAtLogin && model.settings.general.hasCompletedOnboarding)
+        #expect(model.settings.general.appearance == .system && !model.settings.ring.enabled)
+    }
+}

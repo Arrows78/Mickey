@@ -79,7 +79,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     func applicationWillTerminate(_ notification: Notification) {
-        // Automatic Mode's preset is not saved as the user's settings.
+        // Automatic mode's preset is not saved as the user's settings.
         model.set(autoMode.settingsToPersist(model.settings))
         model.flush()
         input.stop()
@@ -109,6 +109,13 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             // A moved or deleted file falls back to the default sound and the choice is cleared.
             model.customSoundError = true
             model.update { $0.click.customSound = nil }
+        }
+        if old == nil || old?.general.appearance != s.general.appearance {
+            switch s.general.appearance {
+            case .system: NSApp.appearance = nil
+            case .light: NSApp.appearance = NSAppearance(named: .aqua)
+            case .dark: NSApp.appearance = NSAppearance(named: .darkAqua)
+            }
         }
         if old == nil || old?.general.showInDock != s.general.showInDock {
             NSApp.setActivationPolicy(s.general.showInDock ? .regular : .accessory)
@@ -165,7 +172,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         }
     }
 
-    /// Applies the Automatic Mode preset while a watched app runs, and restores the previous settings
+    /// Applies the Automatic mode preset while a watched app runs, and restores the previous settings
     /// afterwards unless the user changed something in the meantime.
     private func updateAutoMode(running: Set<String>) {
         if let next = autoMode.update(settings: model.settings, running: running) { model.set(next) }
@@ -305,16 +312,16 @@ extension AppDelegate: AppActions {
 
     func chooseSettingsExportURL() -> URL? {
         let panel = NSSavePanel()
-        panel.title = tr("Export Mickey Settings")
+        panel.title = tr("Export Mickey settings")
         panel.allowedContentTypes = [.json]
-        panel.nameFieldStringValue = "Mickey Settings.json"
+        panel.nameFieldStringValue = "Mickey settings.json"
         NSApp.activate(ignoringOtherApps: true)
         return panel.runModal() == .OK ? panel.url : nil
     }
 
     func chooseSettingsImportURL() -> URL? {
         let panel = NSOpenPanel()
-        panel.title = tr("Import Mickey Settings")
+        panel.title = tr("Import Mickey settings")
         panel.allowedContentTypes = [.json]
         panel.allowsMultipleSelection = false
         NSApp.activate(ignoringOtherApps: true)

@@ -122,6 +122,7 @@ public struct GeneralSettings: Codable, Equatable, Sendable {
     public var showInMenuBar = true
     public var showInDock = false
     public var launchAtLogin = false
+    public var appearance = AppearanceMode.system
     public var updateRateHz = 60.0
     public var hasCompletedOnboarding = false
     public var menuBarItems: Set<MenuBarItem> = Set(MenuBarItem.allCases)
