@@ -53,12 +53,33 @@ jobs:
           python3 -B -m unittest discover -s scripts/tests -q
           python3 -B scripts/release.py check
 
+      - name: Import signing identity
+        env:
+          SIGNING_P12: ${{ secrets.MICKEY_SIGNING_P12 }}
+          SIGNING_PASSWORD: ${{ secrets.MICKEY_SIGNING_PASSWORD }}
+        run: |
+          hash=$(sh scripts/ci_import_identity.sh "Mickey Local Signing")
+          if [ -n "$hash" ]; then
+            echo "MICKEY_SIGN_IDENTITY=$hash" >> "$GITHUB_ENV"
+          else
+            echo "::notice::MICKEY_SIGNING_P12 is not set: the build is signed ad hoc, so macOS asks for privacy permissions again after each update."
+          fi
+
       - name: Build
         run: |
           xcodegen generate --quiet
           xcodebuild -project Mickey.xcodeproj -scheme Mickey -configuration Release \
             -destination "generic/platform=macOS" -derivedDataPath build/DerivedData \
             ARCHS="arm64 x86_64" ONLY_ACTIVE_ARCH=NO build -quiet
+
+      - name: Sign with the stable identity
+        run: |
+          if [ -n "${MICKEY_SIGN_IDENTITY:-}" ]; then
+            app=build/DerivedData/Build/Products/Release/Mickey.app
+            codesign --force --deep --preserve-metadata=identifier,entitlements,flags --sign "${MICKEY_SIGN_IDENTITY}" "$app"
+            codesign --verify --deep --strict "$app"
+            codesign -dr - "$app" 2>&1 | grep designated
+          fi
 
       - name: Package
         run: |
