@@ -41,11 +41,14 @@ final class WindowCoordinator: NSObject, NSWindowDelegate {
     }
 
     private func makeSettingsPanel(model: AppModel) -> NSPanel {
-        let panel = makePanel(title: tr("Mickey Settings"), styleMask: [.titled, .closable, .miniaturizable, .resizable])
+        let panel = makePanel(title: tr("Mickey settings"), styleMask: [.titled, .closable, .miniaturizable, .resizable])
         panel.contentViewController = NSHostingController(rootView: SettingsRootView(model: model))
         panel.setContentSize(NSSize(width: 940, height: 720))
-        panel.setFrameAutosaveName("MickeySettings")
-        panel.center()
+        // A saved position wins; centering is only for the first launch.
+        let name = "MickeySettings"
+        let hadSavedFrame = UserDefaults.standard.object(forKey: "NSWindow Frame \(name)") != nil
+        panel.setFrameAutosaveName(name)
+        if !hadSavedFrame { panel.center() }
         panel.delegate = self
         return panel
     }

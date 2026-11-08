@@ -23,7 +23,7 @@ public final class StudioCoordinator {
 
     public init() {
         keystrokes.onPermissionMissing = { [weak self] in
-            self?.onMessage?(tr("Keystrokes need Input Monitoring: allow Mickey in System Settings › Privacy & Security."))
+            self?.onMessage?(tr("Keystrokes need Input monitoring: allow Mickey in System Settings › Privacy & Security."))
         }
         magnifier.onError = { [weak self] in self?.onMessage?($0) }
         camera.onError = { [weak self] in self?.onMessage?($0) }
@@ -71,6 +71,7 @@ public final class StudioCoordinator {
         magnifier.retry()
         keystrokes.retry()
         captions.retry()
+        camera.retry()
     }
 
     /// Stops a countdown or a recording; `completion` runs once the movie file is complete.
@@ -92,7 +93,7 @@ public final class StudioCoordinator {
         if countdown.isRunning { countdown.cancel(); return }
         if recorder.isRecording { recorder.stop(); return }
         guard Permissions.status(.screenRecording) == .granted else {
-            onMessage?(tr("Recording needs Screen Recording access: allow Mickey in System Settings › Privacy & Security."))
+            onMessage?(tr("Recording needs Screen recording access: allow Mickey in System Settings › Privacy & Security."))
             Permissions.request(.screenRecording) { _ in }
             return
         }

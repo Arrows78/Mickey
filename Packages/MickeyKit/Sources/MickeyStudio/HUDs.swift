@@ -138,7 +138,7 @@ final class KeystrokeHUD {
         }
     }
 
-    /// Retries after the user grants Input Monitoring.
+    /// Retries after the user grants Input monitoring.
     func retry() { if model.settings.enabled { apply(model.settings) } }
 
     private func key(flags: UInt64, code: UInt16, chars: String) {
@@ -264,6 +264,9 @@ final class CameraBubble {
         }
         panel.orderFrontRegardless()
     }
+
+    /// Retries after the user grants Camera access.
+    func retry() { if settings.enabled && session == nil { apply(settings) } }
 
     private func place(size: Double, corner: ScreenCorner) {
         guard let screen = NSScreen.containing(NSEvent.mouseLocation) else { return }

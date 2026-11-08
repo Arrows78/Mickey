@@ -135,7 +135,8 @@ final class FocusOverlay {
     func apply(_ s: FocusSettings) {
         settings = s
         if s.enabled {
-            rebuild()
+            // Panels are only rebuilt when the overlay was off: dragging a slider must not flash the screen.
+            if timer == nil { rebuild() }
             refresh(force: true)
             if timer == nil {
                 // The window list is cheap but not free: ten checks a second follow window moves well enough.

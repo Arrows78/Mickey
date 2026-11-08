@@ -69,7 +69,7 @@ public final class SoundPlayer {
     /// Shows an open panel and returns a bookmark for the chosen audio file.
     public static func chooseCustomSound() -> SoundReference? {
         let panel = NSOpenPanel()
-        panel.title = tr("Choose a Click Sound")
+        panel.title = tr("Choose a click sound")
         panel.message = tr("Pick an audio file to play on each click.")
         panel.allowedContentTypes = [.audio]
         panel.allowsMultipleSelection = false

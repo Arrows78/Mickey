@@ -64,7 +64,7 @@ public enum Permissions {
     }
 }
 
-/// Reports every key press system-wide through a listen-only event tap (requires Input Monitoring).
+/// Reports every key press system-wide through a listen-only event tap (requires Input monitoring).
 public final class KeystrokeMonitor {
     /// (CGEventFlags raw value, virtual key code, characters ignoring modifiers)
     public var onKey: ((UInt64, UInt16, String) -> Void)?
@@ -76,7 +76,7 @@ public final class KeystrokeMonitor {
 
     public var isRunning: Bool { tap != nil }
 
-    /// Returns false when Input Monitoring is not granted.
+    /// Returns false when Input monitoring is not granted.
     @discardableResult
     public func start() -> Bool {
         guard tap == nil else { return true }

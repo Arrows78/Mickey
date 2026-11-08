@@ -173,7 +173,7 @@ public struct InteractionEngine: Sendable {
         spotlightHold.cancelPending()
     }
 
-    /// Hotkey "Show Click Effect".
+    /// Hotkey "Show click effect".
     public func showClickEffect(settings s: Settings) -> [InteractionCommand] {
         s.general.masterEnabled ? [.clickEffect(lastPosition)] : []
     }

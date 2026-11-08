@@ -6,7 +6,7 @@ import os
 /// Samples pointer position and modifier state at a fixed rate and forwards global mouse events.
 ///
 /// Uses polling (`NSEvent.mouseLocation`, `CGEventSource` flag state and event timing) and global mouse
-/// monitors, none of which require Accessibility or Input Monitoring permission.
+/// monitors, none of which require Accessibility or Input monitoring permission.
 public final class InputMonitor {
     public var onTick: ((InputSnapshot) -> Void)?
     public var onMouseDown: ((CGPoint) -> Void)?

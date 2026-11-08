@@ -89,7 +89,7 @@ final class Captions {
 
     private func start() {
         guard Permissions.status(.microphone) == .granted, Permissions.status(.speechRecognition) == .granted else {
-            onError?(tr("Captions need Microphone and Speech Recognition access."))
+            onError?(tr("Captions need Microphone and Speech recognition access."))
             return
         }
         let locale = model.settings.language.isEmpty ? Locale.current : Locale(identifier: model.settings.language)
@@ -99,8 +99,14 @@ final class Captions {
         }
         self.recognizer = recognizer
         let input = engine.inputNode
+        let format = input.outputFormat(forBus: 0)
+        // Without a microphone the format is empty, and installing a tap with it raises an exception.
+        guard format.sampleRate > 0, format.channelCount > 0 else {
+            onError?(tr("No microphone was found."))
+            return
+        }
         input.removeTap(onBus: 0)
-        input.installTap(onBus: 0, bufferSize: 1024, format: input.outputFormat(forBus: 0), block: Self.tap(into: box))
+        input.installTap(onBus: 0, bufferSize: 1024, format: format, block: Self.tap(into: box))
         engine.prepare()
         do { try engine.start() } catch {
             input.removeTap(onBus: 0)

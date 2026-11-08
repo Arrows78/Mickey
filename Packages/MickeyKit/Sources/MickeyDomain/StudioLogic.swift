@@ -10,7 +10,7 @@ public enum Preset: String, CaseIterable, Codable, Sendable, Identifiable {
     public var title: String {
         switch self {
         case .presentation: tr("Presentation")
-        case .tutorial: tr("Tutorial Video")
+        case .tutorial: tr("Tutorial video")
         case .discreet: tr("Discreet")
         }
     }
@@ -332,8 +332,8 @@ public enum AutoModeRule {
     }
 }
 
-/// Applies the Automatic Mode preset while a watched app runs, and gives the user's own settings back afterwards
-/// unless they changed something in the meantime. Editing Automatic Mode itself does not count as a change.
+/// Applies the Automatic mode preset while a watched app runs, and gives the user's own settings back afterwards
+/// unless they changed something in the meantime. Editing Automatic mode itself does not count as a change.
 public struct AutoModeSession: Sendable {
     /// The user's settings before the preset, and the settings the preset produced.
     public private(set) var snapshot: (before: Settings, applied: Settings)?

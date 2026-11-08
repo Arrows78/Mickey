@@ -39,7 +39,7 @@ enum ScreenCapture {
     nonisolated static func userMessage(for error: Error) -> String {
         let e = error as NSError
         if e.domain == SCStreamErrorDomain, e.code == SCStreamError.Code.userDeclined.rawValue {
-            return tr("The zoom and the loupe need Screen Recording: allow Mickey in System Settings › Privacy & Security.")
+            return tr("The zoom and the loupe need Screen recording: allow Mickey in System Settings › Privacy & Security.")
         }
         return trf("Zoom and loupe: %@", e.localizedDescription)
     }
@@ -110,7 +110,7 @@ final class ScreenFrameSource: NSObject, SCStreamOutput, SCStreamDelegate {
         }
     }
 
-    /// Allows another attempt after a failure, e.g. once Screen Recording is granted.
+    /// Allows another attempt after a failure, e.g. once Screen recording is granted.
     func retry() { failedFrame = nil }
 
     func stop() {
