@@ -43,10 +43,20 @@ public struct FnKeyFilter: Sendable {
 
     public init() {}
 
+    /// Arrow keys also raise the numeric-pad flag; the Fn (🌐) key never does.
+    static let numericPadMask: UInt64 = 0x0020_0000
+
+    /// Longest age of the last modifier change for it to be the Fn press itself rather than an earlier ⌃ or ⇧.
+    static let freshChange: TimeInterval = 0.08
+
     /// `keyDownIsLatest`: the most recent keyboard event is a key-down rather than a modifier change.
-    public mutating func filter(_ flags: UInt64, keyDownIsLatest: Bool) -> UInt64 {
+    /// `modifierChangeAge`: seconds since that modifier change. A system shortcut such as ⌃← can swallow the
+    /// key-down, leaving an older ⌃ change as the latest event; an Fn press always has a fresh one.
+    public mutating func filter(_ flags: UInt64, keyDownIsLatest: Bool, modifierChangeAge: TimeInterval = 0) -> UInt64 {
         let down = flags & InputSnapshot.secondaryFnMask != 0
-        if down && !wasDown { ignoring = keyDownIsLatest }
+        if down && !wasDown {
+            ignoring = keyDownIsLatest || flags & Self.numericPadMask != 0 || modifierChangeAge > Self.freshChange
+        }
         if !down { ignoring = false }
         wasDown = down
         return ignoring ? flags & ~InputSnapshot.secondaryFnMask : flags

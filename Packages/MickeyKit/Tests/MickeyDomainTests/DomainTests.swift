@@ -717,6 +717,18 @@ struct InteractionTests {
         #expect(f.filter(fn, keyDownIsLatest: true) == fn)
     }
 
+    @Test func fnFlagFromControlArrowWithSwallowedKeyDownIsIgnored() {
+        var f = FnKeyFilter()
+        // ⌃ pressed 0.4 s ago, then ← raised the flag but its key-down never reached the session state.
+        #expect(f.filter(fn | 0x0004_0000, keyDownIsLatest: false, modifierChangeAge: 0.4) == 0x0004_0000)
+        #expect(f.filter(0, keyDownIsLatest: false, modifierChangeAge: 0.01) == 0)
+        // Arrow keys carry the numeric-pad flag.
+        #expect(f.filter(fn | 0x0020_0000, keyDownIsLatest: false, modifierChangeAge: 0.01) == 0x0020_0000)
+        #expect(f.filter(0, keyDownIsLatest: false) == 0)
+        // A real Fn press right after ⌃ is a fresh modifier change.
+        #expect(f.filter(fn | 0x0004_0000, keyDownIsLatest: false, modifierChangeAge: 0.016) == fn | 0x0004_0000)
+    }
+
     @Test func triggerKeyIsNotAloneWithOtherModifiers() {
         var e = InteractionEngine()
         var s = Settings.defaults

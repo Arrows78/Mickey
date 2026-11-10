@@ -54,7 +54,8 @@ public final class InputMonitor {
     }
 
     private func sample() {
-        let flags = fnFilter.filter(Self.currentFlags(), keyDownIsLatest: Self.keyDownIsLatest())
+        let flags = fnFilter.filter(Self.currentFlags(), keyDownIsLatest: Self.keyDownIsLatest(),
+                                 modifierChangeAge: Self.modifierChangeAge())
         let held = flags & Self.modifierMask != 0
         if held && modifiersDownAt == nil { modifiersDownAt = ProcessInfo.processInfo.systemUptime }
         if !held { modifiersDownAt = nil }
@@ -75,6 +76,10 @@ public final class InputMonitor {
     static func keyDownIsLatest() -> Bool {
         CGEventSource.secondsSinceLastEventType(.combinedSessionState, eventType: .keyDown)
             < CGEventSource.secondsSinceLastEventType(.combinedSessionState, eventType: .flagsChanged)
+    }
+
+    static func modifierChangeAge() -> TimeInterval {
+        CGEventSource.secondsSinceLastEventType(.combinedSessionState, eventType: .flagsChanged)
     }
 
     /// True when a non-modifier key was pressed after `start` (system uptime).
