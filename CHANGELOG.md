@@ -4,6 +4,13 @@ All notable changes to Mickey are listed here, newest first. The file is generat
 from the commit messages (Conventional Commits) and the `v*` tags: do not edit it by hand. See
 `docs/RELEASING.md`. Versions follow [Semantic Versioning](https://semver.org).
 
+## [0.5.1] - 2026-11-11
+
+### Fixed
+
+- **annotations**: Arrow keys and ⌃+arrow no longer start drawing
+- **annotations**: Draw only from Start drawing or the hotkey
+
 ## [0.5.0] - 2026-11-08
 
 ### Added
@@ -93,6 +100,7 @@ from the commit messages (Conventional Commits) and the `v*` tags: do not edit i
 
 - Initial release.
 
+[0.5.1]: https://github.com/Arrows78/Mickey/compare/v0.5.0...v0.5.1
 [0.5.0]: https://github.com/Arrows78/Mickey/compare/v0.4.1...v0.5.0
 [0.4.1]: https://github.com/Arrows78/Mickey/compare/v0.4.0...v0.4.1
 [0.4.0]: https://github.com/Arrows78/Mickey/compare/v0.3.1...v0.4.0
