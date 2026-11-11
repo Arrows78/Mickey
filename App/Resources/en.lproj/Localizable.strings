@@ -14,13 +14,11 @@
 "About Mickey" = "About Mickey";
 "Accent color" = "Accent color";
 "Add Control, Option or Command." = "Add Control, Option or Command.";
-"Adds Right Option as a second hold-to-draw key. Off by default." = "Adds Right Option as a second hold-to-draw key. Off by default.";
 "Adds a thin black or white edge so the ring stays visible on any background." = "Adds a thin black or white edge so the ring stays visible on any background.";
 "All settings, including shortcuts, return to their defaults." = "All settings, including shortcuts, return to their defaults.";
 "Allow…" = "Allow…";
 "Already used by %@." = "Already used by %@.";
 "Already used by macOS (System Settings › Keyboard › Keyboard shortcuts)." = "Already used by macOS (System Settings › Keyboard › Keyboard shortcuts).";
-"Also hold Right Option (⌥) to draw" = "Also hold Right Option (⌥) to draw";
 "Also used for Control-click and Mission Control. Increase the delay if it triggers by accident." = "Also used for Control-click and Mission Control. Increase the delay if it triggers by accident.";
 "Also your app shortcut for “%@”; Mickey will take it from every app." = "Also your app shortcut for “%@”; Mickey will take it from every app.";
 "Always" = "Always";
@@ -132,8 +130,8 @@
 "Effect type" = "Effect type";
 "Effects that make your pointer easy to follow across your whole Mac." = "Effects that make your pointer easy to follow across your whole Mac.";
 "Enable" = "Enable";
-"Enable Annotations and make sure Mickey is on. On some keyboards Fn is mapped to the emoji picker; use Right Option or a hotkey instead." = "Enable Annotations and make sure Mickey is on. On some keyboards Fn is mapped to the emoji picker; use Right Option or a hotkey instead.";
-"Enable Annotations, then hold Fn (🌐) to draw, use the Toggle annotation mode hotkey, or click Start drawing. Press Escape to stop." = "Enable Annotations, then hold Fn (🌐) to draw, use the Toggle annotation mode hotkey, or click Start drawing. Press Escape to stop.";
+"Enable Annotations and make sure Mickey is on. Drawing starts only from the hotkey or Start drawing." = "Enable Annotations and make sure Mickey is on. Drawing starts only from the hotkey or Start drawing.";
+"Enable Annotations, then use the Toggle annotation mode hotkey or click Start drawing. Press Escape to stop." = "Enable Annotations, then use the Toggle annotation mode hotkey or click Start drawing. Press Escape to stop.";
 "Enable Mickey" = "Enable Mickey";
 "Enlarged pointer" = "Enlarged pointer";
 "Enter or leave drawing mode" = "Enter or leave drawing mode";
@@ -179,8 +177,6 @@
 "Highlighter" = "Highlighter";
 "Highlighter color" = "Highlighter color";
 "Highlighter size" = "Highlighter size";
-"Hold Fn (🌐) to draw" = "Hold Fn (🌐) to draw";
-"Hold Fn (🌐) to draw, or use the Toggle annotation mode hotkey, or Start drawing in the menu bar." = "Hold Fn (🌐) to draw, or use the Toggle annotation mode hotkey, or Start drawing in the menu bar.";
 "Hold a key to show" = "Hold a key to show";
 "Hold delay" = "Hold delay";
 "Horizontal bar" = "Horizontal bar";
@@ -329,8 +325,6 @@
 "Right Command (⌘)" = "Right Command (⌘)";
 "Right Control (⌃)" = "Right Control (⌃)";
 "Right Option (⌥)" = "Right Option (⌥)";
-"Right Option is also the optional annotation trigger. Pick another key if you use both." = "Right Option is also the optional annotation trigger. Pick another key if you use both.";
-"Right Option is also used by a spotlight or click-effect trigger." = "Right Option is also used by a spotlight or click-effect trigger.";
 "Right Shift (⇧)" = "Right Shift (⇧)";
 "Ring" = "Ring";
 "Ring burst" = "Ring burst";
@@ -463,7 +457,6 @@
 "Turn every effect on or off" = "Turn every effect on or off";
 "Turn off %@" = "Turn off %@";
 "Turn off Hide cursor in the Spotlight settings or quit Mickey: the pointer is always restored on exit." = "Turn off Hide cursor in the Spotlight settings or quit Mickey: the pointer is always restored on exit.";
-"Turn off if Fn opens the emoji picker or dictation on your keyboard." = "Turn off if Fn opens the emoji picker or dictation on your keyboard.";
 "Turn off to show the effect only on demand (key tap or hotkey)." = "Turn off to show the effect only on demand (key tap or hotkey).";
 "Turn off when moving" = "Turn off when moving";
 "Turn on %@" = "Turn on %@";
@@ -477,6 +470,7 @@
 "Undo (⌘Z)" = "Undo (⌘Z)";
 "Update rate" = "Update rate";
 "Use default" = "Use default";
+"Use the Toggle annotation mode hotkey, or Start drawing in the menu bar." = "Use the Toggle annotation mode hotkey, or Start drawing in the menu bar.";
 "Version %@" = "Version %@";
 "Vertical bar" = "Vertical bar";
 "Visual effect on clicks" = "Visual effect on clicks";
@@ -513,7 +507,6 @@
 "move item" = "move item";
 "new private window, new folder" = "new private window, new folder";
 "next tab" = "next tab";
-"or hold Fn (🌐) to draw" = "or hold Fn (🌐) to draw";
 "previous tab" = "previous tab";
 "redo" = "redo";
 "reopen closed tab" = "reopen closed tab";
@@ -532,7 +525,6 @@
 "text editing: transpose" = "text editing: transpose";
 "text editing: yank" = "text editing: yank";
 "• A shortcut set here is taken from every other app, so avoid ones you use elsewhere." = "• A shortcut set here is taken from every other app, so avoid ones you use elsewhere.";
-"• Annotations also work without a hotkey: hold Fn (🌐)." = "• Annotations also work without a hotkey: hold Fn (🌐).";
 "• Click a field, then press the combination. Esc cancels, Delete clears, ↺ restores the default." = "• Click a field, then press the combination. Esc cancels, Delete clears, ↺ restores the default.";
 "• Combinations already used by macOS or by another action are refused; common app shortcuts get a warning." = "• Combinations already used by macOS or by another action are refused; common app shortcuts get a warning.";
 "• Letters follow your keyboard layout: ⌃⌥⌘M is the key marked M, on AZERTY too." = "• Letters follow your keyboard layout: ⌃⌥⌘M is the key marked M, on AZERTY too.";

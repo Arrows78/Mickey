@@ -138,9 +138,6 @@ public enum SettingsRules {
                 notes.append(tr("This key also reveals the spotlight when held: a quick tap flashes the effect, holding it shows the spotlight."))
             }
         }
-        if key == .rightOption && s.annotations.rightOptionTrigger {
-            notes.append(tr("Right Option is also the optional annotation trigger. Pick another key if you use both."))
-        }
         return notes
     }
 

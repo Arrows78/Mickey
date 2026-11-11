@@ -54,7 +54,7 @@ Values are clamped to their range when decoded and whenever they change.
 
 ### Annotations
 
-`enabled` (false) · `fnTrigger` (true) · `rightOptionTrigger` (false) · `defaultTool` (freehand) · `color` (red) · `strokeWidth` (4, 1…20) · `highlighterColor` (yellow) · `highlighterSize` (32, 8…80) · `calloutSize` (26, 14…60) · `autoFade` (false) · `autoFadeDelay` (5 s, 1…30) · `clearOnExit` (false)
+`enabled` (false) · `defaultTool` (freehand) · `color` (red) · `strokeWidth` (4, 1…20) · `highlighterColor` (yellow) · `highlighterSize` (32, 8…80) · `calloutSize` (26, 14…60) · `autoFade` (false) · `autoFadeDelay` (5 s, 1…30) · `clearOnExit` (false)
 
 ### Presenter tools
 

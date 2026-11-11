@@ -218,8 +218,6 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         case .clickSound: sound.play(volume: s.click.soundVolume)
         case .locate(let p): effects?.playLocator(at: p, color: s.ring.color, style: s.shake.style)
         case .disableSpotlight: model.update { $0.spotlight.enabled = false }
-        case .beginMomentaryDrawing: annotations.enter(momentary: true)
-        case .endMomentaryDrawing: annotations.endMomentary()
         }
     }
 

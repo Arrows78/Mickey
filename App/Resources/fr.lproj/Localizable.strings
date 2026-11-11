@@ -14,13 +14,11 @@
 "About" = "À propos";
 "Accent color" = "Couleur d’accentuation";
 "Add Control, Option or Command." = "Ajoutez Contrôle, Option ou Commande.";
-"Adds Right Option as a second hold-to-draw key. Off by default." = "Ajoute Option droite comme seconde touche à maintenir pour dessiner. Désactivé par défaut.";
 "Adds a thin black or white edge so the ring stays visible on any background." = "Ajoute un fin liseré noir ou blanc pour que l’anneau reste visible sur n’importe quel fond.";
 "All settings, including shortcuts, return to their defaults." = "Tous les réglages, raccourcis compris, retrouvent leurs valeurs par défaut.";
 "Allow…" = "Autoriser…";
 "Already used by %@." = "Déjà utilisé par « %@ ».";
 "Already used by macOS (System Settings › Keyboard › Keyboard shortcuts)." = "Déjà utilisé par macOS (Réglages Système › Clavier › Raccourcis clavier).";
-"Also hold Right Option (⌥) to draw" = "Maintenir aussi Option droite (⌥) pour dessiner";
 "Also used for Control-click and Mission Control. Increase the delay if it triggers by accident." = "Aussi utilisée pour le clic contrôlé et Mission Control. Augmentez le délai si elle se déclenche par erreur.";
 "Also your app shortcut for “%@”; Mickey will take it from every app." = "C’est aussi votre raccourci d’app pour « %@ » ; Mickey le prendra à toutes les apps.";
 "Always on" = "Toujours actif";
@@ -126,8 +124,8 @@
 "Effect size" = "Taille de l’effet";
 "Effect type" = "Type d’effet";
 "Effects that make your pointer easy to follow across your whole Mac." = "Des effets qui rendent votre pointeur facile à suivre sur tout votre Mac.";
-"Enable Annotations and make sure Mickey is on. On some keyboards Fn is mapped to the emoji picker; use Right Option or a hotkey instead." = "Activez les annotations et vérifiez que Mickey est activé. Sur certains claviers, Fn ouvre le sélecteur d’émojis : utilisez plutôt Option droite ou un raccourci.";
-"Enable Annotations, then hold Fn (🌐) to draw, use the Toggle annotation mode hotkey, or click Start drawing. Press Escape to stop." = "Activez les annotations, puis maintenez Fn (🌐) pour dessiner, utilisez le raccourci du mode annotation ou cliquez sur « Commencer à dessiner ». Appuyez sur Échap pour arrêter.";
+"Enable Annotations and make sure Mickey is on. Drawing starts only from the hotkey or Start drawing." = "Activez les annotations et vérifiez que Mickey est activé. Le dessin ne démarre qu’avec le raccourci ou « Commencer à dessiner ».";
+"Enable Annotations, then use the Toggle annotation mode hotkey or click Start drawing. Press Escape to stop." = "Activez les annotations, puis utilisez le raccourci du mode annotation ou cliquez sur « Commencer à dessiner ». Appuyez sur Échap pour arrêter.";
 "Enable Mickey" = "Activer Mickey";
 "Enable" = "Activer";
 "Enlarged pointer" = "Pointeur agrandi";
@@ -173,8 +171,6 @@
 "Highlighter size" = "Taille du surligneur";
 "Highlighter" = "Surligneur";
 "Hold delay" = "Délai de maintien";
-"Hold Fn (🌐) to draw" = "Maintenir Fn (🌐) pour dessiner";
-"Hold Fn (🌐) to draw, or use the Toggle annotation mode hotkey, or Start drawing in the menu bar." = "Maintenez Fn (🌐) pour dessiner, utilisez le raccourci du mode annotation, ou « Commencer à dessiner » dans la barre des menus.";
 "Hold a key to show" = "Maintenir une touche pour afficher";
 "Horizontal bar" = "Bande horizontale";
 "How shortcuts work" = "Comment fonctionnent les raccourcis";
@@ -317,8 +313,6 @@
 "Right Command (⌘)" = "Commande droite (⌘)";
 "Right Control (⌃)" = "Contrôle droite (⌃)";
 "Right Option (⌥)" = "Option droite (⌥)";
-"Right Option is also the optional annotation trigger. Pick another key if you use both." = "Option droite sert aussi de déclencheur facultatif pour les annotations. Choisissez une autre touche si vous utilisez les deux.";
-"Right Option is also used by a spotlight or click-effect trigger." = "Option droite est aussi utilisée par un déclencheur du projecteur ou de l’effet de clic.";
 "Right Shift (⇧)" = "Majuscule droite (⇧)";
 "Ring burst" = "Éclat d’anneaux";
 "Ring color" = "Couleur de l’anneau";
@@ -451,7 +445,6 @@
 "Turn every effect on or off" = "Active ou désactive tous les effets";
 "Turn off %@" = "Désactiver %@";
 "Turn off Hide cursor in the Spotlight settings or quit Mickey: the pointer is always restored on exit." = "Désactivez « Masquer le curseur » dans les réglages du projecteur ou quittez Mickey : le pointeur est toujours rétabli à la fermeture.";
-"Turn off if Fn opens the emoji picker or dictation on your keyboard." = "Désactivez si Fn ouvre le sélecteur d’émojis ou la dictée sur votre clavier.";
 "Turn off to show the effect only on demand (key tap or hotkey)." = "Désactivez pour n’afficher l’effet qu’à la demande (appui bref sur une touche ou raccourci).";
 "Turn on %@" = "Activer %@";
 "Turn on Enable Mickey, then switch on the effects you want. Switching on an effect while Mickey is off turns it on for you." = "Activez Mickey, puis les effets de votre choix. Activer un effet alors que Mickey est désactivé réactive Mickey pour vous.";
@@ -464,6 +457,7 @@
 "Undo" = "Annuler";
 "Update rate" = "Fréquence de mise à jour";
 "Use default" = "Utiliser celui par défaut";
+"Use the Toggle annotation mode hotkey, or Start drawing in the menu bar." = "Utilisez le raccourci du mode annotation, ou « Commencer à dessiner » dans la barre des menus.";
 "Version %@" = "Version %@";
 "Vertical bar" = "Bande verticale";
 "Visual effect on clicks" = "Effet visuel à chaque clic";
@@ -499,7 +493,6 @@
 "move item" = "déplacer l’élément";
 "new private window, new folder" = "nouvelle fenêtre privée, nouveau dossier";
 "next tab" = "onglet suivant";
-"or hold Fn (🌐) to draw" = "ou maintenez Fn (🌐) pour dessiner";
 "previous tab" = "onglet précédent";
 "redo" = "rétablir";
 "reopen closed tab" = "rouvrir l’onglet fermé";
@@ -518,7 +511,6 @@
 "text editing: transpose" = "édition de texte : transposer";
 "text editing: yank" = "édition de texte : coller le texte coupé";
 "• A shortcut set here is taken from every other app, so avoid ones you use elsewhere." = "• Un raccourci défini ici est retiré à toutes les autres apps : évitez ceux que vous utilisez ailleurs.";
-"• Annotations also work without a hotkey: hold Fn (🌐)." = "• Les annotations fonctionnent aussi sans raccourci : maintenez Fn (🌐).";
 "• Click a field, then press the combination. Esc cancels, Delete clears, ↺ restores the default." = "• Cliquez sur un champ, puis tapez la combinaison. Échap annule, Supprimer efface, ↺ rétablit la valeur par défaut.";
 "• Combinations already used by macOS or by another action are refused; common app shortcuts get a warning." = "• Les combinaisons déjà utilisées par macOS ou par une autre action sont refusées ; les raccourcis courants des apps déclenchent un avertissement.";
 "• Letters follow your keyboard layout: ⌃⌥⌘M is the key marked M, on AZERTY too." = "• Les lettres suivent la disposition de votre clavier : ⌃⌥⌘M est la touche marquée M, y compris en AZERTY.";

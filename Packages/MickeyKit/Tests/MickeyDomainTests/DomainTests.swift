@@ -29,7 +29,7 @@ struct DefaultsTests {
 
     @Test func annotationDefaults() {
         let a = Settings.defaults.annotations
-        #expect(!a.enabled && !a.rightOptionTrigger && a.defaultTool == .freehand)
+        #expect(!a.enabled && a.defaultTool == .freehand)
         #expect(a.color == .red && a.strokeWidth == 4 && a.highlighterColor == .yellow)
         #expect(a.highlighterSize == 32 && a.calloutSize == 26 && !a.autoFade && a.autoFadeDelay == 5 && !a.clearOnExit)
     }
@@ -106,8 +106,6 @@ struct RulesTests {
         s.click.tapKey = .rightShift
         let notes = SettingsRules.triggerKeyNotes(for: .rightShift, role: .spotlightHold, settings: s)
         #expect(notes.count == 2)
-        s.annotations.rightOptionTrigger = true
-        #expect(SettingsRules.triggerKeyNotes(for: .rightOption, role: .clickTap, settings: s).count == 1)
         #expect(SettingsRules.triggerKeyNotes(for: nil, role: .clickTap, settings: s).isEmpty)
     }
 
@@ -478,57 +476,6 @@ struct InteractionTests {
         #expect(afterLong.isEmpty)
     }
 
-    @Test func fnHoldDraws() {
-        var e = InteractionEngine()
-        var s = Settings.defaults
-        s.annotations.enabled = true
-        let fn = InputSnapshot.secondaryFnMask
-        #expect(e.tick(snap(fn, at: 0), settings: s).isEmpty)
-        #expect(e.tick(snap(fn, at: 0.3), settings: s) == [.beginMomentaryDrawing])
-        #expect(e.tick(snap(at: 0.5), settings: s) == [.endMomentaryDrawing])
-        s.annotations.enabled = false
-        _ = e.tick(snap(fn, at: 1), settings: s)
-        #expect(e.tick(snap(fn, at: 2), settings: s).isEmpty)
-    }
-
-    @Test func fnDoesNotDrawWhenTurnedOff() {
-        var e = InteractionEngine()
-        var s = Settings.defaults
-        s.annotations.enabled = true
-        s.annotations.fnTrigger = false
-        let fn = InputSnapshot.secondaryFnMask
-        _ = e.tick(snap(fn, at: 0), settings: s)
-        #expect(e.tick(snap(fn, at: 0.5), settings: s).isEmpty)
-        #expect(e.tick(snap(fn, at: 2), settings: s).isEmpty)
-    }
-
-    @Test func turningFnOffMidHoldEndsTheDrawing() {
-        var e = InteractionEngine()
-        var s = Settings.defaults
-        s.annotations.enabled = true
-        let fn = InputSnapshot.secondaryFnMask
-        _ = e.tick(snap(fn, at: 0), settings: s)
-        #expect(e.tick(snap(fn, at: 0.3), settings: s) == [.beginMomentaryDrawing])
-        s.annotations.fnTrigger = false
-        #expect(e.tick(snap(fn, at: 0.5), settings: s) == [.endMomentaryDrawing])
-    }
-
-    @Test func fnDrawsByDefault() {
-        #expect(AnnotationSettings().fnTrigger)
-    }
-
-    @Test func rightOptionDrawsOnlyWhenEnabled() {
-        var e = InteractionEngine()
-        var s = Settings.defaults
-        s.annotations.enabled = true
-        _ = e.tick(snap(rightOption, at: 0), settings: s)
-        #expect(e.tick(snap(rightOption, at: 0.5), settings: s).isEmpty)
-        s.annotations.rightOptionTrigger = true
-        _ = e.tick(snap(at: 0.6), settings: s)
-        _ = e.tick(snap(rightOption, at: 0.7), settings: s)
-        #expect(e.tick(snap(rightOption, at: 1.0), settings: s) == [.beginMomentaryDrawing])
-    }
-
     @Test func dismissOnMove() {
         var e = InteractionEngine()
         var s = Settings.defaults
@@ -675,34 +622,10 @@ struct InteractionTests {
     }
 }
 
-@Suite("Hold-to-draw triggers") struct HoldToDrawTests {
+@Suite("Fn flag filter") struct FnFlagFilterTests {
     let fn = InputSnapshot.secondaryFnMask
     func snap(_ flags: UInt64 = 0, at t: TimeInterval, other: Bool = false) -> InputSnapshot {
         InputSnapshot(position: .zero, flags: flags, otherKeyDown: other, time: t)
-    }
-
-    @Test func toolShortcutWhileHoldingFnKeepsDrawing() {
-        var e = InteractionEngine()
-        var s = Settings.defaults
-        s.annotations.enabled = true
-        _ = e.tick(snap(fn, at: 0), settings: s)
-        #expect(e.tick(snap(fn, at: 0.3), settings: s) == [.beginMomentaryDrawing])
-        #expect(e.tick(snap(fn, at: 0.5, other: true), settings: s).isEmpty)
-        #expect(e.tick(snap(at: 0.6, other: true), settings: s) == [.endMomentaryDrawing])
-    }
-
-    @Test func fnNeverDrawsWhileMickeyIsOff() {
-        var e = InteractionEngine()
-        var s = Settings.defaults
-        s.annotations.enabled = true
-        s.general.masterEnabled = false
-        _ = e.tick(snap(fn, at: 0), settings: s)
-        #expect(e.tick(snap(fn, at: 1), settings: s).isEmpty)
-        s.general.masterEnabled = true
-        _ = e.tick(snap(fn, at: 1.1), settings: s)
-        #expect(e.tick(snap(fn, at: 1.5), settings: s) == [.beginMomentaryDrawing])
-        s.general.masterEnabled = false
-        #expect(e.tick(snap(fn, at: 1.6), settings: s) == [.endMomentaryDrawing])
     }
 
     @Test func fnFlagFromArrowKeysIsIgnored() {

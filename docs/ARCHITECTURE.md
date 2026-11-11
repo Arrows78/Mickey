@@ -50,7 +50,7 @@ Dependencies: `Domain` ← everything; `Persistence` ← `UI`; `System` ← `Stu
 ```
 
 - **One path for changes**: settings pages, the popover, hotkeys, presets and automatic mode all change settings through `AppModel`, so the cross-field rules (master auto-enable, exclusive spotlight triggers, menu bar or Dock) always apply.
-- **Input loop**: `InputMonitor` polls the pointer and modifier flags at the update rate and forwards global clicks and scrolls. `InteractionEngine` turns them into commands (click effect, sound, locate, spotlight off, momentary drawing) and decides spotlight visibility; `EffectsEngine` renders in a Core Animation transaction without implicit animations; `StudioCoordinator` moves the magnifiers.
+- **Input loop**: `InputMonitor` polls the pointer and modifier flags at the update rate and forwards global clicks and scrolls. `InteractionEngine` turns them into commands (click effect, sound, locate, spotlight off) and decides spotlight visibility; `EffectsEngine` renders in a Core Animation transaction without implicit animations; `StudioCoordinator` moves the magnifiers.
 - **Lone modifier detection**: flag state carries left/right device bits; another key counts as pressed when the last key-down event is newer than the modifier press (per-key state is unreliable in the sandbox).
 
 ## 4. Windows

@@ -51,14 +51,13 @@ A bottom bar shows the master switch state. Problems reported by presenter tools
 Contextual notes:
 
 - A key used both to hold the spotlight and to tap the click effect: a quick tap flashes, a hold shows the spotlight.
-- Right Option chosen while Right Option also triggers drawing: conflict warning.
 - Right Shift: Sticky Keys / Slow Keys caveat. Left Control: Control-click and Mission Control caveat. Right Control: missing from Apple keyboards.
 - Show on Mouse Clicks off with no tap key and no Show Click Effect hotkey: "the effect will never appear".
 - Hold a Key to Show and Turn Off When Moving are mutually exclusive; the latest change wins.
 
 #### Annotations
 
-Toggle (off); Start/Stop Drawing; hold Fn to draw (on); also hold Right Option (off); default tool (freehand); color (red); stroke width 4; highlighter color (yellow) and size 32; text & callout size 26; auto-fade (off) after 5 s; clear on exit (off).
+Toggle (off); Start/Stop Drawing; default tool (freehand); color (red); stroke width 4; highlighter color (yellow) and size 32; text & callout size 26; auto-fade (off) after 5 s; clear on exit (off).
 
 #### Presenter tools
 
@@ -140,9 +139,9 @@ The enlarged-pointer animation flashes a pointer five times larger that shrinks 
 
 ### 4.6 Annotations
 
-- Enter draw mode by holding Fn (≥ 0.25 s; releasing ends it; can be turned off in the settings), holding Right Option when enabled (same rule), the Toggle Annotation Mode hotkey, or Start Drawing.
+- Enter draw mode only with the Toggle Annotation Mode hotkey or Start Drawing (menu bar or Annotations settings). Holding a key never starts it.
 - The canvas covers the screen under the pointer; a toolbar at the top offers the eight tools, preset colors, stroke width, undo, clear all and stop.
-- Shortcuts while drawing, including while Fn is held: F freehand, A arrow, R rectangle, C circle, L line, H highlighter, T text, N callout, ⌘Z undo, ⇧⌘Z redo, ⌘C copy the drawing as an image, ⌘⌫ clear all, Esc stop.
+- Shortcuts while drawing: F freehand, A arrow, R rectangle, C circle, L line, H highlighter, T text, N callout, ⌘Z undo, ⇧⌘Z redo, ⌘C copy the drawing as an image, ⌘⌫ clear all, Esc stop.
 - Text: a click opens an inline editor; callouts are numbered automatically. Two-point shapes smaller than 2 pt are ignored.
 - Auto-fade removes each annotation after the delay; clear on exit erases everything when leaving draw mode. Undo keeps up to 100 steps; drawing after an undo drops the redo history. ⌘C (or the toolbar button) puts a transparent image of the drawing, cropped to what was drawn, on the clipboard.
 

@@ -19,7 +19,6 @@ public struct InputSnapshot: Sendable {
     static let modifierMask: UInt64 = 0x0002_0000 | 0x0004_0000 | 0x0008_0000 | 0x0010_0000
 
     public func isDown(_ key: TriggerKey) -> Bool { flags & key.deviceFlagMask != 0 }
-    public var fnDown: Bool { flags & Self.secondaryFnMask != 0 }
 
     /// Left/right bits of control, shift, command and option.
     static let deviceModifierMask: UInt64 = 0x0000_207F
@@ -68,8 +67,6 @@ public enum InteractionCommand: Equatable, Sendable {
     case clickSound
     case locate(CGPoint)
     case disableSpotlight
-    case beginMomentaryDrawing
-    case endMomentaryDrawing
 }
 
 /// Turns raw input into effect commands, applying every trigger rule from the product spec.
@@ -79,8 +76,6 @@ public struct InteractionEngine: Sendable {
 
     private var spotlightHold = HoldRecognizer(delay: 0.5)
     private var tap = TapRecognizer()
-    private var fnHold = HoldRecognizer(delay: 0.25)
-    private var optionHold = HoldRecognizer(delay: 0.25)
     private var shake = ShakeDetector(sensitivity: 0.95)
     private var dismiss = SpotlightDismissTracker()
     private var spotlightWasEnabled = false
@@ -144,20 +139,6 @@ public struct InteractionEngine: Sendable {
             tapKeyWasDown = down
         } else {
             tapKeyWasDown = false
-        }
-
-        // Hold Fn (unless turned off) or Right Option (when enabled) to draw. Once drawing, tool shortcuts typed with the key held keep it going.
-        if effectsOn && s.annotations.enabled {
-            if let e = fnHold.update(isDown: s.annotations.fnTrigger && input.fnDown && (fnHold.isActive || !input.otherKeyDown), at: t) {
-                out.append(e == .began ? .beginMomentaryDrawing : .endMomentaryDrawing)
-            }
-            let optionDown = s.annotations.rightOptionTrigger && input.isAlone(.rightOption)
-            if let e = optionHold.update(isDown: optionDown || (optionHold.isActive && input.isDown(.rightOption)), at: t) {
-                out.append(e == .began ? .beginMomentaryDrawing : .endMomentaryDrawing)
-            }
-        } else {
-            if fnHold.update(isDown: false, at: t) == .ended { out.append(.endMomentaryDrawing) }
-            if optionHold.update(isDown: false, at: t) == .ended { out.append(.endMomentaryDrawing) }
         }
 
         // Shake to locate.

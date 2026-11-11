@@ -8,8 +8,6 @@ import MickeyEffects
 @Observable
 public final class AnnotationController {
     public private(set) var isDrawing = false
-    /// Draw mode entered by holding a key; ends when the key is released.
-    public private(set) var isMomentary = false
     public var session = AnnotationSession(tool: .freehand, color: .red) { didSet { canvas?.needsDisplay = true } }
     public var settings = AnnotationSettings()
     public var onDrawingChanged: ((Bool) -> Void)?
@@ -32,25 +30,18 @@ public final class AnnotationController {
         if !s.enabled && isDrawing { exit() }
     }
 
-    public func toggle() { isDrawing ? exit() : enter(momentary: false) }
+    public func toggle() { isDrawing ? exit() : enter() }
 
-    public func enter(momentary: Bool) {
+    public func enter() {
         guard !isDrawing else { return }
-        isMomentary = momentary
         isDrawing = true
         let screen = NSScreen.screens.first { $0.frame.contains(NSEvent.mouseLocation) } ?? NSScreen.main
         guard let screen else { return }
         showCanvas(on: screen)
         canvasPanel?.ignoresMouseEvents = false
-        if momentary {
-            // The canvas is a non-activating panel: it takes the keyboard without activating Mickey,
-            // so tool shortcuts work while Fn is held and the previous app stays frontmost.
-            canvasPanel?.makeKey()
-        } else {
-            previousApp = NSWorkspace.shared.frontmostApplication
-            canvasPanel?.makeKeyAndOrderFront(nil)
-            NSApp.activate(ignoringOtherApps: true)
-        }
+        previousApp = NSWorkspace.shared.frontmostApplication
+        canvasPanel?.makeKeyAndOrderFront(nil)
+        NSApp.activate(ignoringOtherApps: true)
         // Without this, Esc and the tool shortcuts only work after a first click.
         canvasPanel?.makeFirstResponder(canvas)
         NSCursor.crosshair.push()
@@ -63,7 +54,6 @@ public final class AnnotationController {
         commitTextEditing()
         session.end()
         isDrawing = false
-        isMomentary = false
         NSCursor.pop()
         canvasPanel?.ignoresMouseEvents = true
         toolbarPanel?.orderOut(nil)
@@ -83,9 +73,6 @@ public final class AnnotationController {
             canvasPanel?.orderFrontRegardless()
         }
     }
-
-    /// Momentary mode ends when the trigger key is released, unless the user made it sticky.
-    public func endMomentary() { if isMomentary { exit() } }
 
     public func select(_ tool: AnnotationTool) { commitTextEditing(); session.selectedTool = tool }
     public func setColor(_ c: RGBAColor) { session.color = c }

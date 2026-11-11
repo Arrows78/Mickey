@@ -171,7 +171,6 @@ public struct StatusPopoverView: View {
                         KeyCap(text: KeyboardLayout.displayString(combo))
                     }
                 }
-                Text("or hold Fn (🌐) to draw").font(.caption).foregroundStyle(.secondary)
             }
             Divider()
             recordingRow

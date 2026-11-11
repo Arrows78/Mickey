@@ -8,22 +8,12 @@ struct AnnotationsPage: View {
         VStack(alignment: .leading, spacing: 16) {
             PageHeader(title: "Annotations", subtitle: "Draw arrows, shapes and freehand notes on top of everything.")
             FeatureCard(title: "Screen annotation", symbol: "pencil.tip.crop.circle",
-                        subtitle: "Hold Fn (🌐) to draw, or use the Toggle annotation mode hotkey, or Start drawing in the menu bar.",
+                        subtitle: "Use the Toggle annotation mode hotkey, or Start drawing in the menu bar.",
                         isOn: model.binding(\.annotations.enabled)) {
                 HStack {
                     Button(tr(model.isDrawing ? "Stop drawing" : "Start drawing")) { model.actions?.toggleDrawing() }
                         .help(model.tooltip(.toggleAnnotationMode, title: model.isDrawing ? "Stop drawing" : "Start drawing"))
                     Spacer()
-                }
-                ToggleRow(title: "Hold Fn (🌐) to draw",
-                          detail: "Turn off if Fn opens the emoji picker or dictation on your keyboard.",
-                          isOn: model.binding(\.annotations.fnTrigger))
-                ToggleRow(title: "Also hold Right Option (⌥) to draw",
-                          detail: "Adds Right Option as a second hold-to-draw key. Off by default.",
-                          isOn: model.binding(\.annotations.rightOptionTrigger))
-                if model.settings.annotations.rightOptionTrigger &&
-                    (model.settings.spotlight.holdKey == .rightOption || model.settings.click.tapKey == .rightOption) {
-                    NoteView(text: "Right Option is also used by a spotlight or click-effect trigger.", warning: true)
                 }
                 PickerRow(title: "Default tool", selection: model.binding(\.annotations.defaultTool), options: AnnotationTool.allCases) {
                     Label($0.title, systemImage: $0.symbolName)
@@ -91,7 +81,6 @@ struct HotkeysPage: View {
                     Text("• Combinations already used by macOS or by another action are refused; common app shortcuts get a warning.")
                     Text("• Shortcuts set by other apps (Raycast, Rectangle…) can't be detected: if one stops working, pick another.")
                     Text("• A shortcut set here is taken from every other app, so avoid ones you use elsewhere.")
-                    Text("• Annotations also work without a hotkey: hold Fn (🌐).")
                 }
                 .font(.callout).foregroundStyle(.secondary)
             }
